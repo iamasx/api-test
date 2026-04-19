@@ -14,9 +14,5 @@ export default function MissionBriefingLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={styles.body}>{children}</body>
-    </html>
-  );
+  return <div className={styles.body}>{children}</div>;
 }
