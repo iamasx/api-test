@@ -1,0 +1,19 @@
+name: Package Scripts
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  package-scripts:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify required package scripts exist
+        run: |
+          node -e "const pkg = require('./package.json'); const required = ['dev', 'build', 'start', 'lint', 'typecheck', 'test']; const missing = required.filter((name) => !pkg.scripts || !pkg.scripts[name]); if (missing.length) { console.error('Missing scripts: ' + missing.join(', ')); process.exit(1); } console.log('All required scripts are present.');"

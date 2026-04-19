@@ -1,0 +1,27 @@
+name: Lockfile Integrity
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lockfile-integrity:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies from lockfile
+        run: npm ci
+
+      - name: Ensure package-lock.json remains unchanged
+        run: git diff --exit-code -- package-lock.json

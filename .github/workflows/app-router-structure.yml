@@ -1,0 +1,24 @@
+name: App Router Structure
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  app-router-structure:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify core App Router files exist
+        run: |
+          test -f src/app/layout.tsx
+          test -f src/app/page.tsx
+          test -f src/app/globals.css
+
+      - name: Verify layout exports metadata
+        run: grep -q "export const metadata" src/app/layout.tsx
