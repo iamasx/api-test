@@ -1,0 +1,78 @@
+---
+title: "The Art of Writing Clean TypeScript"
+excerpt: "Practical tips for writing maintainable TypeScript code. Covers discriminated unions, branded types, const assertions, and when to use type vs interface."
+publishedAt: "2024-07-08"
+tags:
+  - "TypeScript"
+  - "Best Practices"
+  - "Frontend"
+readingTime: "6 min read"
+featured: false
+---
+
+Clean TypeScript is less about showing off the type system and more about using it to remove ambiguity from your code. When a type annotation makes runtime behavior easier to trust, it is pulling its weight. When it only makes signatures look clever, it is probably overhead.
+
+## Reach for discriminated unions before boolean soup
+
+Many UI bugs come from impossible states being modeled as separate booleans: `isLoading`, `hasError`, `isReady`, `isEmpty`. Those states drift out of sync because the model allows combinations the UI never intends to render.
+
+```ts
+type RequestState<T> =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: T }
+  | { status: "error"; message: string };
+
+function renderPanel(state: RequestState<string[]>) {
+  switch (state.status) {
+    case "success":
+      return state.data.length;
+    case "error":
+      return state.message;
+    default:
+      return state.status;
+  }
+}
+```
+
+The `status` field acts as a guardrail. It keeps rendering code honest and makes refactors safer because each branch is explicit.
+
+## Brand identifiers that should never be interchangeable
+
+If `UserId`, `WorkspaceId`, and `InvoiceId` are all plain strings, you are trusting naming discipline instead of the compiler.
+
+### Use branded types selectively
+
+Branded types are valuable when identifiers cross several boundaries and a mix-up would be painful to debug. Do not brand everything. Brand the values that represent domain identities or critical units.
+
+## Use const assertions for configuration surfaces
+
+When a configuration object doubles as a source of inferred types, `as const` keeps the compiler from widening values too early.
+
+```ts
+const themeTokens = {
+  primary: "#101828",
+  accent: "#f5c86b",
+  radius: "1rem",
+} as const;
+
+type ThemeToken = keyof typeof themeTokens;
+```
+
+This is especially useful for variant systems, navigation definitions, and feature-flag registries.
+
+## Choose type versus interface for the shape you need
+
+The argument is often overstated. I use `interface` when I expect declaration merging or object-oriented extension patterns to matter. I use `type` when composing unions, mapped types, or tuple-heavy helpers.
+
+The important part is consistency inside the codebase. Teams lose more time from style drift than they gain from absolutist rules.
+
+## Make runtime validation visible
+
+TypeScript does not validate API responses, form payloads, or local storage data at runtime. If a boundary can lie, say so in code. Parse unknown input, narrow it immediately, and keep the untrusted shape short lived.
+
+## Prefer readable helpers over generic acrobatics
+
+The best TypeScript abstractions usually feel obvious. If a helper requires several minutes of type-level archaeology before a teammate can change it, the abstraction is probably too expensive.
+
+Clean TypeScript should make intent sharper. It should help the next engineer move quickly without rereading the entire type system manual.

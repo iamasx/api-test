@@ -1,0 +1,94 @@
+---
+title: "Building Real-Time Apps with WebSockets and Next.js"
+excerpt: "Deep dive into implementing real-time features in Next.js applications using WebSocket connections and server-sent events. Covers connection pooling, reconnection strategies, and scaling considerations."
+publishedAt: "2024-11-15"
+tags:
+  - "Next.js"
+  - "WebSocket"
+  - "Tutorial"
+readingTime: "8 min read"
+featured: true
+---
+
+Real-time features stop feeling magical the minute they enter production. Presence indicators, live cursors, synced boards, and notification streams all depend on boring details: connection lifecycle, fan-out strategy, and failure handling under pressure.
+
+## Pick the transport that matches the interaction
+
+Not every "live" feature needs a full duplex socket. A collaborative editor does. A deployment activity feed often does not.
+
+- Use WebSockets when clients need to both publish and receive updates with low latency.
+- Use server-sent events when the server is primarily streaming state changes to the browser.
+- Keep HTTP mutations as the source of truth when writes still benefit from retries, tracing, and idempotency.
+
+### Treat sockets as a delivery layer, not your domain model
+
+The easiest mistake is letting socket event names become your business API. Domain actions should still flow through typed handlers or HTTP endpoints so they remain testable outside of a browser session.
+
+## Build a connection manager once
+
+If every component creates its own socket, you get duplicate subscriptions, race conditions during navigation, and painful reconnect storms. Centralize that concern behind a small client-side manager.
+
+```ts
+type RealtimeEvent =
+  | { type: "presence.updated"; roomId: string; users: string[] }
+  | { type: "message.created"; roomId: string; id: string; body: string };
+
+class RealtimeClient {
+  private socket: WebSocket | null = null;
+  private queue: RealtimeEvent[] = [];
+
+  connect(url: string) {
+    if (this.socket && this.socket.readyState <= WebSocket.OPEN) return;
+    this.socket = new WebSocket(url);
+    this.socket.addEventListener("open", () => {
+      for (const event of this.queue.splice(0)) {
+        this.socket?.send(JSON.stringify(event));
+      }
+    });
+  }
+
+  publish(event: RealtimeEvent) {
+    if (this.socket?.readyState === WebSocket.OPEN) {
+      this.socket.send(JSON.stringify(event));
+      return;
+    }
+
+    this.queue.push(event);
+  }
+}
+```
+
+## Reconnect with intent
+
+Reconnect logic is not just "retry forever." It is coordination between browser state, auth freshness, and replay protection.
+
+### Use exponential backoff and replay guards
+
+Backoff prevents thundering herds after a regional blip. Replay guards prevent duplicate mutations when a queued event is sent after the server already processed it.
+
+- Give every write-capable event an idempotency key.
+- Refresh auth before reconnecting if tokens are short lived.
+- Resubscribe to rooms explicitly after the connection opens instead of assuming server memory survived.
+
+## Scale the fan-out path
+
+The scaling problem usually appears before the application logic changes. One process can maintain plenty of connections, but broadcast coordination becomes the bottleneck.
+
+For larger systems, publish domain events into a broker such as Redis Streams or Kafka and let your realtime gateway translate those events into per-room broadcasts. That separation keeps delivery stateless and lets the application workers focus on persistence.
+
+## Prefer observability over confidence
+
+The teams that operate real-time systems well can answer simple questions quickly:
+
+- How many active connections do we have per node?
+- How often are clients reconnecting?
+- Which event types are dropped, delayed, or retried?
+- What is the tail latency from write acknowledgement to subscriber delivery?
+
+Dashboards for those numbers prevent socket bugs from becoming support tickets.
+
+## Know when SSE is the better choice
+
+For dashboards, deployment logs, and any stream that mostly flows in one direction, SSE is often cheaper to operate. You avoid custom ping logic, the browser reconnects automatically, and infrastructure teams usually have fewer surprises at the proxy layer.
+
+The practical goal is not to use WebSockets everywhere. It is to choose the narrowest transport that keeps the feature honest under failure.

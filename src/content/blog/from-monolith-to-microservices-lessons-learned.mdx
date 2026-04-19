@@ -1,0 +1,73 @@
+---
+title: "From Monolith to Microservices: Lessons Learned"
+excerpt: "A retrospective on migrating a 200K LOC monolithic application to microservices. Discusses service boundaries, data consistency, deployment strategies, and the mistakes made along the way."
+publishedAt: "2024-09-22"
+tags:
+  - "Architecture"
+  - "DevOps"
+  - "Backend"
+readingTime: "12 min read"
+featured: false
+---
+
+Breaking apart a monolith is usually framed as a technical upgrade. In practice, it is an organizational change with a lot of infrastructure attached. The hardest work is not writing new services. It is deciding which boundaries deserve to exist and then living with them.
+
+## Start with business seams, not folder structure
+
+Teams often split services based on the current module tree. That preserves accidental couplings instead of removing them.
+
+The more reliable starting point is the flow of ownership: billing, identity, notification delivery, reporting, and catalog management. If the same people cannot reason about a boundary without constant cross-team meetings, the boundary is probably premature.
+
+## Data consistency becomes an explicit design choice
+
+A monolith hides the cost of consistency behind a shared database transaction. Microservices make that cost visible.
+
+### Prefer asynchronous workflows where the business allows it
+
+If an operation can tolerate eventual consistency, model it that way from the start. Publish an event, persist an outbox record, and allow downstream services to catch up. Reserve distributed coordination for the workflows that genuinely require it.
+
+```ts
+export async function finalizeOrder(orderId: string) {
+  await db.transaction(async (tx) => {
+    await tx.orders.update({
+      where: { id: orderId },
+      data: { status: "placed" },
+    });
+
+    await tx.outbox.create({
+      data: {
+        type: "order.placed",
+        payload: JSON.stringify({ orderId }),
+      },
+    });
+  });
+}
+```
+
+That pattern gave us a recovery surface. If a consumer fell behind, the source of truth remained intact and the event could be replayed safely.
+
+## Deployment strategy matters as much as service design
+
+Cutting over too much traffic at once turns a migration into an incident. We had better outcomes when every step answered one question: "Can we roll this back quickly without data repair?"
+
+- Put new services behind routing or feature flags.
+- Mirror read traffic before switching writes.
+- Maintain compatibility contracts longer than you think is necessary.
+
+## Shared libraries are useful until they become a secret monolith
+
+There is a seductive middle state where every service is independent on paper but still depends on one "common" package for validation, logging, database access, and event schemas. That buys speed in the short term while quietly rebuilding a distributed version of the old coupling.
+
+The fix is not banning shared code. It is limiting shared code to stable contracts and utilities while keeping business behavior local to the service that owns it.
+
+## The biggest mistake was migrating low-value edges too early
+
+We spent time extracting workflows that were not operational bottlenecks while postponing the payment pipeline and job orchestration path that actually slowed releases. The system looked more modern without getting simpler to operate.
+
+## What I would repeat
+
+- Use an outbox and replayable events from day one.
+- Keep a platform team involved in observability and deployment templates.
+- Delay service extraction until ownership and scaling constraints are real.
+
+Microservices can improve autonomy, but only if the new boundaries reduce coordination instead of redistributing it.
