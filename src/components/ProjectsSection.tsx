@@ -40,10 +40,13 @@ export function ProjectsSection() {
   return (
     <section className="w-full">
       <div className="mb-8 text-center">
-        <h2 className="mb-2 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        <h2
+          id="projects-title"
+          className="mb-2 text-3xl font-bold tracking-tight text-[var(--foreground)]"
+        >
           Projects
         </h2>
-        <p className="text-zinc-600 dark:text-zinc-400">
+        <p className="text-[var(--muted)]">
           A selection of projects I&apos;ve built and contributed to
         </p>
       </div>
