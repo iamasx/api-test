@@ -1,0 +1,84 @@
+.shell { padding: 2rem; }
+.hero, .filters, .listPanel, .sidePanel {
+  border: 1px solid rgba(93, 68, 44, 0.12);
+  border-radius: 1.75rem;
+  background: rgba(255, 251, 245, 0.9);
+  box-shadow: 0 20px 48px rgba(80, 56, 36, 0.08);
+}
+.hero {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1.75rem;
+  background: linear-gradient(135deg, rgba(122, 68, 36, 0.09), transparent), rgba(255, 251, 245, 0.92);
+}
+.eyebrow, .panelHeader p {
+  margin: 0 0 0.45rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  color: #885734;
+}
+.title, .panelHeader h2, .cardHeading h3 { margin: 0; }
+.intro, .cardSummary, .emptyState p, .noteList { color: #54483f; }
+.heroStats, .workspace, .sideRail, .recordGrid, .detailGrid, .highlightList, .chipRow, .tagStrip, .comparePair, .statGrid { display: grid; gap: 0.85rem; }
+.heroStats, .recordGrid, .highlightList, .chipRow, .tagStrip, .comparePair { grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); }
+.workspace { grid-template-columns: minmax(0, 1.5fr) minmax(20rem, 0.9fr); align-items: start; }
+.sideRail { position: sticky; top: 1.25rem; }
+.statCard, .highlightCard, .chip, .tag, .inlineBadge, .statusBadge, .cardTop button, .filterMeta button {
+  border: 1px solid rgba(127, 92, 56, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 246, 235, 0.88);
+}
+.statCard, .highlightCard { padding: 0.9rem 1rem; }
+.statCard span, .highlightCard span, .detailGrid dt, .statGrid dt { display: block; font-size: 0.78rem; color: #725a45; }
+.statCard strong, .highlightCard strong, .detailGrid dd, .statGrid dd { margin: 0.35rem 0 0; font-size: 1.05rem; }
+.filters, .listPanel, .sidePanel { padding: 1.25rem; }
+.filters { margin-bottom: 1.5rem; }
+.searchRow, .panelHeader, .cardTop, .filterMeta, .cardHeading {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.searchField, .cardBody { display: grid; gap: 0.5rem; }
+.searchField { flex: 1; }
+.searchField span {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #725238;
+}
+.searchField input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(127, 92, 56, 0.18);
+  border-radius: 1rem;
+  background: rgba(255, 250, 244, 0.96);
+}
+.filterMeta { align-items: center; white-space: nowrap; color: #725a45; }
+.chip, .tag, .inlineBadge, .statusBadge, .cardTop button, .filterMeta button { padding: 0.5rem 0.85rem; font-size: 0.82rem; text-transform: capitalize; }
+.chipActive, .cardActive, .inlineBadge { background: #2e3d52; color: #f7f2e9; }
+.listPanel, .sidePanel { min-width: 0; }
+.card {
+  padding: 1rem;
+  border-radius: 1.35rem;
+  border: 1px solid rgba(93, 68, 44, 0.1);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(250, 242, 231, 0.95));
+}
+.cardBody { width: 100%; padding: 0; border: 0; background: transparent; text-align: left; color: inherit; }
+.cardHeading span { font-size: 0.78rem; color: #725a45; }
+.statGrid, .detailGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tag { text-align: center; }
+.statusBadge[data-tone="sealed"] { background: #dff0df; }
+.statusBadge[data-tone="review"] { background: #f6e3ba; }
+.statusBadge[data-tone="active"] { background: #dce8f6; }
+.statusBadge[data-tone="drift"] { background: #f8d1c3; }
+.compareVerdict { margin: 0; padding: 1rem; border-radius: 1rem; background: rgba(46, 61, 82, 0.08); }
+.noteList { margin: 0; padding-left: 1rem; }
+.emptyState { display: grid; gap: 0.75rem; padding: 1.25rem; border-radius: 1.1rem; background: rgba(104, 74, 47, 0.06); }
+@media (max-width: 900px) {
+  .shell { padding: 1rem; }
+  .workspace, .searchRow, .panelHeader, .cardTop, .filterMeta, .cardHeading { grid-template-columns: 1fr; display: grid; }
+  .sideRail { position: static; }
+}
