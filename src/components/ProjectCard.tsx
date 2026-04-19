@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/Button";
 import type { Project } from "@/types/project";
 
 interface ProjectCardProps {
@@ -10,32 +11,33 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, onTagClick, onOpenModal }: ProjectCardProps) {
   return (
-    <div className="group flex flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white transition-shadow hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-line bg-surface/90 shadow-card transition duration-300 hover:-translate-y-1 hover:border-brand/25">
       <button
         type="button"
         onClick={() => onOpenModal(project)}
-        className="flex h-48 items-center justify-center bg-gradient-to-br from-zinc-100 to-zinc-200 text-sm text-zinc-400 dark:from-zinc-800 dark:to-zinc-900 dark:text-zinc-600"
+        className="relative flex h-48 items-end overflow-hidden bg-gradient-to-br from-brand-soft via-transparent to-accent-soft px-5 py-5 text-left"
       >
-        {project.imageAlt}
+        <span className="absolute inset-0 bg-mesh-glow opacity-90" />
+        <span className="absolute left-5 top-5 rounded-full border border-line bg-surface/85 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-muted">
+          {project.category}
+        </span>
+        <span className="relative max-w-[15rem] font-mono text-xs uppercase tracking-[0.24em] text-muted">
+          {project.imageAlt}
+        </span>
       </button>
 
-      <div className="flex flex-1 flex-col p-5">
-        <div className="mb-2 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-            {project.title}
-          </h3>
-          <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-            {project.category}
-          </span>
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <div className="mb-3">
+          <h3 className="text-xl font-semibold tracking-tight text-text">{project.title}</h3>
         </div>
 
-        <p className="mb-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-          {project.description}
+        <p className="mb-4 text-sm leading-7 text-muted">{project.description}</p>
+
+        <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.22em] text-brand">
+          {project.stats}
         </p>
 
-        <p className="mb-4 text-xs text-zinc-500 dark:text-zinc-500">{project.stats}</p>
-
-        <div className="mb-4 flex flex-wrap gap-1.5">
+        <div className="mb-5 flex flex-wrap gap-2">
           {project.techStack.map((tech) => (
             <button
               key={tech}
@@ -43,40 +45,32 @@ export function ProjectCard({ project, onTagClick, onOpenModal }: ProjectCardPro
                 e.stopPropagation();
                 onTagClick(tech);
               }}
-              className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50"
+              type="button"
+              className="rounded-full border border-line bg-canvas/70 px-3 py-1 text-xs font-medium text-muted transition duration-200 hover:border-brand/25 hover:bg-brand-soft/55 hover:text-brand-strong"
             >
               {tech}
             </button>
           ))}
         </div>
 
-        <div className="mt-auto flex gap-3">
-          <a
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-zinc-700 underline-offset-4 hover:underline dark:text-zinc-300"
-          >
+        <div className="mt-auto flex flex-wrap items-center gap-3">
+          <Button className="flex-1 sm:flex-none" href={project.githubUrl} size="sm" variant="secondary">
             GitHub
-          </a>
+          </Button>
           {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium text-blue-600 underline-offset-4 hover:underline dark:text-blue-400"
-            >
+            <Button className="flex-1 sm:flex-none" href={project.liveUrl} size="sm">
               Live Demo
-            </a>
+            </Button>
           )}
           <button
             onClick={() => onOpenModal(project)}
-            className="ml-auto text-sm font-medium text-zinc-500 underline-offset-4 hover:underline dark:text-zinc-400"
+            type="button"
+            className="text-sm font-medium text-muted transition duration-200 hover:text-brand-strong"
           >
             Details
           </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 }

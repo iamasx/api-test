@@ -1,26 +1,114 @@
+@config "../../tailwind.config.mts";
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-canvas: oklch(96.5% 0.015 87.2);
+  --color-surface: oklch(99% 0.01 87.2 / 0.92);
+  --color-text: oklch(24% 0.025 212.5);
+  --color-muted: oklch(46% 0.024 215.2);
+  --color-line: oklch(74% 0.02 93 / 0.4);
+  --color-shadow: oklch(14% 0.02 214);
+  --color-brand: oklch(58% 0.115 195.5);
+  --color-brand-soft: oklch(94% 0.03 190.5);
+  --color-brand-strong: oklch(42% 0.11 196.3);
+  --color-accent: oklch(72% 0.16 63.8);
+  --color-accent-soft: oklch(94% 0.05 64.4);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-canvas: var(--color-canvas);
+  --color-surface: var(--color-surface);
+  --color-text: var(--color-text);
+  --color-muted: var(--color-muted);
+  --color-line: var(--color-line);
+  --color-shadow: var(--color-shadow);
+  --color-brand: var(--color-brand);
+  --color-brand-soft: var(--color-brand-soft);
+  --color-brand-strong: var(--color-brand-strong);
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.dark {
+  --color-canvas: oklch(17% 0.025 216.6);
+  --color-surface: oklch(21% 0.022 216.8 / 0.92);
+  --color-text: oklch(95.5% 0.012 187.7);
+  --color-muted: oklch(75% 0.02 201.3);
+  --color-line: oklch(58% 0.014 205 / 0.22);
+  --color-shadow: oklch(5% 0.01 220);
+  --color-brand: oklch(73% 0.11 186.4);
+  --color-brand-soft: oklch(32% 0.042 194.7);
+  --color-brand-strong: oklch(84% 0.095 186.2);
+  --color-accent: oklch(81% 0.13 70.4);
+  --color-accent-soft: oklch(33% 0.05 67.2);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-canvas);
+  }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(
+        circle at 8% 12%,
+        color-mix(in oklab, var(--color-brand) 18%, transparent),
+        transparent 26rem
+      ),
+      radial-gradient(
+        circle at 92% 10%,
+        color-mix(in oklab, var(--color-accent) 16%, transparent),
+        transparent 22rem
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in oklab, var(--color-surface) 72%, transparent),
+        transparent 20rem
+      ),
+      var(--color-canvas);
+    color: var(--color-text);
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-brand) 34%, white);
+    color: var(--color-text);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

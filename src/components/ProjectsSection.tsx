@@ -1,11 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { FilterCategory, Project } from "@/types/project";
-import { projects } from "@/data/projects";
 import { FilterBar } from "@/components/FilterBar";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ProjectModal } from "@/components/ProjectModal";
+import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { projects } from "@/data/projects";
+import type { FilterCategory, Project } from "@/types/project";
 
 export function ProjectsSection() {
   const [activeCategory, setActiveCategory] = useState<FilterCategory>("All");
@@ -37,43 +39,58 @@ export function ProjectsSection() {
     setActiveCategory("All");
   };
 
+  const activeLabel = activeTech ?? activeCategory;
+
   return (
-    <section className="w-full">
-      <div className="mb-8 text-center">
-        <h2 className="mb-2 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-          Projects
-        </h2>
-        <p className="text-zinc-600 dark:text-zinc-400">
-          A selection of projects I&apos;ve built and contributed to
-        </p>
-      </div>
-
-      <FilterBar
-        activeCategory={activeCategory}
-        activeTech={activeTech}
-        allTechs={allTechs}
-        onCategoryChange={setActiveCategory}
-        onTechChange={setActiveTech}
-      />
-
-      <div className="grid grid-cols-1 gap-6 transition-all duration-300 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredProjects.map((project) => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-            onTagClick={handleTagClick}
-            onOpenModal={setSelectedProject}
+    <section className="scroll-mt-24 py-14 sm:py-20" id="projects">
+      <Container className="space-y-8">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end">
+          <SectionHeading
+            description="A selection of products, tools, and platform work spanning frontend systems, backend services, and open-source experiments."
+            eyebrow="Selected Work"
+            title="Projects shaped by performance, developer experience, and durable product thinking."
           />
-        ))}
-      </div>
 
-      {filteredProjects.length === 0 && (
-        <p className="py-12 text-center text-zinc-500 dark:text-zinc-400">
-          No projects match the selected filter.
-        </p>
-      )}
+          <div className="rounded-[1.75rem] border border-line bg-surface/85 p-5 shadow-card">
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-brand">Active view</p>
+            <p className="mt-3 text-3xl font-semibold tracking-tight text-text">
+              {filteredProjects.length}
+            </p>
+            <p className="mt-2 text-sm leading-7 text-muted">
+              {activeLabel === "All"
+                ? "Showing the full portfolio selection."
+                : `Filtered for ${activeLabel}.`}
+            </p>
+          </div>
+        </div>
 
-      <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+        <FilterBar
+          activeCategory={activeCategory}
+          activeTech={activeTech}
+          allTechs={allTechs}
+          onCategoryChange={setActiveCategory}
+          onTechChange={setActiveTech}
+        />
+
+        <div className="grid grid-cols-1 gap-6 transition-all duration-300 sm:grid-cols-2 xl:grid-cols-3">
+          {filteredProjects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onTagClick={handleTagClick}
+              onOpenModal={setSelectedProject}
+            />
+          ))}
+        </div>
+
+        {filteredProjects.length === 0 ? (
+          <div className="rounded-[1.75rem] border border-dashed border-line bg-surface/70 px-6 py-12 text-center text-sm text-muted">
+            No projects match the selected filter.
+          </div>
+        ) : null}
+
+        <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+      </Container>
     </section>
   );
 }
