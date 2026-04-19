@@ -1,11 +1,18 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 import type { FilterCategory, Project } from "@/types/project";
 import { projects } from "@/data/projects";
 import { FilterBar } from "@/components/FilterBar";
 import { ProjectCard } from "@/components/ProjectCard";
-import { ProjectModal } from "@/components/ProjectModal";
+
+const ProjectModal = dynamic(
+  () => import("@/components/ProjectModal").then((module) => module.ProjectModal),
+  {
+    loading: () => null,
+  },
+);
 
 export function ProjectsSection() {
   const [activeCategory, setActiveCategory] = useState<FilterCategory>("All");
@@ -38,13 +45,17 @@ export function ProjectsSection() {
   };
 
   return (
-    <section className="w-full">
-      <div className="mb-8 text-center">
-        <h2 className="mb-2 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+    <div className="glass-panel soft-grid overflow-hidden rounded-[2rem] border border-[var(--border)] px-6 py-8 shadow-[var(--shadow)] md:px-8">
+      <div className="mb-8 max-w-2xl">
+        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--accent)]">
           Projects
+        </p>
+        <h2 className="mt-3 text-3xl font-semibold tracking-[-0.05em] text-[var(--ink)] sm:text-4xl">
+          Selected systems and interfaces
         </h2>
-        <p className="text-zinc-600 dark:text-zinc-400">
-          A selection of projects I&apos;ve built and contributed to
+        <p className="mt-4 text-base leading-8 text-[var(--muted)]">
+          A cross-section of product engineering work spanning collaborative tools,
+          backend platforms, and UI-heavy applications.
         </p>
       </div>
 
@@ -56,7 +67,7 @@ export function ProjectsSection() {
         onTechChange={setActiveTech}
       />
 
-      <div className="grid grid-cols-1 gap-6 transition-all duration-300 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 transition-all duration-300 md:grid-cols-2 xl:grid-cols-3">
         {filteredProjects.map((project) => (
           <ProjectCard
             key={project.id}
@@ -68,12 +79,12 @@ export function ProjectsSection() {
       </div>
 
       {filteredProjects.length === 0 && (
-        <p className="py-12 text-center text-zinc-500 dark:text-zinc-400">
+        <p className="py-12 text-center text-[var(--muted)]">
           No projects match the selected filter.
         </p>
       )}
 
       <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
-    </section>
+    </div>
   );
 }

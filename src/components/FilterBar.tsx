@@ -31,15 +31,17 @@ export function FilterBar({
         {categories.map((category) => (
           <button
             key={category}
+            type="button"
             onClick={() => {
               onCategoryChange(category);
               onTechChange(null);
             }}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+            className={`rounded-full border px-4 py-2 text-sm font-medium ${
               activeCategory === category && activeTech === null
-                ? "bg-foreground text-background"
-                : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                ? "border-transparent bg-[var(--ink)] text-white"
+                : "border-[rgba(20,32,51,0.08)] bg-white/80 text-[var(--muted)] hover:border-[rgba(20,32,51,0.18)] hover:text-[var(--ink)]"
             }`}
+            aria-pressed={activeCategory === category && activeTech === null}
           >
             {category}
           </button>
@@ -49,15 +51,17 @@ export function FilterBar({
         {allTechs.map((tech) => (
           <button
             key={tech}
+            type="button"
             onClick={() => {
               onTechChange(activeTech === tech ? null : tech);
               onCategoryChange("All");
             }}
-            className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+            className={`rounded-full border px-3 py-1 text-xs font-medium ${
               activeTech === tech
-                ? "bg-blue-600 text-white"
-                : "bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50"
+                ? "border-transparent bg-[var(--accent)] text-white"
+                : "border-[rgba(15,118,110,0.14)] bg-[rgba(15,118,110,0.08)] text-[var(--accent)] hover:bg-[rgba(15,118,110,0.14)]"
             }`}
+            aria-pressed={activeTech === tech}
           >
             {tech}
           </button>
