@@ -4,8 +4,6 @@ import {
   commandLogToneClasses,
   type CommandLogGroup,
 } from "@/app/command-log/mock-data";
-import { CommandLogEmptyState } from "./command-log-empty-state";
-
 type EventStreamProps = {
   groups: CommandLogGroup[];
   activeEventId: string | null;
@@ -14,7 +12,6 @@ type EventStreamProps = {
   onSelectEvent: (eventId: string) => void;
   onResetFilters: () => void;
 };
-
 export function EventStream({
   groups,
   activeEventId,
@@ -25,23 +22,24 @@ export function EventStream({
 }: EventStreamProps) {
   if (groups.length === 0) {
     return (
-      <CommandLogEmptyState
-        actionLabel={hasFilters ? "Reset tag filters" : undefined}
-        description="No command events match the active tag set. Clear filters to repopulate the stream."
-        eyebrow="Stream empty"
-        onAction={hasFilters ? onResetFilters : undefined}
-        title="This window has gone quiet."
-      />
+      <section className="rounded-[1.75rem] border border-dashed border-white/12 bg-stone-950/50 p-6 text-stone-300">
+        <p className="text-xs uppercase tracking-[0.22em] text-stone-500">Stream empty</p>
+        <h2 className="mt-3 text-xl font-semibold text-stone-100">This window has gone quiet.</h2>
+        <p className="mt-3 text-sm leading-6">No command events match the active tag set. Clear filters to repopulate the stream.</p>
+        {hasFilters ? (
+          <button
+            className="mt-5 rounded-full border border-white/15 px-4 py-2 text-sm font-medium text-stone-100 transition hover:border-white/30 hover:bg-white/5"
+            onClick={onResetFilters} type="button">
+            Reset tag filters
+          </button>
+        ) : null}
+      </section>
     );
   }
-
   return (
     <section className="space-y-4">
       {groups.map((group) => (
-        <article
-          key={group.id}
-          className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-stone-950/75 backdrop-blur"
-        >
+        <article key={group.id} className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-stone-950/75 backdrop-blur">
           <header className="flex flex-col gap-3 border-b border-white/8 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-stone-500">{group.lane}</p>
@@ -63,19 +61,15 @@ export function EventStream({
 
               return (
                 <button
-                  key={event.id}
+                  key={event.id} aria-pressed={isActive}
                   className={`block w-full px-5 py-4 text-left transition ${
                     isActive ? "bg-white/7" : "hover:bg-white/4"
                   }`}
-                  onClick={() => onSelectEvent(event.id)}
-                  type="button"
-                >
+                  onClick={() => onSelectEvent(event.id)} type="button">
                   <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span
-                          className={`h-2.5 w-2.5 rounded-full ${commandLogOutcomeClasses[event.outcome]}`}
-                        />
+                        <span className={`h-2.5 w-2.5 rounded-full ${commandLogOutcomeClasses[event.outcome]}`} />
                         <span className="text-sm font-semibold text-stone-100">{event.title}</span>
                         {isPinned ? (
                           <span className="rounded-full border border-violet-400/25 bg-violet-400/12 px-2.5 py-1 text-[11px] uppercase tracking-[0.18em] text-violet-100">
@@ -89,10 +83,7 @@ export function EventStream({
                         {event.tags.map((tagId) => {
                           const tag = commandLogTagIndex[tagId];
                           return (
-                            <span
-                              key={tagId}
-                              className={`rounded-full border px-2.5 py-1 text-xs ${commandLogToneClasses[tag.tone]}`}
-                            >
+                            <span key={tagId} className={`rounded-full border px-2.5 py-1 text-xs ${commandLogToneClasses[tag.tone]}`}>
                               {tag.label}
                             </span>
                           );

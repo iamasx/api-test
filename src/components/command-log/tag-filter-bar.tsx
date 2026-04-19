@@ -2,7 +2,6 @@ import {
   commandLogToneClasses,
   type CommandLogTag,
 } from "@/app/command-log/mock-data";
-
 type TagFilterBarProps = {
   tags: CommandLogTag[];
   activeTagIds: string[];
@@ -12,7 +11,6 @@ type TagFilterBarProps = {
   onToggleTag: (tagId: string) => void;
   onReset: () => void;
 };
-
 export function TagFilterBar({
   tags,
   activeTagIds,
@@ -28,15 +26,14 @@ export function TagFilterBar({
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-stone-500">Tag filters</p>
           <p className="mt-2 text-sm text-stone-300">
-            Matching any active tag keeps an event in view. Showing {visibleCount} of{" "}
-            {totalCount} events.
+            Matching any active tag keeps an event in view. Showing {visibleCount} of {totalCount} events.
           </p>
         </div>
         <button
+          aria-disabled={activeTagIds.length === 0}
           className="rounded-full border border-white/12 px-4 py-2 text-sm font-medium text-stone-100 transition hover:border-white/30 hover:bg-white/5"
-          onClick={onReset}
-          type="button"
-        >
+          disabled={activeTagIds.length === 0}
+          onClick={onReset} type="button">
           Clear filters
         </button>
       </div>
@@ -48,18 +45,15 @@ export function TagFilterBar({
           return (
             <button
               key={tag.id}
+              aria-pressed={isActive}
               className={`rounded-full border px-4 py-2 text-left transition ${
                 isActive
                   ? `${commandLogToneClasses[tag.tone]} shadow-[0_0_0_1px_rgba(255,255,255,0.06)]`
                   : "border-white/10 bg-white/5 text-stone-300 hover:border-white/20 hover:bg-white/8"
               }`}
-              onClick={() => onToggleTag(tag.id)}
-              type="button"
-            >
+              onClick={() => onToggleTag(tag.id)} type="button">
               <span className="block text-sm font-semibold">{tag.label}</span>
-              <span className="mt-1 block text-xs opacity-80">
-                {count} visible · {tag.hint}
-              </span>
+              <span className="mt-1 block text-xs opacity-80">{count} visible · {tag.hint}</span>
             </button>
           );
         })}
