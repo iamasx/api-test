@@ -1,141 +1,105 @@
-import { type ComparisonMode, type ComparisonPanel, type TelemetryMetric } from "./mock-data";
+import type { TrendPanel } from "@/app/telemetry-desk/mock-data";
 
-const toneClasses = {
-  focus: "border-amber-300/35 bg-amber-300/12 text-amber-100",
-  watch: "border-rose-300/35 bg-rose-300/12 text-rose-100",
-  steady: "border-teal-300/35 bg-teal-300/12 text-teal-100",
+const panelStatusClasses = {
+  lift: "border-emerald-400/25 bg-emerald-400/10 text-emerald-100",
+  steady: "border-cyan-300/30 bg-cyan-300/12 text-cyan-100",
+  watch: "border-amber-300/25 bg-amber-300/10 text-amber-100",
 };
 
 type TrendComparisonPanelsProps = {
-  activeMetric: TelemetryMetric | null;
-  panelModes: Record<string, string>;
-  panels: ComparisonPanel[];
+  baselineByPanel: Record<string, string>;
+  focusedMetricLabel: string | null;
+  hiddenCount: number;
+  onBaselineChange: (panelId: string, baselineId: string) => void;
+  onHidePanel: (panelId: string) => void;
   onReset: () => void;
-  onSelectMode: (panelId: string, modeId: string) => void;
+  panels: TrendPanel[];
+  totalPanels: number;
 };
 
-function ComparisonPanelCard({
-  mode,
-  panel,
-  selectedModeId,
-  onSelectMode,
-}: {
-  mode: ComparisonMode;
-  panel: ComparisonPanel;
-  selectedModeId: string;
-  onSelectMode: (panelId: string, modeId: string) => void;
-}) {
-  const maxValue = Math.max(...mode.series.flatMap((point) => [point.primary, point.comparison]));
+export function TrendComparisonPanels({
+  baselineByPanel,
+  focusedMetricLabel,
+  hiddenCount,
+  onBaselineChange,
+  onHidePanel,
+  onReset,
+  panels,
+  totalPanels,
+}: TrendComparisonPanelsProps) {
+  const helperCopy = focusedMetricLabel
+    ? `Focused comparisons for ${focusedMetricLabel}.`
+    : "Each panel can switch its own baseline or drop out of the desk until reset.";
 
   return (
-    <article className="rounded-[1.75rem] border border-white/8 bg-white/[0.04] p-5">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+    <section className="rounded-[2rem] border border-white/10 bg-slate-950/65 p-6 backdrop-blur sm:p-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <div className={`inline-flex rounded-full border px-3 py-1 text-[11px] uppercase tracking-[0.24em] ${toneClasses[panel.status]}`}>
-            {panel.status}
-          </div>
-          <h3 className="mt-4 text-xl font-semibold text-stone-50">{panel.title}</h3>
-          <p className="mt-2 text-sm leading-6 text-stone-300">{panel.strapline}</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-cyan-200/70">Trend Comparison Panels</p>
+          <h2 className="mt-2 text-2xl font-semibold text-white">Local baselines and panel visibility controls.</h2>
         </div>
-
-        <div className="flex flex-wrap gap-2">
-          {panel.modes.map((entry) => {
-            const isSelected = entry.id === selectedModeId;
+        <p className="max-w-xl text-sm text-slate-300">{hiddenCount > 0 ? `${hiddenCount} panel${hiddenCount === 1 ? "" : "s"} hidden. ` : ""}{helperCopy}</p>
+      </div>
+      {panels.length > 0 ? (
+        <div className="mt-6 grid gap-4 lg:grid-cols-3">
+          {panels.map((panel) => {
+            const activeBaseline =
+              panel.baselines.find((baseline) => baseline.id === baselineByPanel[panel.id]) ??
+              panel.baselines[0];
             return (
-              <button
-                aria-pressed={isSelected}
-                className={`rounded-full border px-3 py-1.5 text-sm transition ${isSelected ? "border-teal-200/50 bg-teal-200/15 text-teal-50" : "border-white/10 bg-white/5 text-stone-300 hover:border-white/20 hover:text-stone-100"}`}
-                key={entry.id}
-                onClick={() => onSelectMode(panel.id, entry.id)}
-                type="button"
-              >
-                {entry.label}
-              </button>
+              <article className="rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-5" key={panel.id}>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{panel.owner}</p>
+                    <h3 className="mt-2 text-xl font-semibold text-white">{panel.title}</h3>
+                  </div>
+                  <span className={`rounded-full border px-3 py-1 text-xs uppercase tracking-[0.2em] ${panelStatusClasses[panel.status]}`}>{panel.status}</span>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-slate-300">{panel.summary}</p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {panel.baselines.map((baseline) => (
+                    <button
+                      className={`rounded-full border px-3 py-1.5 text-xs transition ${baseline.id === activeBaseline.id ? "border-cyan-300/35 bg-cyan-300 text-slate-950" : "border-white/10 text-slate-200 hover:bg-white/[0.08]"}`}
+                      key={baseline.id}
+                      onClick={() => onBaselineChange(panel.id, baseline.id)}
+                      type="button"
+                    >
+                      {baseline.label}
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-5 flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Comparison value</p>
+                    <p className="mt-2 text-3xl font-semibold text-white">{activeBaseline.value}</p>
+                    <p className="mt-1 text-sm text-cyan-100">{activeBaseline.delta}</p>
+                  </div>
+                  <button className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-white/[0.08]" onClick={() => onHidePanel(panel.id)} type="button">
+                    Hide panel
+                  </button>
+                </div>
+                <div className="mt-5 flex h-16 items-end gap-2">
+                  {activeBaseline.samples.map((sample, index) => (
+                    <div className="flex-1 rounded-t-full bg-gradient-to-t from-cyan-500/35 to-amber-300/55" key={`${panel.id}-${index}`} style={{ height: `${sample}%` }} />
+                  ))}
+                </div>
+              </article>
             );
           })}
         </div>
-      </div>
-
-      <p className="mt-4 text-sm text-stone-400">{mode.detail}</p>
-      <div className="mt-5 space-y-4">
-        {mode.series.map((point) => (
-          <div key={point.label}>
-            <div className="flex items-center justify-between text-xs uppercase tracking-[0.2em] text-stone-400">
-              <span>{point.label}</span>
-              <span>{mode.unit}</span>
-            </div>
-            <div className="mt-2 space-y-2">
-              <div>
-                <div className="flex items-center justify-between text-sm text-stone-200">
-                  <span>{mode.primaryLabel}</span>
-                  <span className="font-mono">{point.primary}{mode.unit}</span>
-                </div>
-                <div className="mt-1 h-2 rounded-full bg-white/8">
-                  <div className="h-full rounded-full bg-amber-200" style={{ width: `${point.primary / maxValue * 100}%` }} />
-                </div>
-              </div>
-              <div>
-                <div className="flex items-center justify-between text-sm text-stone-300">
-                  <span>{mode.comparisonLabel}</span>
-                  <span className="font-mono">{point.comparison}{mode.unit}</span>
-                </div>
-                <div className="mt-1 h-2 rounded-full bg-white/8">
-                  <div className="h-full rounded-full bg-teal-300/80" style={{ width: `${point.comparison / maxValue * 100}%` }} />
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </article>
-  );
-}
-
-export function TrendComparisonPanels({
-  activeMetric,
-  panelModes,
-  panels,
-  onReset,
-  onSelectMode,
-}: TrendComparisonPanelsProps) {
-  if (!activeMetric || panels.length === 0) {
-    return (
-      <section className="rounded-[2rem] border border-dashed border-white/12 bg-stone-950/55 p-6 text-center backdrop-blur sm:p-8">
-        <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Trend comparisons</p>
-        <h2 className="mt-4 text-2xl font-semibold text-stone-50">No metric focus selected</h2>
-        <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-stone-300">
-          Deselecting the active tile clears the local comparison deck. Restore the recommended focus to bring the panels back.
-        </p>
-        <button className="mt-6 rounded-full bg-amber-200 px-5 py-2.5 text-sm font-semibold text-stone-950 transition hover:bg-amber-100" onClick={onReset} type="button">
-          Restore recommended focus
-        </button>
-      </section>
-    );
-  }
-
-  return (
-    <section className="rounded-[2rem] border border-white/10 bg-stone-950/65 p-6 backdrop-blur sm:p-8">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-xs uppercase tracking-[0.24em] text-teal-200/70">Trend comparisons</p>
-          <h2 className="mt-2 text-2xl font-semibold text-stone-50">{activeMetric.label} comparison panels</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-300">
-            Each panel keeps its own selector state locally. Reset returns the desk to the recommended focus and default comparison modes.
+      ) : (
+        <div className="mt-6 rounded-[1.6rem] border border-dashed border-white/12 bg-white/[0.03] p-8 text-center">
+          <p className="text-lg font-semibold text-white">No comparison panels are visible.</p>
+          <p className="mt-3 text-sm leading-6 text-slate-300">
+            {focusedMetricLabel
+              ? `${focusedMetricLabel} does not have an active trend panel in the current desk view.`
+              : "All comparison panels have been hidden from the desk."}
           </p>
+          <button className="mt-5 rounded-full bg-cyan-300 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200" onClick={onReset} type="button">
+            Restore all {totalPanels} panels
+          </button>
         </div>
-        <button className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-stone-200 transition hover:border-amber-200/35 hover:text-amber-100" onClick={onReset} type="button">
-          Reset comparisons
-        </button>
-      </div>
-
-      <div className="mt-6 grid gap-4 xl:grid-cols-2">
-        {panels.map((panel) => {
-          const selectedModeId = panelModes[panel.id] ?? panel.defaultMode;
-          const mode = panel.modes.find((entry) => entry.id === selectedModeId) ?? panel.modes[0];
-          if (!mode) return null;
-          return <ComparisonPanelCard key={panel.id} mode={mode} onSelectMode={onSelectMode} panel={panel} selectedModeId={selectedModeId} />;
-        })}
-      </div>
+      )}
     </section>
   );
 }

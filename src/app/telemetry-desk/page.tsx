@@ -5,7 +5,7 @@ import { TelemetryDeskShell } from "@/components/telemetry-desk/telemetry-desk-s
 export const metadata: Metadata = {
   title: "Telemetry Desk",
   description:
-    "Mock telemetry desk with local metric tiles, comparison panels, and alert summaries.",
+    "Mock telemetry desk with local metric tiles, trend comparisons, and alert summaries.",
 };
 
 export default function TelemetryDeskPage() {

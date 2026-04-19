@@ -1,82 +1,117 @@
 "use client";
-
-import { useTransition, useState } from "react";
-
-import { AlertSummaryRail } from "./alert-summary-rail";
-import { MetricTileGrid } from "./metric-tile-grid";
+import { startTransition, useDeferredValue, useState } from "react";
 import {
-  getDefaultPanelModes,
-  telemetryDeskSnapshots,
-  type TelemetryWindowId,
-  telemetryWindows,
-} from "./mock-data";
+  alertToneFilters,
+  comparisonDefaults,
+  reportingWindows,
+  telemetryDeskData,
+  type AlertTone,
+  type ReportingWindowId,
+} from "@/app/telemetry-desk/mock-data";
+import { AlertSummaryList } from "./alert-summary-list";
+import { MetricTileGrid } from "./metric-tile-grid";
 import { TelemetryDeskHeader } from "./telemetry-desk-header";
 import { TrendComparisonPanels } from "./trend-comparison-panels";
 
-const initialWindow = telemetryWindows[1]?.id ?? telemetryWindows[0].id;
-const initialSnapshot = telemetryDeskSnapshots[initialWindow];
+function buildBaselineSelection(windowId: ReportingWindowId) {
+  return Object.fromEntries(
+    telemetryDeskData[windowId].panels.map((panel) => [panel.id, panel.defaultBaselineId]),
+  );
+}
+const initialWindowId: ReportingWindowId = "6h";
 
 export function TelemetryDeskShell() {
-  const [selectedWindow, setSelectedWindow] = useState<TelemetryWindowId>(initialWindow);
-  const [activeMetricId, setActiveMetricId] = useState<string | null>(initialSnapshot.metrics[0]?.id ?? null);
-  const [panelModes, setPanelModes] = useState<Record<string, string>>(getDefaultPanelModes(initialSnapshot.comparisons));
-  const [isPending, startTransition] = useTransition();
+  const [windowId, setWindowId] = useState<ReportingWindowId>(initialWindowId);
+  const [focusedMetricId, setFocusedMetricId] = useState<string | null>(
+    comparisonDefaults[initialWindowId].focusMetricId,
+  );
+  const [hiddenPanelIds, setHiddenPanelIds] = useState<string[]>(
+    comparisonDefaults[initialWindowId].hiddenPanelIds,
+  );
+  const [alertTone, setAlertTone] = useState<AlertTone | "all">("all");
+  const [baselineByPanel, setBaselineByPanel] = useState<Record<string, string>>(
+    () => buildBaselineSelection(initialWindowId),
+  );
+  const snapshot = telemetryDeskData[windowId];
+  const focusedMetric = snapshot.metrics.find((metric) => metric.id === focusedMetricId) ?? null;
+  const deferredMetricId = useDeferredValue(focusedMetricId);
+  const visiblePanels = snapshot.panels.filter(
+    (panel) =>
+      !hiddenPanelIds.includes(panel.id) &&
+      (!deferredMetricId || panel.metricIds.includes(deferredMetricId)),
+  );
+  const visibleAlerts = snapshot.alerts.filter(
+    (alert) =>
+      (alertTone === "all" || alert.severity === alertTone) &&
+      (!deferredMetricId || alert.metricIds.includes(deferredMetricId)),
+  );
+  const activeMetricCount = snapshot.metrics.filter((metric) => metric.state === "active").length;
 
-  const snapshot = telemetryDeskSnapshots[selectedWindow];
-  const activeMetric = snapshot.metrics.find((metric) => metric.id === activeMetricId) ?? null;
-  const visiblePanels = activeMetric ? snapshot.comparisons.filter((panel) => panel.metrics.includes(activeMetric.id)) : [];
-
-  function handleSelectWindow(windowId: TelemetryWindowId) {
-    if (windowId === selectedWindow) return;
-
+  function resetDesk(nextWindowId: ReportingWindowId = windowId) {
+    const defaults = comparisonDefaults[nextWindowId];
     startTransition(() => {
-      const nextSnapshot = telemetryDeskSnapshots[windowId];
-      setSelectedWindow(windowId);
-      setPanelModes(getDefaultPanelModes(nextSnapshot.comparisons));
-      setActiveMetricId((current) =>
-        current && nextSnapshot.metrics.some((metric) => metric.id === current) ? current : (nextSnapshot.metrics[0]?.id ?? null),
-      );
+      setFocusedMetricId(defaults.focusMetricId);
+      setHiddenPanelIds(defaults.hiddenPanelIds);
+      setAlertTone("all");
+      setBaselineByPanel(buildBaselineSelection(nextWindowId));
     });
   }
 
-  function handleToggleMetric(metricId: string) {
-    startTransition(() => {
-      setActiveMetricId((current) => (current === metricId ? null : metricId));
-    });
+  function handleWindowChange(nextWindowId: ReportingWindowId) {
+    startTransition(() => setWindowId(nextWindowId));
+    resetDesk(nextWindowId);
   }
-
-  function handleReset() {
-    startTransition(() => {
-      setActiveMetricId(snapshot.metrics[0]?.id ?? null);
-      setPanelModes(getDefaultPanelModes(snapshot.comparisons));
-    });
-  }
-
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.16),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(45,212,191,0.12),transparent_34%),linear-gradient(180deg,#120b08_0%,#1f1710_48%,#091114_100%)] px-4 py-6 text-stone-100 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.18),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(251,191,36,0.14),transparent_28%),linear-gradient(160deg,#07111b_0%,#0f172a_48%,#111827_100%)] px-4 py-6 text-slate-100 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-6">
         <TelemetryDeskHeader
-          deskState={snapshot.deskState}
-          focusLabel={activeMetric?.label ?? null}
-          handoff={snapshot.handoff}
-          isPending={isPending}
-          selectedWindow={selectedWindow}
-          summary={snapshot.summary}
-          onSelectWindow={handleSelectWindow}
+          activeMetricCount={activeMetricCount}
+          alertCount={visibleAlerts.length}
+          focusedMetricLabel={focusedMetric?.label ?? null}
+          onReset={() => resetDesk()}
+          onWindowChange={handleWindowChange}
+          panelCount={visiblePanels.length}
+          periodLabel={snapshot.periodLabel}
+          windowId={windowId}
+          windows={reportingWindows}
         />
-
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(320px,0.8fr)]">
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.75fr)_minmax(320px,0.95fr)]">
           <div className="space-y-6">
-            <MetricTileGrid activeMetricId={activeMetricId} metrics={snapshot.metrics} onToggleMetric={handleToggleMetric} />
+            <MetricTileGrid
+              focusedMetricId={focusedMetricId}
+              metrics={snapshot.metrics}
+              onToggleMetric={(metricId) =>
+                startTransition(() =>
+                  setFocusedMetricId((current) => (current === metricId ? null : metricId)),
+                )
+              }
+            />
             <TrendComparisonPanels
-              activeMetric={activeMetric}
-              panelModes={panelModes}
+              baselineByPanel={baselineByPanel}
+              focusedMetricLabel={focusedMetric?.label ?? null}
+              hiddenCount={hiddenPanelIds.length}
+              onBaselineChange={(panelId, baselineId) =>
+                startTransition(() =>
+                  setBaselineByPanel((current) => ({ ...current, [panelId]: baselineId })),
+                )
+              }
+              onHidePanel={(panelId) =>
+                startTransition(() =>
+                  setHiddenPanelIds((current) => [...current, panelId]),
+                )
+              }
+              onReset={() => resetDesk()}
               panels={visiblePanels}
-              onReset={handleReset}
-              onSelectMode={(panelId, modeId) => setPanelModes((current) => ({ ...current, [panelId]: modeId }))}
+              totalPanels={snapshot.panels.length}
             />
           </div>
-          <AlertSummaryRail activeMetric={activeMetric} alerts={snapshot.alerts} />
+          <AlertSummaryList
+            alerts={visibleAlerts}
+            filter={alertTone}
+            focusedMetricLabel={focusedMetric?.label ?? null}
+            onFilterChange={(nextTone) => startTransition(() => setAlertTone(nextTone))}
+            toneFilters={alertToneFilters}
+          />
         </div>
       </div>
     </main>
