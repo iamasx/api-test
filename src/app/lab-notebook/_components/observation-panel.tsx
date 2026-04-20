@@ -2,11 +2,16 @@ import type { ObservationPanel as ObservationPanelData } from "../_data/lab-note
 
 export function ObservationPanel({
   panel,
+  entryLabel,
 }: {
   panel: ObservationPanelData;
+  entryLabel: string;
 }) {
   return (
-    <article className="rounded-[1.65rem] border border-stone-900/10 bg-[rgba(81,52,36,0.96)] p-6 text-amber-50 shadow-[0_18px_70px_rgba(43,24,13,0.28)]">
+    <article
+      className="scroll-mt-8 rounded-[1.65rem] border border-stone-900/10 bg-[rgba(81,52,36,0.96)] p-6 text-amber-50 shadow-[0_18px_70px_rgba(43,24,13,0.28)]"
+      id={panel.id}
+    >
       <div className="flex h-full flex-col gap-5">
         <div className="flex flex-col gap-4 border-b border-white/10 pb-5">
           <div className="flex flex-wrap items-center gap-3">
@@ -38,7 +43,7 @@ export function ObservationPanel({
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-50/60">
                 Linked entry
               </p>
-              <p className="mt-2 font-medium text-white">{panel.experimentId}</p>
+              <p className="mt-2 font-medium text-white">{entryLabel}</p>
             </div>
           </div>
         </div>

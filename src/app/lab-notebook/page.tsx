@@ -30,6 +30,23 @@ export default function LabNotebookPage() {
 
     return counts;
   }, {});
+  const firstObservationIdByExperiment = observationPanels.reduce<
+    Record<string, string>
+  >((firstIds, panel) => {
+    if (!firstIds[panel.experimentId]) {
+      firstIds[panel.experimentId] = panel.id;
+    }
+
+    return firstIds;
+  }, {});
+  const entryLabelById = experimentEntries.reduce<Record<string, string>>(
+    (labels, entry) => {
+      labels[entry.id] = entry.codename;
+
+      return labels;
+    },
+    {},
+  );
 
   const priorityEntries = experimentEntries.filter(
     (entry) => entry.status !== "Stable",
@@ -182,7 +199,16 @@ export default function LabNotebookPage() {
 
             <div className="space-y-5">
               {experimentEntries.map((entry) => (
-                <ExperimentEntryCard key={entry.id} entry={entry} />
+                <ExperimentEntryCard
+                  key={entry.id}
+                  entry={entry}
+                  observationCount={observationCountByExperiment[entry.id] ?? 0}
+                  observationHref={
+                    firstObservationIdByExperiment[entry.id]
+                      ? `#${firstObservationIdByExperiment[entry.id]}`
+                      : undefined
+                  }
+                />
               ))}
             </div>
           </section>
@@ -239,15 +265,31 @@ export default function LabNotebookPage() {
                       key={entry.id}
                       className="rounded-[1.35rem] border border-stone-900/8 bg-stone-50/80 px-4 py-4"
                     >
-                      <p className="text-sm font-semibold text-stone-950">
-                        {entry.codename}
-                      </p>
-                      <p className="mt-1 text-sm leading-6 text-stone-600">
-                        {observationCountByExperiment[entry.id] ?? 0} linked
-                        observation panel
-                        {observationCountByExperiment[entry.id] === 1 ? "" : "s"}
-                        .
-                      </p>
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <p className="text-sm font-semibold text-stone-950">
+                            {entry.codename}
+                          </p>
+                          <p className="mt-1 text-sm leading-6 text-stone-600">
+                            {observationCountByExperiment[entry.id] ?? 0} linked
+                            observation panel
+                            {observationCountByExperiment[entry.id] === 1
+                              ? ""
+                              : "s"}
+                            .
+                          </p>
+                        </div>
+
+                        {firstObservationIdByExperiment[entry.id] ? (
+                          <a
+                            aria-label={`Jump to notes for ${entry.codename}`}
+                            className="inline-flex shrink-0 items-center justify-center rounded-full border border-stone-900/10 bg-white px-3 py-2 text-sm font-semibold text-stone-900 transition hover:border-stone-900/25"
+                            href={`#${firstObservationIdByExperiment[entry.id]}`}
+                          >
+                            Open
+                          </a>
+                        ) : null}
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -281,7 +323,11 @@ export default function LabNotebookPage() {
             data-testid="lab-notebook-observation-grid"
           >
             {observationPanels.map((panel) => (
-              <ObservationPanel key={panel.id} panel={panel} />
+              <ObservationPanel
+                key={panel.id}
+                entryLabel={entryLabelById[panel.experimentId] ?? panel.experimentId}
+                panel={panel}
+              />
             ))}
           </div>
         </section>

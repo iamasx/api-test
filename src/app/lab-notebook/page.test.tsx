@@ -81,6 +81,12 @@ describe("LabNotebookPage", () => {
     render(<LabNotebookPage />);
 
     const observationGrid = screen.getByTestId("lab-notebook-observation-grid");
+    const experimentSection = screen
+      .getByRole("heading", {
+        level: 2,
+        name: /active notebook entries/i,
+      })
+      .closest("section");
     const prioritySection = screen
       .getByRole("heading", { name: /priority follow-up/i })
       .closest("section");
@@ -96,6 +102,11 @@ describe("LabNotebookPage", () => {
     expect(
       within(prioritySection as HTMLElement).getByText("Solace-07"),
     ).toBeInTheDocument();
+    expect(
+      within(experimentSection as HTMLElement).getByRole("link", {
+        name: /open linked observations for morrow-12/i,
+      }),
+    ).toHaveAttribute("href", "#morrow-12-obs-1");
 
     expect(
       within(observationGrid).getByRole("heading", {
@@ -115,6 +126,14 @@ describe("LabNotebookPage", () => {
     expect(
       within(linksSection as HTMLElement).getAllByText(/1 linked observation panel\./i),
     ).toHaveLength(3);
+    expect(
+      within(linksSection as HTMLElement).getByRole("link", {
+        name: /jump to notes for atlas-03/i,
+      }),
+    ).toHaveAttribute("href", "#atlas-03-obs-1");
+    expect(
+      within(observationGrid).getByText("Atlas-03"),
+    ).toBeInTheDocument();
   });
 
   it("exposes the responsive multi-panel layout hooks", () => {

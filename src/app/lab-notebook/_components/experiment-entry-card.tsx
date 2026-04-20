@@ -6,7 +6,15 @@ const statusClasses: Record<ExperimentEntry["status"], string> = {
   Blocked: "border-rose-300/45 bg-rose-300/16 text-rose-950",
 };
 
-export function ExperimentEntryCard({ entry }: { entry: ExperimentEntry }) {
+export function ExperimentEntryCard({
+  entry,
+  observationCount,
+  observationHref,
+}: {
+  entry: ExperimentEntry;
+  observationCount: number;
+  observationHref?: string;
+}) {
   return (
     <article className="rounded-[1.7rem] border border-stone-900/10 bg-[rgba(255,251,247,0.94)] p-6 shadow-[0_18px_60px_rgba(68,42,22,0.08)] backdrop-blur-sm">
       <div className="flex flex-col gap-5">
@@ -98,6 +106,30 @@ export function ExperimentEntryCard({ entry }: { entry: ExperimentEntry }) {
                   </li>
                 ))}
               </ul>
+            </div>
+
+            <div className="rounded-[1.35rem] border border-stone-900/8 bg-white/70 p-4 sm:col-span-2 lg:col-span-1">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-stone-500">
+                Linked notes
+              </p>
+              <p className="mt-2 text-sm leading-6 text-stone-600">
+                {observationCount} linked observation panel
+                {observationCount === 1 ? "" : "s"} in this notebook.
+              </p>
+
+              {observationHref ? (
+                <a
+                  aria-label={`Open linked observations for ${entry.codename}`}
+                  className="mt-3 inline-flex items-center justify-center rounded-full bg-stone-950 px-4 py-2 text-sm font-semibold text-stone-50 transition hover:bg-stone-800"
+                  href={observationHref}
+                >
+                  Open linked observations
+                </a>
+              ) : (
+                <p className="mt-3 text-sm font-medium text-stone-500">
+                  Observation notes will appear here when a panel is added.
+                </p>
+              )}
             </div>
           </div>
         </div>
