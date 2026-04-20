@@ -4,6 +4,7 @@ import { ContactSummary } from "./contact-summary";
 import { InspectorPanel } from "./inspector-panel";
 import { SectorCard } from "./sector-card";
 import type { RadarConsoleView } from "../_lib/radar-console";
+import styles from "../radar-console.module.css";
 
 type RadarConsoleShellProps = {
   view: RadarConsoleView;
@@ -11,9 +12,9 @@ type RadarConsoleShellProps = {
 
 export function RadarConsoleShell({ view }: RadarConsoleShellProps) {
   return (
-    <main className="px-6 py-10 text-slate-50 sm:px-10 lg:px-12 lg:py-12">
+    <main className={`${styles.pageShell} px-6 py-10 text-slate-50 sm:px-10 lg:px-12 lg:py-12`}>
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-        <header className="overflow-hidden rounded-[2.2rem] border border-slate-950/10 bg-slate-950 px-8 py-8 shadow-[0_28px_90px_rgba(15,23,42,0.32)] sm:px-10 sm:py-10 lg:px-12">
+        <header className={`${styles.heroPanel} rounded-[2.2rem] border border-slate-950/10 px-8 py-8 shadow-[0_28px_90px_rgba(15,23,42,0.32)] sm:px-10 sm:py-10 lg:px-12`}>
           <div className="grid gap-8 xl:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)] xl:items-start">
             <div className="space-y-6">
               <div className="space-y-4">
@@ -36,7 +37,7 @@ export function RadarConsoleShell({ view }: RadarConsoleShellProps) {
                 {view.summaryCards.map((card) => (
                   <div
                     key={card.label}
-                    className="rounded-[1.4rem] border border-white/10 bg-white/8 px-4 py-4"
+                    className={`${styles.summaryCard} rounded-[1.4rem] border border-white/10 bg-white/8 px-4 py-4`}
                     role="listitem"
                   >
                     <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
@@ -70,7 +71,7 @@ export function RadarConsoleShell({ view }: RadarConsoleShellProps) {
               </div>
             </div>
 
-            <aside className="grid gap-4 rounded-[1.7rem] border border-white/10 bg-white/6 p-6">
+            <aside className={`${styles.metaRail} grid gap-4 rounded-[1.7rem] border border-white/10 bg-white/6 p-6`}>
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">
                   Mission
@@ -110,7 +111,10 @@ export function RadarConsoleShell({ view }: RadarConsoleShellProps) {
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.28fr)_minmax(340px,0.72fr)] xl:items-start">
           <div className="space-y-8">
-            <section className="space-y-5" aria-labelledby="radar-sectors-heading">
+            <section
+              className={`${styles.sectionFrame} ${styles.sectorFlow} space-y-5`}
+              aria-labelledby="radar-sectors-heading"
+            >
               <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                 <div className="space-y-2">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
@@ -142,7 +146,10 @@ export function RadarConsoleShell({ view }: RadarConsoleShellProps) {
               </div>
             </section>
 
-            <section className="space-y-5" aria-labelledby="radar-contacts-heading">
+            <section
+              className={`${styles.sectionFrame} ${styles.contactFlow} space-y-5`}
+              aria-labelledby="radar-contacts-heading"
+            >
               <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                 <div className="space-y-2">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">

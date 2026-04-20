@@ -7,6 +7,7 @@ import type {
   RadarSignalPriority,
 } from "../_data/radar-console-data";
 import type { InspectorQueueItem } from "../_lib/radar-console";
+import styles from "../radar-console.module.css";
 
 type InspectorPanelProps = {
   metadata: RadarInspectorMetadata;
@@ -33,7 +34,7 @@ export function InspectorPanel({
 }: InspectorPanelProps) {
   return (
     <aside
-      className="rounded-[1.9rem] border border-white/10 bg-slate-950/92 p-6 text-slate-50 shadow-[0_26px_80px_rgba(2,6,23,0.28)]"
+      className={`${styles.stickyInspector} ${styles.inspectorShell} rounded-[1.9rem] border border-white/10 p-6 text-slate-50 shadow-[0_26px_80px_rgba(2,6,23,0.28)]`}
       aria-label="Signal inspector"
     >
       <div className="space-y-6">
@@ -75,7 +76,7 @@ export function InspectorPanel({
                         ? `Viewing signal ${item.signal.title}`
                         : `Inspect signal ${item.signal.title}`
                     }
-                    className={`block rounded-[1.3rem] border px-4 py-4 transition ${
+                    className={`${styles.queueItem} ${item.isSelected ? styles.queueItemActive : ""} block rounded-[1.3rem] border px-4 py-4 transition ${
                       item.isSelected
                         ? "border-emerald-300/45 bg-emerald-300/12"
                         : "border-white/8 bg-white/6 hover:border-white/16 hover:bg-white/9"
@@ -110,7 +111,7 @@ export function InspectorPanel({
         </section>
 
         <section
-          className="space-y-5 rounded-[1.5rem] border border-white/8 bg-white/6 p-5"
+          className={`${styles.inspectorDetail} space-y-5 rounded-[1.5rem] border border-white/8 bg-white/6 p-5`}
           aria-labelledby="selected-signal-heading"
         >
           <div className="flex flex-wrap items-start justify-between gap-3">

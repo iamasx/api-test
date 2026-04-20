@@ -3,6 +3,7 @@ import type {
   RadarSector,
   RadarSignalPriority,
 } from "../_data/radar-console-data";
+import styles from "../radar-console.module.css";
 
 type ContactSummaryProps = {
   contact: RadarContact;
@@ -17,7 +18,7 @@ export function ContactSummary({
 }: ContactSummaryProps) {
   return (
     <article
-      className="rounded-[1.5rem] border border-slate-900/10 bg-white/88 p-5 text-slate-900 shadow-[0_18px_40px_rgba(15,23,42,0.08)]"
+      className={`${styles.contactCard} rounded-[1.5rem] border border-slate-900/10 p-5 text-slate-900 shadow-[0_18px_40px_rgba(15,23,42,0.08)]`}
       role="listitem"
     >
       <div className="flex flex-wrap items-start justify-between gap-3">

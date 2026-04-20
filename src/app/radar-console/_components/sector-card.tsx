@@ -4,6 +4,7 @@ import type {
   RadarSignalPriority,
   RadarSectorTone,
 } from "../_data/radar-console-data";
+import styles from "../radar-console.module.css";
 
 type SectorCardProps = {
   sector: RadarSector;
@@ -23,7 +24,7 @@ export function SectorCard({ sector, contacts, signals }: SectorCardProps) {
 
   return (
     <article
-      className="rounded-[1.7rem] border border-white/10 bg-slate-950/60 p-5 text-slate-50 shadow-[0_18px_45px_rgba(2,6,23,0.18)]"
+      className={`${styles.sectorCard} rounded-[1.7rem] border border-white/10 p-5 text-slate-50 shadow-[0_18px_45px_rgba(2,6,23,0.18)]`}
       role="listitem"
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
