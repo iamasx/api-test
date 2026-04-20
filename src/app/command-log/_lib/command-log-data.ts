@@ -51,7 +51,7 @@ export const commandLogEvents: CommandLogEvent[] = [
     category: "Mitigation",
     status: "Watching",
     environment: "Production / us-east-1",
-    tags: ["rollback-watch", "queue-depth", "worker-fleet"],
+    tags: ["rollback-watch", "queue-depth", "deploy-window"],
     relatedServices: ["Workflow Engine", "Import API"],
     notes: [
       "Backlog growth fell from 14% to 3% over the final five-minute window.",
@@ -77,7 +77,7 @@ export const commandLogEvents: CommandLogEvent[] = [
     category: "Escalation",
     status: "Needs follow-up",
     environment: "Production / ap-southeast-1",
-    tags: ["cert-rotation", "identity-edge", "regional-drift"],
+    tags: ["regional-drift", "identity-edge", "follow-up"],
     relatedServices: ["Identity Edge", "Session Broker"],
     notes: [
       "Parity mismatch affected one of six APAC clusters.",
@@ -103,7 +103,7 @@ export const commandLogEvents: CommandLogEvent[] = [
     category: "Automation",
     status: "Completed",
     environment: "Production / eu-west-1",
-    tags: ["export-replay", "automation", "batch-recovery"],
+    tags: ["automation", "export-recovery", "follow-up"],
     relatedServices: ["Data Exporter", "Blob Archive"],
     notes: [
       "312 export jobs were replayed across eight batches.",
@@ -129,7 +129,7 @@ export const commandLogEvents: CommandLogEvent[] = [
     category: "Deploy",
     status: "Completed",
     environment: "Staging -> Production",
-    tags: ["deploy-window", "queue-balancer", "staging-soak"],
+    tags: ["deploy-window", "queue-depth", "worker-fleet"],
     relatedServices: ["Workflow Engine", "Worker Fleet"],
     notes: [
       "Soak checks covered synthetic import traffic and live replay samples.",
@@ -155,7 +155,7 @@ export const commandLogEvents: CommandLogEvent[] = [
     category: "Investigation",
     status: "Watching",
     environment: "Production / multi-region",
-    tags: ["cold-start", "cache-fanout", "trace-compare"],
+    tags: ["cache-fanout", "multi-region", "follow-up"],
     relatedServices: ["Config Cache", "Worker Runtime"],
     notes: [
       "Latency impact was measurable only during worker cold starts.",
@@ -181,7 +181,7 @@ export const commandLogEvents: CommandLogEvent[] = [
     category: "Handoff",
     status: "Watching",
     environment: "Production / apac",
-    tags: ["shift-handoff", "search-freshness", "regional-watch"],
+    tags: ["shift-handoff", "regional-drift", "follow-up"],
     relatedServices: ["Search Pipeline", "Indexer Fleet"],
     notes: [
       "Freshness lag recovered to 6 minutes before shift transfer.",
@@ -207,7 +207,7 @@ export const commandLogEvents: CommandLogEvent[] = [
     category: "Automation",
     status: "Blocked",
     environment: "Compliance staging",
-    tags: ["approval-token", "storage-policy", "automation-block"],
+    tags: ["automation", "approval-block", "storage-policy"],
     relatedServices: ["Blob Archive", "Policy Control"],
     notes: [
       "The blocked run exited before mutating any storage configuration.",
@@ -233,7 +233,7 @@ export const commandLogEvents: CommandLogEvent[] = [
     category: "Mitigation",
     status: "Completed",
     environment: "Production / global",
-    tags: ["retry-cap", "payments-core", "merchant-burst"],
+    tags: ["queue-depth", "merchant-burst", "mitigation-watch"],
     relatedServices: ["Payments Core", "Authorization Pool"],
     notes: [
       "Early mitigation reduced duplicate writes within three minutes.",

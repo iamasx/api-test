@@ -1,15 +1,4 @@
-import type {
-  CommandEventCategory,
-  CommandEventSeverity,
-} from "../_lib/command-log-data";
-
-export type CommandTagSummaryItem = {
-  tag: string;
-  eventCount: number;
-  latestEventLabel: string;
-  severities: CommandEventSeverity[];
-  categories: CommandEventCategory[];
-};
+import type { CommandTagSummaryItem } from "../_lib/command-log";
 
 type CommandTagSummaryProps = {
   groups: CommandTagSummaryItem[];
@@ -66,8 +55,9 @@ export function CommandTagSummary({
             <div className="mt-4 space-y-3 text-sm text-slate-600">
               <p>
                 <span className="font-semibold text-slate-950">Latest event:</span>{" "}
-                {group.latestEventLabel}
+                {group.latestEventTitle}
               </p>
+              <p>{group.latestEventLabel}</p>
               <p>
                 <span className="font-semibold text-slate-950">Severity mix:</span>{" "}
                 {group.severities.join(", ")}
