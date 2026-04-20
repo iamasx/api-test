@@ -1,5 +1,7 @@
 import type {
   Experiment,
+  ExperimentRun,
+  ExperimentTemplate,
   MilestoneTag,
   ObservationEntry,
   ObservationSection,
@@ -12,7 +14,10 @@ type ObservationDrawerProps = {
   milestoneTagsById: Record<string, MilestoneTag>;
   onExpandEntry: (entryId: string) => void;
   onSectionChange: (section: ObservationSection) => void;
+  runsById: Record<string, ExperimentRun>;
   section: ObservationSection;
+  selectedRuns: ExperimentRun[];
+  template: ExperimentTemplate | null;
 };
 
 const sectionLabels: Record<ObservationSection, string> = {
@@ -35,7 +40,10 @@ export function ObservationDrawer({
   milestoneTagsById,
   onExpandEntry,
   onSectionChange,
+  runsById,
   section,
+  selectedRuns,
+  template,
 }: ObservationDrawerProps) {
   const sectionEntries = entries.filter((entry) => entry.section === section);
   const counts = {
@@ -45,14 +53,17 @@ export function ObservationDrawer({
   };
 
   return (
-    <aside className="rounded-[2rem] border border-stone-900/10 bg-[linear-gradient(180deg,rgba(12,10,9,0.96),rgba(41,37,36,0.97))] p-5 text-stone-100 shadow-[0_28px_90px_rgba(15,23,42,0.3)] sm:p-6">
+    <aside
+      aria-label="Observation drawer"
+      className="rounded-[2rem] border border-stone-900/10 bg-[linear-gradient(180deg,rgba(12,10,9,0.96),rgba(41,37,36,0.97))] p-5 text-stone-100 shadow-[0_28px_90px_rgba(15,23,42,0.3)] sm:p-6"
+    >
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.32em] text-amber-200/75">Observation drawer</p>
           <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em]">{experiment ? experiment.title : "Choose an experiment"}</h2>
           <p className="mt-2 text-sm leading-6 text-stone-300">
             {experiment
-              ? `${experiment.window}. Local sections switch between notebook notes, watch items, and milestone timing.`
+              ? `${template?.name ?? "Template"} is filtering notes through ${selectedRuns.length > 0 ? `${selectedRuns.length} selected runs` : "all attached runs"}.`
               : "Select an experiment card to open the drawer. Until then, the notebook keeps this region in a local waiting state."}
           </p>
         </div>
@@ -75,6 +86,16 @@ export function ObservationDrawer({
         ))}
       </div>
 
+      {selectedRuns.length > 0 ? (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {selectedRuns.map((run) => (
+            <span className="rounded-full border border-white/12 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.22em] text-stone-300" key={run.id}>
+              {run.label}
+            </span>
+          ))}
+        </div>
+      ) : null}
+
       {!experiment ? (
         <div className="mt-5 rounded-[1.75rem] border border-dashed border-white/12 bg-white/[0.04] p-6 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.32em] text-stone-400">Waiting on selection</p>
@@ -83,13 +104,14 @@ export function ObservationDrawer({
       ) : sectionEntries.length === 0 ? (
         <div className="mt-5 rounded-[1.75rem] border border-dashed border-white/12 bg-white/[0.04] p-6 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.32em] text-stone-400">Section clear</p>
-          <h3 className="mt-3 text-xl font-semibold">No {sectionLabels[section].toLowerCase()} are parked for this experiment.</h3>
-          <p className="mt-3 text-sm leading-6 text-stone-300">The drawer stays open, but this section is empty. Switch sections or return to another card if you want a fuller observation trail.</p>
+          <h3 className="mt-3 text-xl font-semibold">No {sectionLabels[section].toLowerCase()} are parked for this experiment and run set.</h3>
+          <p className="mt-3 text-sm leading-6 text-stone-300">The drawer stays open, but the currently selected runs do not have entries in this section. Switch sections or change the comparison set for more context.</p>
         </div>
       ) : (
         <div className="mt-5 space-y-3">
           {sectionEntries.map((entry) => {
             const milestone = entry.milestoneId ? milestoneTagsById[entry.milestoneId] : undefined;
+            const run = runsById[entry.runId];
             const isExpanded = expandedEntryId === entry.id;
 
             return (
@@ -97,8 +119,13 @@ export function ObservationDrawer({
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.22em] text-stone-300">{entry.capturedAt}</span>
                   <span className="rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.22em] text-stone-300">{entry.recorder}</span>
+                  {run ? (
+                    <span className="rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.22em] text-stone-300">{run.label}</span>
+                  ) : null}
                   {milestone ? (
-                    <span className={`rounded-full border px-3 py-1 text-xs font-medium ${toneClasses[milestone.tone]}`}>{milestone.label}</span>
+                    <span className={`rounded-full border px-3 py-1 text-xs font-medium ${toneClasses[milestone.tone]}`} key={milestone.id}>
+                      {milestone.label}
+                    </span>
                   ) : null}
                 </div>
                 <h3 className="mt-3 text-lg font-semibold">{entry.headline}</h3>

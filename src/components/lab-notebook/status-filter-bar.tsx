@@ -15,7 +15,7 @@ export function StatusFilterBar({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.32em] text-stone-500">Status filters</p>
-          <p className="mt-2 text-sm text-stone-600">Filter the notebook without leaving the route or mutating any shared workspace.</p>
+          <p className="mt-2 text-sm text-stone-600">Filter the notebook board after template selection without leaving the route or mutating any shared workspace.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           {statusOptions.map((option) => (
