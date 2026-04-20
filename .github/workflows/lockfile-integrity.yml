@@ -1,0 +1,32 @@
+name: Lockfile Integrity
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lockfile-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Verify lockfile exists
+        run: test -f package-lock.json
+
+      - name: Verify deterministic install from lockfile
+        run: npm ci
+
+      - name: Verify top-level dependency tree
+        run: npm ls --depth=0

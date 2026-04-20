@@ -1,0 +1,44 @@
+name: Repo Hygiene
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repo-hygiene:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Fail on tracked .DS_Store files
+        shell: bash
+        run: |
+          if git ls-files | grep -E '(^|/)\.DS_Store$'; then
+            echo "Tracked .DS_Store files are not allowed."
+            exit 1
+          fi
+
+      - name: Fail on tracked generated build output
+        shell: bash
+        run: |
+          if git ls-files | grep -E '^(\.next/|coverage/|dist/)'; then
+            echo "Tracked generated build output is not allowed."
+            exit 1
+          fi
+
+      - name: Fail on merge conflict markers
+        shell: bash
+        run: |
+          if git grep -nE '^(<<<<<<<|=======|>>>>>>>)' -- . ':(exclude)package-lock.json'; then
+            echo "Merge conflict markers were found in tracked files."
+            exit 1
+          fi

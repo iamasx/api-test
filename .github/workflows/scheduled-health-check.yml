@@ -1,0 +1,52 @@
+name: Scheduled Health Check
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scheduled-health-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run typecheck
+        run: npx tsc --noEmit
+
+      - name: Run build
+        run: npm run build
+
+      - name: Capture dependency drift report
+        shell: bash
+        run: |
+          npm outdated > outdated-report.txt || true
+          {
+            echo "## Dependency drift"
+            echo
+            if [ -s outdated-report.txt ]; then
+              echo '```'
+              cat outdated-report.txt
+              echo '```'
+            else
+              echo "All dependencies are current."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
