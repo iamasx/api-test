@@ -23,7 +23,7 @@ export default function Home() {
             </p>
             <div className="space-y-4">
               <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-                Browse sealed archive snapshots without leaving the app shell.
+                Controlled conflict drill B landing page headline.
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-slate-600">
                 The new archive browser route focuses on quick inspection:
