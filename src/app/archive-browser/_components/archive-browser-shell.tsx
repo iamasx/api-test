@@ -1,64 +1,113 @@
 import { ArchiveDetailPanel } from "./archive-detail-panel";
 import { ArchiveSnapshotList } from "./archive-snapshot-list";
-import type { ArchiveBrowserView } from "../_lib/archive-browser";
+import styles from "../archive-browser.module.css";
+import type { ArchiveBrowserSelection } from "../_lib/archive-browser";
+
+const numberFormatter = new Intl.NumberFormat("en-US");
 
 type ArchiveBrowserShellProps = {
-  view: ArchiveBrowserView;
+  selection: ArchiveBrowserSelection;
 };
 
-export function ArchiveBrowserShell({ view }: ArchiveBrowserShellProps) {
+function formatFootprint(totalFootprintGb: number) {
+  if (totalFootprintGb >= 1000) {
+    return `${(totalFootprintGb / 1000).toFixed(1)} TB`;
+  }
+
+  return `${totalFootprintGb.toFixed(1)} GB`;
+}
+
+function buildOverview(selection: ArchiveBrowserSelection) {
+  const totalAssets = selection.snapshots.reduce(
+    (count, snapshot) => count + snapshot.assetCount,
+    0,
+  );
+  const totalFootprint = selection.snapshots.reduce(
+    (count, snapshot) => count + snapshot.storageFootprintGb,
+    0,
+  );
+  const allTags = new Set(
+    selection.snapshots.flatMap((snapshot) => snapshot.tags),
+  );
+
+  return [
+    {
+      label: "Snapshots",
+      value: numberFormatter.format(selection.snapshots.length),
+    },
+    {
+      label: "Preserved assets",
+      value: numberFormatter.format(totalAssets),
+    },
+    {
+      label: "Storage footprint",
+      value: formatFootprint(totalFootprint),
+    },
+    {
+      label: "Tagged themes",
+      value: numberFormatter.format(allTags.size),
+    },
+  ];
+}
+
+export function ArchiveBrowserShell({
+  selection,
+}: ArchiveBrowserShellProps) {
+  const overview = buildOverview(selection);
+
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-6 py-8 sm:px-10 lg:px-12">
-      <section className="overflow-hidden rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.08)]">
-        <div className="grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(260px,0.85fr)] lg:px-12 lg:py-10">
-          <div className="space-y-5">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-amber-700">
-              Archive browser
-            </p>
+    <main className={styles.archiveBrowser}>
+      <section className={styles.heroPanel}>
+        <div className={styles.heroGrid}>
+          <div className="space-y-4">
+            <p className={styles.eyebrow}>Archive browser</p>
             <div className="space-y-3">
-              <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-                Snapshot cards and preservation detail in one route.
+              <h1 className={styles.heroTitle}>
+                Inspect preserved snapshots with visible metadata and a detail-first review panel.
               </h1>
-              <p className="max-w-3xl text-lg leading-8 text-slate-600">
-                The browser keeps the route intentionally self-contained:
-                server-rendered selection, clear metadata badges, and a detail
-                panel that can be validated with straightforward render tests.
+              <p className={styles.heroText}>
+                This route keeps archive browsing independent and testable:
+                server-rendered snapshot selection, explicit metadata badges,
+                and a detail surface that expands timeline and recovery notes.
               </p>
             </div>
           </div>
 
-          <div className="rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface-strong)] p-5">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
-              Archive summary
-            </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {view.summaryMetrics.map((metric) => (
+          <section
+            aria-labelledby="archive-browser-overview-title"
+            className={styles.overviewCard}
+          >
+            <p className={styles.eyebrow}>Route overview</p>
+            <h2
+              id="archive-browser-overview-title"
+              className={styles.overviewTitle}
+            >
+              Archive metrics at a glance
+            </h2>
+            <div className={styles.overviewGrid}>
+              {overview.map((item) => (
                 <div
-                  key={metric.label}
-                  className="rounded-[1.2rem] border border-slate-200 bg-white/80 p-4"
+                  key={item.label}
+                  className={styles.overviewMetric}
                 >
-                  <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
-                    {metric.label}
-                  </p>
-                  <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
-                    {metric.value}
-                  </p>
+                  <p className={styles.overviewMetricLabel}>{item.label}</p>
+                  <p className={styles.overviewMetricValue}>{item.value}</p>
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         </div>
       </section>
 
-      <div className="grid gap-8 xl:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)]">
+      <div className={styles.contentGrid}>
         <ArchiveSnapshotList
-          snapshots={view.snapshots}
-          selectedSnapshotId={view.selectedSnapshot.id}
+          snapshots={selection.snapshots}
+          selectedSnapshotId={selection.selectedSnapshot.id}
         />
         <ArchiveDetailPanel
-          selectedSnapshot={view.selectedSnapshot}
-          requestedSnapshotId={view.requestedSnapshotId}
-          selectionFound={view.selectionFound}
+          selectedSnapshot={selection.selectedSnapshot}
+          requestedSnapshotId={selection.requestedSnapshotId}
+          selectionFound={selection.selectionFound}
         />
       </div>
     </main>

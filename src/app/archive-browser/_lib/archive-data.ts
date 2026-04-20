@@ -1,4 +1,4 @@
-export type ArchiveBadgeTone = "attention" | "calm" | "neutral";
+export type ArchiveBadgeTone = "alert" | "verified" | "muted";
 
 export type ArchiveMetadataBadge = {
   label: string;
@@ -6,12 +6,7 @@ export type ArchiveMetadataBadge = {
   tone?: ArchiveBadgeTone;
 };
 
-export type ArchiveMetric = {
-  label: string;
-  value: string;
-};
-
-export type ArchiveDetailEntry = {
+export type ArchiveDetailRow = {
   label: string;
   value: string;
 };
@@ -19,335 +14,334 @@ export type ArchiveDetailEntry = {
 export type ArchiveDetailSection = {
   title: string;
   description: string;
-  entries: ArchiveDetailEntry[];
+  rows: ArchiveDetailRow[];
+};
+
+export type ArchiveTimelineEntry = {
+  label: string;
+  timestamp: string;
+  detail: string;
 };
 
 export type ArchiveSnapshot = {
   id: string;
+  label: string;
   title: string;
   summary: string;
   source: string;
   archivedAt: string;
   archivedLabel: string;
-  timeline: string;
+  captureRange: string;
+  status: string;
   assetCount: number;
   storageFootprintGb: number;
   storageFootprintLabel: string;
+  tags: string[];
   metadataBadges: ArchiveMetadataBadge[];
-  highlightMetrics: ArchiveMetric[];
   detailSections: ArchiveDetailSection[];
+  timelineEntries: ArchiveTimelineEntry[];
   recoveryNotes: string[];
 };
 
 export const archiveSnapshots: ArchiveSnapshot[] = [
   {
     id: "glass-harbor-incident-ledger",
-    title: "Glass Harbor / Incident ledger",
+    label: "Snapshot 07",
+    title: "Glass Harbor incident ledger",
     summary:
-      "Port authority incident reports, dock camera manifests, and signed witness addenda sealed after the quarterly reconciliation pass.",
+      "Quarter-close manifests, dock incident reports, and witness addenda preserved as a single evidentiary archive for replay drills.",
     source: "Glass Harbor Port Authority",
-    archivedAt: "2026-04-16",
-    archivedLabel: "April 16, 2026",
-    timeline: "January 3, 2026 to April 11, 2026",
+    archivedAt: "2026-04-18T06:20:00Z",
+    archivedLabel: "April 18, 2026 at 06:20 UTC",
+    captureRange: "January 03, 2026 to April 11, 2026",
+    status: "Sealed for audit replay",
     assetCount: 18420,
     storageFootprintGb: 42.6,
     storageFootprintLabel: "42.6 GB",
+    tags: ["incidents", "port", "audit-ready"],
     metadataBadges: [
-      { label: "Verification", value: "Merkle sealed", tone: "calm" },
-      { label: "Retention", value: "12-year legal hold", tone: "attention" },
-      { label: "Format", value: "CSV + signed PDFs", tone: "neutral" },
-      { label: "Vault", value: "Reykjavik cold tier", tone: "neutral" },
-    ],
-    highlightMetrics: [
-      { label: "Indexed records", value: "18,420" },
-      { label: "Replication", value: "3 geosealed copies" },
-      { label: "Primary digest", value: "SHA-256 / 98 groups" },
-      { label: "Access profile", value: "Audit-only rotation" },
+      { label: "Retention", value: "12-year legal hold", tone: "alert" },
+      { label: "Integrity", value: "Merkle-sealed ledger", tone: "verified" },
+      { label: "Vault", value: "Reykjavik cold tier", tone: "muted" },
     ],
     detailSections: [
       {
-        title: "Acquisition profile",
+        title: "Archive package",
         description:
-          "The seal was cut from the authority's quarter-close export window with all manifests reconciled against live berth assignments.",
-        entries: [
-          { label: "Collection method", value: "Automated export + chain receipt" },
-          { label: "Captured systems", value: "Berth logs, CCTV indexes, customs notes" },
-          { label: "Window length", value: "99 days" },
-        ],
-      },
-      {
-        title: "Integrity controls",
-        description:
-          "Each payload segment is hashed individually, then stitched into a signed ledger to support selective verification during review.",
-        entries: [
-          { label: "Hash tree", value: "98 leaf groups" },
-          { label: "Seal authority", value: "North Atlantic compliance desk" },
-          { label: "Tamper response", value: "Quarantine on digest mismatch" },
-        ],
-      },
-      {
-        title: "Custody trail",
-        description:
-          "The handoff path is short and documented, which makes this snapshot a reliable reference set for testable UI states.",
-        entries: [
-          { label: "Origin signer", value: "Marin Kappel" },
-          { label: "Vault intake", value: "April 16, 2026 / 09:14 UTC" },
-          { label: "Review cadence", value: "Semiannual spot check" },
-        ],
-      },
-    ],
-    recoveryNotes: [
-      "Witness addenda remain cross-linked to berth incident IDs for replay.",
-      "Camera manifests preserve source reel offsets but not the video payload.",
-      "A subset of customs notes is intentionally redacted for public drill scenarios.",
-    ],
-  },
-  {
-    id: "sable-atlas-survey-mosaic",
-    title: "Sable Atlas / Survey mosaic",
-    summary:
-      "Orthographic survey tiles and annotation overlays archived after the terrain team completed a full coastal remap.",
-    source: "Atlas Survey Office",
-    archivedAt: "2026-03-28",
-    archivedLabel: "March 28, 2026",
-    timeline: "December 18, 2025 to March 22, 2026",
-    assetCount: 9328,
-    storageFootprintGb: 186.4,
-    storageFootprintLabel: "186.4 GB",
-    metadataBadges: [
-      { label: "Verification", value: "Frame-by-frame parity", tone: "calm" },
-      { label: "Retention", value: "Permanent survey reference", tone: "attention" },
-      { label: "Format", value: "GeoTIFF + JSON overlays", tone: "neutral" },
-      { label: "Vault", value: "Svalbard map store", tone: "neutral" },
-    ],
-    highlightMetrics: [
-      { label: "Tile groups", value: "1,184 stitched panels" },
-      { label: "Spatial coverage", value: "486 coastal km" },
-      { label: "Overlay revisions", value: "41 signed revisions" },
-      { label: "Recovery target", value: "14 minute warm restore" },
-    ],
-    detailSections: [
-      {
-        title: "Capture profile",
-        description:
-          "Survey flights were normalized into a single index so any tile can be recalled without reconstructing the full mission path.",
-        entries: [
-          { label: "Sensor stack", value: "Lidar, visible light, tide overlays" },
-          { label: "Resolution band", value: "12 cm to 18 cm ground sampling" },
-          { label: "Anchor grid", value: "Northshore 7B geodetic map" },
-        ],
-      },
-      {
-        title: "Preservation profile",
-        description:
-          "The archive stores raw tiles beside finalized overlays, which makes side-by-side historical inspection possible in the detail view.",
-        entries: [
-          { label: "Primary store", value: "Immutable object tier" },
-          { label: "Replica store", value: "Tape vault / quarterly verify" },
-          { label: "Checksum set", value: "Dual SHA-256 and BLAKE3" },
-        ],
-      },
-      {
-        title: "Custody trail",
-        description:
-          "This snapshot has a longer handling chain because the survey office and terrain team sign off independently.",
-        entries: [
-          { label: "Mission supervisor", value: "Elin Duarte" },
-          { label: "Archive intake", value: "March 28, 2026 / 18:42 UTC" },
-          { label: "Public release status", value: "Internal only" },
-        ],
-      },
-    ],
-    recoveryNotes: [
-      "Overlay revisions preserve author initials and approval timestamps.",
-      "Tile seams are stored after correction but before color grading.",
-      "Warm restore targets assume the annotation layer is requested first.",
-    ],
-  },
-  {
-    id: "aurora-station-shift-telemetry",
-    title: "Aurora Station / Shift telemetry",
-    summary:
-      "Shift summaries, power draw telemetry, and handover annotations bundled from the station's winter operations cycle.",
-    source: "Aurora Deep Field",
-    archivedAt: "2026-02-14",
-    archivedLabel: "February 14, 2026",
-    timeline: "November 1, 2025 to February 8, 2026",
-    assetCount: 27104,
-    storageFootprintGb: 74.3,
-    storageFootprintLabel: "74.3 GB",
-    metadataBadges: [
-      { label: "Verification", value: "Parity pass complete", tone: "calm" },
-      { label: "Retention", value: "7-year ops baseline", tone: "attention" },
-      { label: "Format", value: "NDJSON + plain text logs", tone: "neutral" },
-      { label: "Vault", value: "Low-latency mirror tier", tone: "neutral" },
-    ],
-    highlightMetrics: [
-      { label: "Shift packets", value: "27,104" },
-      { label: "Telemetry streams", value: "19 synchronized feeds" },
-      { label: "Alert density", value: "0.7% escalated events" },
-      { label: "Replay mode", value: "Chronological stream" },
-    ],
-    detailSections: [
-      {
-        title: "Operations profile",
-        description:
-          "Station telemetry is grouped by handover window so investigators can step through a shift transition without reindexing the archive.",
-        entries: [
-          { label: "Grouping key", value: "Shift handover timestamp" },
-          { label: "Packet cadence", value: "30 second aggregates" },
-          { label: "Alert source", value: "Power, climate, access control" },
-        ],
-      },
-      {
-        title: "Integrity controls",
-        description:
-          "Telemetry packets were compacted after signing, preserving audit value while keeping the overall archive footprint low.",
-        entries: [
-          { label: "Compression", value: "Zstandard level 9" },
-          { label: "Digest envelope", value: "Hourly signed manifests" },
-          { label: "Replay integrity", value: "Out-of-order packets flagged" },
-        ],
-      },
-      {
-        title: "Custody trail",
-        description:
-          "Operations staff can request extracts, but the sealed archive remains managed by the infrastructure records team.",
-        entries: [
-          { label: "Origin signer", value: "Yara Brenn" },
-          { label: "Records custodian", value: "Infrastructure archives team" },
-          { label: "Inspection SLA", value: "4 hours" },
-        ],
-      },
-    ],
-    recoveryNotes: [
-      "Shift annotations include free-text notes for equipment swaps.",
-      "Escalated events are mirrored into a separate compliance notebook.",
-      "The mirror tier is optimized for query-heavy drills and rehearsals.",
-    ],
-  },
-  {
-    id: "cinder-census-intake-registry",
-    title: "Cinder Census / Intake registry",
-    summary:
-      "Registry rows, intake correspondence, and exception routing notes captured after the annual census reconciliation.",
-    source: "Cinder Civic Office",
-    archivedAt: "2026-01-09",
-    archivedLabel: "January 9, 2026",
-    timeline: "September 12, 2025 to January 4, 2026",
-    assetCount: 14382,
-    storageFootprintGb: 33.9,
-    storageFootprintLabel: "33.9 GB",
-    metadataBadges: [
-      { label: "Verification", value: "Dual-sign release", tone: "calm" },
-      { label: "Retention", value: "20-year civic record", tone: "attention" },
-      { label: "Format", value: "Delimited rows + OCR PDFs", tone: "neutral" },
-      { label: "Vault", value: "Municipal amber tier", tone: "neutral" },
-    ],
-    highlightMetrics: [
-      { label: "Registry rows", value: "14,382" },
-      { label: "Exception cases", value: "312 routed files" },
-      { label: "OCR confidence", value: "97.4% median" },
-      { label: "Disclosure profile", value: "Case-by-case export" },
-    ],
-    detailSections: [
-      {
-        title: "Acquisition profile",
-        description:
-          "The intake registry combines structured census rows with attached correspondence so reviewers can reconcile a household file in one place.",
-        entries: [
-          { label: "Intake channel", value: "Batch import + manual attachments" },
-          { label: "Normalization pass", value: "Address and identifier cleanup" },
-          { label: "Backfill status", value: "Complete through filing period 01" },
-        ],
-      },
-      {
-        title: "Preservation profile",
-        description:
-          "Records are optimized for long retention, so the archive keeps rendered OCR outputs beside source scans and case notes.",
-        entries: [
-          { label: "Storage mix", value: "Object store + offline tape" },
-          { label: "Audit markers", value: "Household ID, filing route, reviewer" },
-          { label: "Redaction mode", value: "Immutable derivative copies" },
-        ],
-      },
-      {
-        title: "Custody trail",
-        description:
-          "Municipal archives require two signers before a seal is accepted into the amber tier vault.",
-        entries: [
-          { label: "Origin signer", value: "Toma Eres" },
-          { label: "Second signer", value: "Iris Fen" },
-          { label: "Audit review", value: "Annual statutory review" },
-        ],
-      },
-    ],
-    recoveryNotes: [
-      "OCR PDFs are stored with a reference back to the original scan bundle.",
-      "Exception routing notes stay searchable by household identifier.",
-      "Derivative redactions are materialized up front for faster review drills.",
-    ],
-  },
-  {
-    id: "opal-delta-forecast-frames",
-    title: "Opal Delta / Forecast frames",
-    summary:
-      "Hydrology forecast grids and scenario notes preserved after the flood-model calibration cycle was frozen for external review.",
-    source: "Opal Delta Modeling Desk",
-    archivedAt: "2025-12-03",
-    archivedLabel: "December 3, 2025",
-    timeline: "August 15, 2025 to November 26, 2025",
-    assetCount: 7614,
-    storageFootprintGb: 129.1,
-    storageFootprintLabel: "129.1 GB",
-    metadataBadges: [
-      { label: "Verification", value: "Scenario checks approved", tone: "calm" },
-      { label: "Retention", value: "10-year policy baseline", tone: "attention" },
-      { label: "Format", value: "NetCDF + markdown notes", tone: "neutral" },
-      { label: "Vault", value: "Delta research reserve", tone: "neutral" },
-    ],
-    highlightMetrics: [
-      { label: "Model frames", value: "7,614 archived states" },
-      { label: "Calibration bands", value: "23 scenario families" },
-      { label: "Restore path", value: "Frame-first partial hydrate" },
-      { label: "Review profile", value: "Policy and engineering teams" },
-    ],
-    detailSections: [
-      {
-        title: "Model capture",
-        description:
-          "The archive stores forecast frames as checkpoints with linked scenario notes, making this a good test subject for a detail-heavy route.",
-        entries: [
-          { label: "Checkpoint interval", value: "Every 45 simulated minutes" },
-          { label: "Scenario families", value: "Seasonal surge and dam release" },
-          { label: "Boundaries", value: "Delta basin v4.2" },
+          "The package keeps manifests, signed statements, and redaction notes together so investigators can review a single archive surface.",
+        rows: [
+          { label: "Primary contents", value: "Berth logs, manifests, witness PDFs" },
+          { label: "Packaging mode", value: "Quarter-close export with chain receipt" },
+          { label: "Review profile", value: "Incident replay and compliance audit" },
         ],
       },
       {
         title: "Preservation controls",
         description:
-          "Forecast frames are expensive to regenerate, so the seal favors rapid partial restore over compact storage alone.",
-        entries: [
-          { label: "Primary media", value: "Research object tier" },
-          { label: "Fast lane", value: "Partial hydrate from frame map" },
-          { label: "Validation routine", value: "Monthly replay sample" },
+          "Every ledger slice is hashed independently before the final seal is written into the archive index.",
+        rows: [
+          { label: "Digest family", value: "SHA-256 with 98 leaf groups" },
+          { label: "Replica count", value: "3 geosealed copies" },
+          { label: "Tamper handling", value: "Quarantine on digest mismatch" },
         ],
       },
       {
-        title: "Custody trail",
+        title: "Access expectations",
         description:
-          "The modeling desk is the origin owner, but policy reviewers control downstream access after the snapshot is frozen.",
-        entries: [
-          { label: "Origin signer", value: "Pavel Noor" },
-          { label: "Policy liaison", value: "Rina Sol" },
-          { label: "External review state", value: "Queued" },
+          "Public drill scenarios can inspect event narratives, but the archive keeps customs annotations behind a restricted review gate.",
+        rows: [
+          { label: "Access lane", value: "Audit-only request flow" },
+          { label: "Restricted fields", value: "Customs notes and witness contact data" },
+          { label: "Restore target", value: "11-minute partial hydrate" },
         ],
       },
     ],
+    timelineEntries: [
+      {
+        label: "Collection frozen",
+        timestamp: "April 11, 2026 at 22:05 UTC",
+        detail: "Berth logs and statements were locked after the quarter-close export passed reconciliation.",
+      },
+      {
+        label: "Seal issued",
+        timestamp: "April 18, 2026 at 06:20 UTC",
+        detail: "The North Atlantic compliance desk countersigned the archive ledger and pushed it into cold storage.",
+      },
+      {
+        label: "Drill approved",
+        timestamp: "April 19, 2026 at 09:30 UTC",
+        detail: "The archive was cleared for rehearsal use with redaction-safe witness references.",
+      },
+    ],
     recoveryNotes: [
-      "Scenario markdown notes remain versioned against frame checkpoints.",
-      "Partial hydrate can target a single basin region without restoring the full grid.",
-      "Monthly replay samples focus on high-variance surge scenarios.",
+      "Witness addenda stay cross-linked to berth incident IDs for deterministic replay.",
+      "Camera manifests retain reel offsets without bundling raw video payloads.",
+      "Redaction-safe drill exports are generated from the sealed ledger, not from live systems.",
+    ],
+  },
+  {
+    id: "northwind-evacuation-audio-bundle",
+    label: "Snapshot 06",
+    title: "Northwind evacuation audio bundle",
+    summary:
+      "Dispatch room recordings, operator transcripts, and route-change annotations archived after the evacuation readiness exercise.",
+    source: "Northwind Transit Command",
+    archivedAt: "2026-03-27T15:45:00Z",
+    archivedLabel: "March 27, 2026 at 15:45 UTC",
+    captureRange: "February 09, 2026 to March 25, 2026",
+    status: "Ready for supervised playback",
+    assetCount: 9621,
+    storageFootprintGb: 88.1,
+    storageFootprintLabel: "88.1 GB",
+    tags: ["audio", "dispatch", "exercise"],
+    metadataBadges: [
+      { label: "Retention", value: "8-year operations baseline", tone: "alert" },
+      { label: "Integrity", value: "Waveform parity verified", tone: "verified" },
+      { label: "Vault", value: "Zurich warm mirror", tone: "muted" },
+    ],
+    detailSections: [
+      {
+        title: "Archive package",
+        description:
+          "Source audio sits beside transcript excerpts and route overrides so review teams can trace each dispatch decision.",
+        rows: [
+          { label: "Primary contents", value: "WAV bundles, transcript slices, route notes" },
+          { label: "Session grouping", value: "Operator shift and dispatch event pair" },
+          { label: "Review profile", value: "Exercise playback and after-action review" },
+        ],
+      },
+      {
+        title: "Preservation controls",
+        description:
+          "Audio archives prioritize playback fidelity first, then layer verification metadata for drift detection.",
+        rows: [
+          { label: "Checksum pair", value: "BLAKE3 plus sample-range parity" },
+          { label: "Replica count", value: "2 warm copies and 1 tape export" },
+          { label: "Drift handling", value: "Frame mismatch flagged before restore" },
+        ],
+      },
+      {
+        title: "Access expectations",
+        description:
+          "Exercises can replay command audio, but participant identifiers remain masked outside the review room.",
+        rows: [
+          { label: "Access lane", value: "Training review with custodian approval" },
+          { label: "Restricted fields", value: "Operator identities and emergency contact notes" },
+          { label: "Restore target", value: "6-minute targeted retrieval" },
+        ],
+      },
+    ],
+    timelineEntries: [
+      {
+        label: "Audio normalized",
+        timestamp: "March 25, 2026 at 20:14 UTC",
+        detail: "Shift recordings were re-bucketed by dispatch event and operator handoff.",
+      },
+      {
+        label: "Seal issued",
+        timestamp: "March 27, 2026 at 15:45 UTC",
+        detail: "Transit records signed the archive and synchronized the warm mirror copies.",
+      },
+      {
+        label: "Playback certified",
+        timestamp: "March 28, 2026 at 10:05 UTC",
+        detail: "Exercise coordinators confirmed the bundle for supervised playback use.",
+      },
+    ],
+    recoveryNotes: [
+      "Transcript slices preserve speaker changes at the second-level timestamp.",
+      "Route override notes remain attached to the dispatch event that triggered them.",
+      "Warm mirror recovery is optimized for a single route or control room rather than the full bundle.",
+    ],
+  },
+  {
+    id: "solstice-orchard-sensor-rollup",
+    label: "Snapshot 05",
+    title: "Solstice orchard sensor rollup",
+    summary:
+      "Environmental sensor streams, irrigation overrides, and technician notebook excerpts preserved after a seasonal yield study.",
+    source: "Solstice Orchard Lab",
+    archivedAt: "2026-02-16T11:10:00Z",
+    archivedLabel: "February 16, 2026 at 11:10 UTC",
+    captureRange: "October 02, 2025 to February 12, 2026",
+    status: "Indexed for comparative review",
+    assetCount: 27104,
+    storageFootprintGb: 74.3,
+    storageFootprintLabel: "74.3 GB",
+    tags: ["sensors", "agriculture", "comparative-study"],
+    metadataBadges: [
+      { label: "Retention", value: "5-year research baseline", tone: "alert" },
+      { label: "Integrity", value: "Parity pass complete", tone: "verified" },
+      { label: "Vault", value: "Low-latency mirror tier", tone: "muted" },
+    ],
+    detailSections: [
+      {
+        title: "Archive package",
+        description:
+          "Telemetry is grouped with manual notebook corrections so reviewers can inspect human intervention beside the raw sensor history.",
+        rows: [
+          { label: "Primary contents", value: "Telemetry packets, override logs, field notes" },
+          { label: "Session grouping", value: "Irrigation zone and harvest cycle" },
+          { label: "Review profile", value: "Yield anomaly comparison" },
+        ],
+      },
+      {
+        title: "Preservation controls",
+        description:
+          "The archive compresses high-frequency telemetry after signing so long-range comparisons stay practical without weakening auditability.",
+        rows: [
+          { label: "Compression", value: "Zstandard level 9" },
+          { label: "Replica count", value: "2 mirrors with weekly verify" },
+          { label: "Replay handling", value: "Out-of-order sensor packets flagged" },
+        ],
+      },
+      {
+        title: "Access expectations",
+        description:
+          "Researchers can query trend summaries quickly, but full notebook extracts stay restricted to the field operations team.",
+        rows: [
+          { label: "Access lane", value: "Research review with notebook gating" },
+          { label: "Restricted fields", value: "Technician initials and manual override reasons" },
+          { label: "Restore target", value: "4-hour complete replay window" },
+        ],
+      },
+    ],
+    timelineEntries: [
+      {
+        label: "Sensor window closed",
+        timestamp: "February 12, 2026 at 17:05 UTC",
+        detail: "The seasonal export locked after the final irrigation cycle was certified.",
+      },
+      {
+        label: "Seal issued",
+        timestamp: "February 16, 2026 at 11:10 UTC",
+        detail: "Research ops wrote the sealed rollup and synchronized the mirror tier.",
+      },
+      {
+        label: "Comparison set approved",
+        timestamp: "February 17, 2026 at 07:55 UTC",
+        detail: "Analysts cleared the archive for cross-season comparison work.",
+      },
+    ],
+    recoveryNotes: [
+      "Field notes remain anchored to the irrigation zone that triggered the manual override.",
+      "Trend queries can restore a single zone without hydrating the full season.",
+      "Comparative review exports omit technician names by default.",
+    ],
+  },
+  {
+    id: "opal-delta-forecast-freeze",
+    label: "Snapshot 04",
+    title: "Opal Delta forecast freeze",
+    summary:
+      "Hydrology model checkpoints, boundary assumptions, and policy review notes archived after the annual flood calibration freeze.",
+    source: "Opal Delta Modeling Desk",
+    archivedAt: "2025-12-03T08:00:00Z",
+    archivedLabel: "December 03, 2025 at 08:00 UTC",
+    captureRange: "August 15, 2025 to November 26, 2025",
+    status: "Queued for policy inspection",
+    assetCount: 7614,
+    storageFootprintGb: 129.1,
+    storageFootprintLabel: "129.1 GB",
+    tags: ["forecast", "hydrology", "policy"],
+    metadataBadges: [
+      { label: "Retention", value: "10-year policy baseline", tone: "alert" },
+      { label: "Integrity", value: "Scenario checks approved", tone: "verified" },
+      { label: "Vault", value: "Delta research reserve", tone: "muted" },
+    ],
+    detailSections: [
+      {
+        title: "Archive package",
+        description:
+          "Forecast checkpoints stay bundled with scenario notes so downstream reviewers can understand why a model state was frozen.",
+        rows: [
+          { label: "Primary contents", value: "NetCDF frames, scenario notes, policy review memo" },
+          { label: "Session grouping", value: "Calibration family and basin region" },
+          { label: "Review profile", value: "Engineering and policy inspection" },
+        ],
+      },
+      {
+        title: "Preservation controls",
+        description:
+          "Partial restore is favored over full hydrate because the policy workflow usually inspects one basin region at a time.",
+        rows: [
+          { label: "Primary media", value: "Research object tier with frame map" },
+          { label: "Replica count", value: "1 reserve plus monthly replay sample" },
+          { label: "Validation routine", value: "Monthly high-variance scenario replay" },
+        ],
+      },
+      {
+        title: "Access expectations",
+        description:
+          "Policy reviewers can browse notes and outputs, but mutable model inputs remain isolated from the frozen archive path.",
+        rows: [
+          { label: "Access lane", value: "Policy review with engineering escrow" },
+          { label: "Restricted fields", value: "Mutable calibration inputs and draft scenarios" },
+          { label: "Restore target", value: "Frame-first partial hydrate" },
+        ],
+      },
+    ],
+    timelineEntries: [
+      {
+        label: "Calibration frozen",
+        timestamp: "November 26, 2025 at 19:00 UTC",
+        detail: "The final surge and release scenarios were locked for external review.",
+      },
+      {
+        label: "Seal issued",
+        timestamp: "December 03, 2025 at 08:00 UTC",
+        detail: "The modeling desk finalized the archive and wrote it into the research reserve.",
+      },
+      {
+        label: "Policy queue opened",
+        timestamp: "December 04, 2025 at 12:40 UTC",
+        detail: "Regional policy reviewers received the frame map and note index.",
+      },
+    ],
+    recoveryNotes: [
+      "Scenario markdown notes remain versioned against their checkpoint family.",
+      "Partial restore can hydrate a single basin region without reading the full grid set.",
+      "Monthly replay samples focus on high-variance surge scenarios first.",
     ],
   },
 ];

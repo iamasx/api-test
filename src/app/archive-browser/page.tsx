@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { ArchiveBrowserShell } from "./_components/archive-browser-shell";
 import {
   readRequestedSnapshotId,
-  resolveArchiveBrowserView,
+  resolveArchiveBrowserSelection,
 } from "./_lib/archive-browser";
 
 type ArchiveBrowserPageProps = {
@@ -15,7 +15,7 @@ type ArchiveBrowserPageProps = {
 export const metadata: Metadata = {
   title: "Archive Browser",
   description:
-    "Browse archived entries through snapshot cards, metadata badges, and a detail panel.",
+    "Inspect archived entries through snapshot cards, metadata sections, and a dedicated detail view.",
 };
 
 export default async function ArchiveBrowserPage({
@@ -24,7 +24,7 @@ export default async function ArchiveBrowserPage({
   const requestedSnapshotId = readRequestedSnapshotId(
     (await searchParams).snapshot,
   );
-  const view = resolveArchiveBrowserView(requestedSnapshotId);
+  const selection = resolveArchiveBrowserSelection(requestedSnapshotId);
 
-  return <ArchiveBrowserShell view={view} />;
+  return <ArchiveBrowserShell selection={selection} />;
 }

@@ -1,25 +1,26 @@
-import type { ArchiveMetadataBadge } from "../_lib/archive-data";
+import type { ArchiveMetadataBadge as ArchiveMetadataBadgeValue } from "../_lib/archive-data";
+import styles from "../archive-browser.module.css";
 
 const toneClasses = {
-  attention: "border-amber-200 bg-amber-50 text-amber-900",
-  calm: "border-cyan-200 bg-cyan-50 text-cyan-900",
-  neutral: "border-slate-200 bg-white/80 text-slate-700",
+  alert: styles.metadataBadgeAlert,
+  muted: styles.metadataBadgeMuted,
+  verified: styles.metadataBadgeVerified,
 };
 
 type ArchiveMetadataBadgeProps = {
-  badge: ArchiveMetadataBadge;
+  badge: ArchiveMetadataBadgeValue;
 };
 
 export function ArchiveMetadataBadge({
   badge,
 }: ArchiveMetadataBadgeProps) {
-  const tone = badge.tone ?? "neutral";
+  const tone = badge.tone ?? "muted";
 
   return (
     <li
-      className={`rounded-full border px-3 py-1.5 text-xs font-medium tracking-wide ${toneClasses[tone]}`}
+      className={`${styles.metadataBadge} ${toneClasses[tone]}`}
     >
-      <span className="text-[11px] uppercase text-slate-500">{badge.label}</span>{" "}
+      <span className={styles.metadataBadgeLabel}>{badge.label}</span>
       <span>{badge.value}</span>
     </li>
   );
