@@ -25,6 +25,10 @@ export function StockBandSummaryCard({ summary }: StockBandSummaryCardProps) {
         </span>
       </div>
 
+      <p className="mt-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+        State: {summary.stateLabel}
+      </p>
+
       <p className="mt-3 max-w-sm text-sm leading-7 text-slate-700">
         {summary.description}
       </p>

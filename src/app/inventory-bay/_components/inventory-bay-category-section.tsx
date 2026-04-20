@@ -48,7 +48,7 @@ export function InventoryBayCategorySection({
                 key={band.id}
                 className={`rounded-full border px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] ${band.badgeClassName}`}
               >
-                {section.bandCounts[band.id]} {band.name}
+                {section.bandCounts[band.id]} {band.stateLabel}
               </span>
             ))}
         </div>

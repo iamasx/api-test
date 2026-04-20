@@ -29,6 +29,9 @@ export function InventoryBayCard({ item, band }: InventoryBayCardProps) {
               {band.name}
             </span>
             <span className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
+              {band.stateLabel}
+            </span>
+            <span className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600">
               {item.sku}
             </span>
           </div>
@@ -68,7 +71,7 @@ export function InventoryBayCard({ item, band }: InventoryBayCardProps) {
         </div>
       </div>
 
-      <dl className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <dl className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
           <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
             Units on hand
@@ -104,7 +107,7 @@ export function InventoryBayCard({ item, band }: InventoryBayCardProps) {
       </dl>
 
       <div className="mt-5 rounded-[1.5rem] border border-slate-200 bg-[linear-gradient(135deg,rgba(248,250,252,0.96),rgba(255,255,255,0.96))] px-4 py-4">
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(15rem,0.85fr)]">
+        <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(15rem,0.85fr)]">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               Next delivery

@@ -78,6 +78,9 @@ export function InventoryBayShell({
                   Sections grouped by bay category
                 </span>
                 <span className="rounded-full border border-white/10 bg-white/8 px-3 py-1.5">
+                  Available, low-stock, and depleted visual states
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/8 px-3 py-1.5">
                   Recommendation panel stays visible beside the stock grid
                 </span>
               </div>

@@ -5,6 +5,7 @@ export type InventoryBayPriority = "Immediate" | "This Shift" | "Monitor";
 export type InventoryBayBand = {
   id: InventoryBayBandId;
   name: string;
+  stateLabel: string;
   eyebrow: string;
   description: string;
   badgeClassName: string;
@@ -78,6 +79,7 @@ export const inventoryBayBands: InventoryBayBand[] = [
   {
     id: "healthy",
     name: "Healthy",
+    stateLabel: "Available",
     eyebrow: "Above target",
     description: "Stock is above the reorder point with enough cover for normal demand.",
     badgeClassName: "border-emerald-200 bg-emerald-50 text-emerald-800",
@@ -88,6 +90,7 @@ export const inventoryBayBands: InventoryBayBand[] = [
   {
     id: "watch",
     name: "Watch",
+    stateLabel: "Low Stock",
     eyebrow: "Drifting low",
     description: "Coverage is tightening and needs a transfer or replenishment soon.",
     badgeClassName: "border-amber-200 bg-amber-50 text-amber-800",
@@ -98,6 +101,7 @@ export const inventoryBayBands: InventoryBayBand[] = [
   {
     id: "critical",
     name: "Critical",
+    stateLabel: "Depleted",
     eyebrow: "Below reorder point",
     description: "Current stock cannot safely cover expected pulls without intervention.",
     badgeClassName: "border-rose-200 bg-rose-50 text-rose-800",
