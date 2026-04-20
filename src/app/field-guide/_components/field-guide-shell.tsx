@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useDeferredValue, useState } from "react";
+import { startTransition, useState } from "react";
 
 import {
   getDefaultFieldGuideProcedure,
@@ -71,7 +71,7 @@ export function FieldGuideShell({
   const [selectedProcedureId, setSelectedProcedureId] = useState(
     defaultProcedure?.id ?? "",
   );
-  const deferredSearchValue = useDeferredValue(searchValue.trim().toLowerCase());
+  const normalizedSearchValue = searchValue.trim().toLowerCase();
 
   const categoryOptions = getFieldGuideCategoryOptions(procedures, categories);
   const priorityOptions = getFieldGuidePriorityOptions(procedures);
@@ -89,7 +89,7 @@ export function FieldGuideShell({
       matchesCategory &&
       matchesPriority &&
       matchesFocusArea &&
-      matchesProcedure(procedure, deferredSearchValue)
+      matchesProcedure(procedure, normalizedSearchValue)
     );
   });
   const groupedVisibleProcedures = categories
@@ -117,6 +117,14 @@ export function FieldGuideShell({
     (count, procedure) => count + procedure.references.length,
     0,
   );
+  const activeFilterLabels = [
+    searchValue.trim() ? `Query: ${searchValue.trim()}` : null,
+    activeCategoryId !== "all"
+      ? categoryOptions.find((option) => option.id === activeCategoryId)?.name
+      : null,
+    activePriority !== "all" ? `Priority: ${activePriority}` : null,
+    activeFocusArea !== "all" ? `Focus: ${activeFocusArea}` : null,
+  ].filter(Boolean);
   const canReset =
     activeCategoryId !== "all" ||
     activePriority !== "all" ||
@@ -130,9 +138,7 @@ export function FieldGuideShell({
   }
 
   function handleSearchChange(value: string) {
-    startTransition(() => {
-      setSearchValue(value);
-    });
+    setSearchValue(value);
   }
 
   function handlePriorityChange(priority: ProcedurePriority | "all") {
@@ -269,6 +275,53 @@ export function FieldGuideShell({
           onSearchChange={handleSearchChange}
           onReset={handleResetFilters}
         />
+
+        <section
+          aria-label="Field guide workspace summary"
+          className="grid gap-4 xl:grid-cols-[minmax(0,1.3fr)_minmax(280px,0.7fr)]"
+        >
+          <div className="rounded-[1.8rem] border border-slate-200/80 bg-white/78 px-5 py-5 shadow-[0_18px_70px_-48px_rgba(15,23,42,0.38)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+              Active Filters
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {activeFilterLabels.length > 0 ? (
+                activeFilterLabels.map((filterLabel) => (
+                  <span
+                    key={filterLabel}
+                    className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700"
+                  >
+                    {filterLabel}
+                  </span>
+                ))
+              ) : (
+                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-800">
+                  All procedures visible
+                </span>
+              )}
+            </div>
+            <p className="mt-4 text-sm leading-6 text-slate-600">
+              {groupedVisibleProcedures.length} procedure group
+              {groupedVisibleProcedures.length === 1 ? "" : "s"} in view with{" "}
+              {visibleProcedures.length} active procedure
+              {visibleProcedures.length === 1 ? "" : "s"} ready for review.
+            </p>
+          </div>
+
+          <div className="rounded-[1.8rem] border border-slate-200/80 bg-slate-950 px-5 py-5 text-white shadow-[0_24px_80px_-50px_rgba(15,23,42,0.65)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
+              Selected Focus
+            </p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight">
+              {selectedProcedure?.title ?? "No visible procedure"}
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-300">
+              {selectedProcedure
+                ? `${selectedProcedure.code} • ${selectedProcedure.focusAreas.join(" • ")}`
+                : "Adjust the filters or search term to restore a procedure and re-open the detail panel."}
+            </p>
+          </div>
+        </section>
 
         <div className="grid gap-8 xl:grid-cols-[minmax(0,1.45fr)_420px]">
           <section

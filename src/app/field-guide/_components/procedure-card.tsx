@@ -23,6 +23,7 @@ export function ProcedureCard({
   return (
     <button
       type="button"
+      aria-label={procedure.title}
       onClick={() => onSelect(procedure.id)}
       className={`w-full rounded-[1.9rem] border p-5 text-left transition ${
         selected
@@ -133,7 +134,7 @@ export function ProcedureCard({
         >
           {procedure.checklist.length} checklist items
         </span>
-        {procedure.focusAreas.map((focusArea) => (
+        {procedure.focusAreas.slice(0, 2).map((focusArea) => (
           <span
             key={focusArea}
             className={`rounded-full px-3 py-1 text-xs font-medium ${
@@ -171,7 +172,7 @@ export function ProcedureCard({
           </span>
         </div>
         <ul className="mt-3 space-y-3">
-          {procedure.checklist.slice(0, 2).map((item) => (
+          {procedure.checklist.slice(0, 1).map((item) => (
             <li
               key={item.id}
               className={`rounded-[1.1rem] border px-3 py-3 ${
@@ -191,10 +192,19 @@ export function ProcedureCard({
             </li>
           ))}
         </ul>
+        {procedure.checklist.length > 1 ? (
+          <p
+            className={`mt-3 text-xs font-medium ${
+              selected ? "text-slate-300" : "text-slate-500"
+            }`}
+          >
+            +{procedure.checklist.length - 1} more checks in the detail panel
+          </p>
+        ) : null}
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
-        {procedure.tags.map((tag) => (
+        {procedure.tags.slice(0, 2).map((tag) => (
           <span
             key={tag}
             className={`rounded-full px-3 py-1 text-xs font-medium ${

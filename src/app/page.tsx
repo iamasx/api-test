@@ -12,6 +12,12 @@ const notebookHighlights = [
   "Notebook route is now staged independently from the archive workflows",
 ];
 
+const fieldGuideHighlights = [
+  "Grouped procedure cards with searchable categories, priorities, and focus areas",
+  "Checklist previews on the catalog side before opening the detail panel",
+  "Reference-ready procedure detail for active response handoffs",
+];
+
 export default function Home() {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-6 py-12 sm:px-10 lg:px-12">
@@ -108,6 +114,60 @@ export default function Home() {
             </p>
             <ul className="mt-5 space-y-4">
               {notebookHighlights.map((item) => (
+                <li
+                  key={item}
+                  className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.06)]">
+        <div className="grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.9fr)] lg:px-12 lg:py-10">
+          <div className="space-y-5">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-teal-700">
+              Issue 142 / Field Guide
+            </p>
+            <div className="space-y-3">
+              <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+                Open the field guide route for searchable procedures, grouped
+                checklists, and reference detail.
+              </h2>
+              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                The field guide route stages mock response procedures with
+                searchable controls, grouped catalog sections, and a sticky
+                reference panel so operators can keep execution detail close to
+                the active selection.
+              </p>
+            </div>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/field-guide"
+                className="inline-flex items-center justify-center rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-teal-50 transition hover:bg-teal-800"
+              >
+                Open field guide
+              </Link>
+              <a
+                href="https://github.com/iamasx/api-test/issues/142"
+                className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Review issue scope
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface-strong)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
+              Field guide staging
+            </p>
+            <ul className="mt-5 space-y-4">
+              {fieldGuideHighlights.map((item) => (
                 <li
                   key={item}
                   className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
