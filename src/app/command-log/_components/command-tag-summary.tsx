@@ -1,4 +1,5 @@
 import type { CommandTagSummaryItem } from "../_lib/command-log";
+import styles from "../command-log.module.css";
 
 type CommandTagSummaryProps = {
   groups: CommandTagSummaryItem[];
@@ -12,7 +13,7 @@ export function CommandTagSummary({
   return (
     <section
       aria-labelledby="command-tag-summary-title"
-      className="rounded-[2rem] border border-slate-200/70 bg-[var(--surface)] p-5 shadow-[0_18px_65px_rgba(15,23,42,0.08)] sm:p-6"
+      className={`${styles.tagSection} rounded-[2rem] border border-slate-200/70 bg-[var(--surface)] p-5 shadow-[0_18px_65px_rgba(15,23,42,0.08)] sm:p-6`}
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div className="space-y-2">
@@ -36,7 +37,7 @@ export function CommandTagSummary({
         {groups.map((group) => (
           <article
             key={group.tag}
-            className="rounded-[1.5rem] border border-slate-200 bg-white/78 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+            className={`${styles.tagCard} rounded-[1.5rem] border border-slate-200 bg-white/78 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]`}
           >
             <div className="flex items-start justify-between gap-3">
               <div>

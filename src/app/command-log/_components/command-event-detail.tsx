@@ -1,4 +1,19 @@
 import type { CommandLogEvent } from "../_lib/command-log-data";
+import styles from "../command-log.module.css";
+
+const severityClasses = {
+  Critical: styles.severityCritical,
+  High: styles.severityHigh,
+  Moderate: styles.severityModerate,
+  Low: styles.severityLow,
+};
+
+const statusClasses = {
+  Completed: styles.statusCompleted,
+  Watching: styles.statusWatching,
+  "Needs follow-up": styles.statusNeedsFollowUp,
+  Blocked: styles.statusBlocked,
+};
 
 type CommandEventDetailProps = {
   event: CommandLogEvent;
@@ -15,7 +30,7 @@ export function CommandEventDetail({
     <aside className="xl:sticky xl:top-8 xl:self-start">
       <section
         aria-label="Event detail"
-        className="rounded-[2rem] border border-white/10 bg-slate-950 p-5 text-slate-100 shadow-[0_24px_90px_rgba(15,23,42,0.18)] sm:p-6"
+        className={`${styles.detailPanel} rounded-[2rem] border border-white/10 bg-slate-950 p-5 text-slate-100 shadow-[0_24px_90px_rgba(15,23,42,0.18)] sm:p-6`}
       >
         <div className="space-y-5">
           <div className="space-y-3">
@@ -45,21 +60,29 @@ export function CommandEventDetail({
             </p>
           ) : null}
 
-          <div className="rounded-[1.5rem] border border-white/10 bg-white/6 p-4">
+          <div
+            className={`${styles.detailSection} rounded-[1.5rem] border border-white/10 bg-white/6 p-4`}
+          >
             <div className="flex flex-wrap gap-2">
-              <span className="inline-flex rounded-full border border-rose-300/30 bg-rose-500/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-rose-100">
+              <span
+                className={`${styles.badge} ${severityClasses[event.severity]} inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em]`}
+              >
                 {event.severity}
               </span>
               <span className="inline-flex rounded-full border border-white/10 bg-white/8 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-100">
                 {event.category}
               </span>
-              <span className="inline-flex rounded-full border border-cyan-300/30 bg-cyan-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-100">
+              <span
+                className={`${styles.badge} ${statusClasses[event.status]} inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em]`}
+              >
                 {event.status}
               </span>
             </div>
 
             <dl className="mt-4 grid gap-3 sm:grid-cols-2">
-              <div className="rounded-[1rem] border border-white/10 bg-slate-900/80 p-4">
+              <div
+                className={`${styles.detailInnerCard} rounded-[1rem] border border-white/10 bg-slate-900/80 p-4`}
+              >
                 <dt className="text-xs uppercase tracking-[0.18em] text-slate-400">
                   Timestamp
                 </dt>
@@ -67,7 +90,9 @@ export function CommandEventDetail({
                   {event.occurredLabel}
                 </dd>
               </div>
-              <div className="rounded-[1rem] border border-white/10 bg-slate-900/80 p-4">
+              <div
+                className={`${styles.detailInnerCard} rounded-[1rem] border border-white/10 bg-slate-900/80 p-4`}
+              >
                 <dt className="text-xs uppercase tracking-[0.18em] text-slate-400">
                   Team
                 </dt>
@@ -75,7 +100,9 @@ export function CommandEventDetail({
                   {event.team}
                 </dd>
               </div>
-              <div className="rounded-[1rem] border border-white/10 bg-slate-900/80 p-4">
+              <div
+                className={`${styles.detailInnerCard} rounded-[1rem] border border-white/10 bg-slate-900/80 p-4`}
+              >
                 <dt className="text-xs uppercase tracking-[0.18em] text-slate-400">
                   Actor
                 </dt>
@@ -83,7 +110,9 @@ export function CommandEventDetail({
                   {event.actor}
                 </dd>
               </div>
-              <div className="rounded-[1rem] border border-white/10 bg-slate-900/80 p-4">
+              <div
+                className={`${styles.detailInnerCard} rounded-[1rem] border border-white/10 bg-slate-900/80 p-4`}
+              >
                 <dt className="text-xs uppercase tracking-[0.18em] text-slate-400">
                   Environment
                 </dt>
@@ -94,12 +123,16 @@ export function CommandEventDetail({
             </dl>
           </div>
 
-          <section className="rounded-[1.5rem] border border-white/10 bg-white/6 p-4">
+          <section
+            className={`${styles.detailSection} rounded-[1.5rem] border border-white/10 bg-white/6 p-4`}
+          >
             <h3 className="text-xl font-semibold text-white">Command context</h3>
             <p className="mt-3 text-sm leading-6 text-slate-300">
               {event.summary}
             </p>
-            <div className="mt-4 rounded-[1rem] border border-white/10 bg-slate-900/80 p-4">
+            <div
+              className={`${styles.detailInnerCard} mt-4 rounded-[1rem] border border-white/10 bg-slate-900/80 p-4`}
+            >
               <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
                 Executed command
               </p>
@@ -109,13 +142,15 @@ export function CommandEventDetail({
             </div>
           </section>
 
-          <section className="rounded-[1.5rem] border border-white/10 bg-white/6 p-4">
+          <section
+            className={`${styles.detailSection} rounded-[1.5rem] border border-white/10 bg-white/6 p-4`}
+          >
             <h3 className="text-xl font-semibold text-white">Related services</h3>
             <div className="mt-4 flex flex-wrap gap-2">
               {event.relatedServices.map((service) => (
                 <span
                   key={`${event.id}-${service}`}
-                  className="inline-flex rounded-full border border-white/10 bg-slate-900/80 px-3 py-1 text-sm font-medium text-slate-100"
+                  className={`${styles.servicePill} inline-flex rounded-full border px-3 py-1 text-sm font-medium text-slate-100`}
                 >
                   {service}
                 </span>
@@ -123,13 +158,15 @@ export function CommandEventDetail({
             </div>
           </section>
 
-          <section className="rounded-[1.5rem] border border-white/10 bg-white/6 p-4">
+          <section
+            className={`${styles.detailSection} rounded-[1.5rem] border border-white/10 bg-white/6 p-4`}
+          >
             <h3 className="text-xl font-semibold text-white">Operator notes</h3>
-            <ul className="mt-4 space-y-3">
+            <ul className={`${styles.notesList} mt-4 space-y-3`}>
               {event.notes.map((note) => (
                 <li
                   key={`${event.id}-${note}`}
-                  className="rounded-[1rem] border border-white/10 bg-slate-900/80 px-4 py-3 text-sm leading-6 text-slate-200"
+                  className={`${styles.noteCard} rounded-[1rem] border border-white/10 bg-slate-900/80 px-4 py-3 text-sm leading-6 text-slate-200`}
                 >
                   {note}
                 </li>
@@ -137,7 +174,9 @@ export function CommandEventDetail({
             </ul>
           </section>
 
-          <section className="rounded-[1.5rem] border border-white/10 bg-white/6 p-4">
+          <section
+            className={`${styles.detailSection} rounded-[1.5rem] border border-white/10 bg-white/6 p-4`}
+          >
             <h3 className="text-xl font-semibold text-white">Next action</h3>
             <p className="mt-3 text-sm leading-6 text-slate-200">
               {event.nextAction}
