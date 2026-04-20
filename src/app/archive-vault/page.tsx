@@ -11,6 +11,7 @@ import {
   readRequestedSnapshotId,
   resolveArchiveVaultSelection,
 } from "./_lib/archive-vault";
+import styles from "./archive-vault.module.css";
 
 type ArchiveVaultPageProps = {
   searchParams: Promise<{
@@ -60,35 +61,33 @@ export default async function ArchiveVaultPage({
   const overview = buildOverview();
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-1 flex-col gap-8 px-6 py-12 sm:px-10 lg:px-14">
-      <header className="overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] p-8 shadow-[0_20px_90px_rgba(15,23,42,0.08)] sm:p-10">
-        <div className="grid gap-8 xl:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)] xl:items-end">
-          <div className="space-y-5">
+    <main className={styles.vaultPage}>
+      <header className={styles.heroPanel}>
+        <div className={styles.heroGrid}>
+          <div className={styles.heroCopy}>
             <div className="space-y-4">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-amber-700">
-                Archive Vault
-              </p>
-              <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
+              <p className={styles.eyebrow}>Archive Vault</p>
+              <h1 className={styles.heroTitle}>
                 Browse sealed snapshots with visible labels, metadata badges,
                 and a comparison-ready detail panel.
               </h1>
-              <p className="max-w-3xl text-base leading-7 text-slate-600 sm:text-lg">
+              <p className={styles.heroText}>
                 The vault keeps audit packages, operational restores, and
                 research baselines on one route, while preserving a dedicated
                 detail surface for deep review of the active snapshot.
               </p>
             </div>
 
-            <div className="flex flex-col gap-4 sm:flex-row">
+            <div className={styles.heroActions}>
               <Link
                 href="/"
-                className="inline-flex items-center justify-center rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
+                className={styles.actionGhost}
               >
                 Back to route index
               </Link>
               <Link
                 href={`/archive-vault?snapshot=${selection.selectedSnapshot.id}`}
-                className="inline-flex items-center justify-center rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-amber-50 transition hover:bg-slate-800"
+                className={styles.actionPrimary}
               >
                 Keep current snapshot in view
               </Link>
@@ -97,32 +96,24 @@ export default async function ArchiveVaultPage({
 
           <section
             aria-labelledby="archive-vault-overview-title"
-            className="rounded-[1.6rem] border border-slate-200 bg-white/70 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]"
+            className={styles.overviewCard}
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-              Route overview
-            </p>
+            <p className={styles.eyebrow}>Route overview</p>
             <h2
               id="archive-vault-overview-title"
-              className="mt-3 text-2xl font-semibold tracking-tight text-slate-950"
+              className={styles.overviewTitle}
             >
               Archive coverage at a glance
             </h2>
-            <div className="mt-5 grid gap-4">
+            <div className={styles.overviewGrid}>
               {overview.map((item) => (
                 <article
                   key={item.label}
-                  className="rounded-[1.35rem] border border-slate-200 bg-slate-50/80 p-4"
+                  className={styles.overviewItem}
                 >
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    {item.label}
-                  </p>
-                  <p className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
-                    {item.value}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
-                    {item.detail}
-                  </p>
+                  <p className={styles.overviewLabel}>{item.label}</p>
+                  <p className={styles.overviewValue}>{item.value}</p>
+                  <p className={styles.overviewDetail}>{item.detail}</p>
                 </article>
               ))}
             </div>
@@ -130,19 +121,17 @@ export default async function ArchiveVaultPage({
         </div>
       </header>
 
-      <section className="grid gap-6 xl:grid-cols-[minmax(0,1.12fr)_minmax(320px,0.88fr)] xl:items-start">
-        <div className="space-y-6">
-          <section className="rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[0_18px_70px_rgba(15,23,42,0.06)]">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+      <section className={styles.contentGrid}>
+        <div className={styles.browserColumn}>
+          <section className={styles.browserIntro}>
+            <div className={styles.browserIntroHeader}>
               <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
-                  Snapshot browser
-                </p>
-                <h2 className="text-3xl font-semibold tracking-tight text-slate-950">
+                <p className={styles.eyebrow}>Snapshot browser</p>
+                <h2 className={styles.browserIntroTitle}>
                   Multiple archive lanes, one active detail summary
                 </h2>
               </div>
-              <p className="max-w-2xl text-sm leading-7 text-slate-600">
+              <p className={styles.browserIntroText}>
                 Each group keeps its own archive purpose, while the shared
                 detail panel stays ready for comparisons, replay, and restore
                 planning from the selected snapshot.

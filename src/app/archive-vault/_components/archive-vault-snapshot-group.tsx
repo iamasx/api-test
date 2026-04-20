@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { ArchiveVaultMetadataBadge } from "./archive-vault-metadata-badge";
+import styles from "../archive-vault.module.css";
 import type { ArchiveVaultSnapshotGroup } from "../_data/archive-vault-data";
 
 type ArchiveVaultSnapshotGroupProps = {
@@ -15,26 +16,22 @@ export function ArchiveVaultSnapshotGroup({
   return (
     <section
       aria-labelledby={`${group.id}-title`}
-      className="space-y-4 rounded-[1.75rem] border border-[var(--line)] bg-[var(--surface)] p-6 shadow-[0_18px_70px_rgba(15,23,42,0.06)]"
+      className={styles.groupSection}
     >
-      <div className="space-y-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
-          {group.eyebrow}
-        </p>
+      <div className={styles.groupHeader}>
+        <p className={styles.eyebrow}>{group.eyebrow}</p>
         <h2
           id={`${group.id}-title`}
-          className="text-3xl font-semibold tracking-tight text-slate-950"
+          className={styles.groupTitle}
         >
           {group.title}
         </h2>
-        <p className="max-w-3xl text-sm leading-7 text-slate-600 sm:text-base">
-          {group.description}
-        </p>
+        <p className={styles.groupDescription}>{group.description}</p>
       </div>
 
       <div
         aria-label={`${group.title} snapshots`}
-        className="grid gap-4"
+        className={styles.snapshotStack}
         role="list"
       >
         {group.snapshots.map((snapshot) => {
@@ -44,31 +41,31 @@ export function ArchiveVaultSnapshotGroup({
             <article
               key={snapshot.id}
               aria-labelledby={`${snapshot.id}-title`}
-              className={`rounded-[1.5rem] border p-5 transition ${
+              className={`${styles.snapshotCard} ${
                 isSelected
-                  ? "border-slate-950 bg-slate-950 text-slate-50 shadow-[0_20px_65px_rgba(15,23,42,0.18)]"
-                  : "border-slate-200 bg-white/75 text-slate-950"
+                  ? styles.snapshotCardSelected
+                  : ""
               }`}
               role="listitem"
             >
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <div className="space-y-3">
+              <div className={styles.snapshotTop}>
+                <div className={styles.snapshotHeading}>
                   <p
-                    className={`text-[11px] font-semibold uppercase tracking-[0.22em] ${
-                      isSelected ? "text-amber-200" : "text-slate-500"
+                    className={`${styles.snapshotLabel} ${
+                      isSelected ? styles.snapshotLabelSelected : ""
                     }`}
                   >
                     {snapshot.label}
                   </p>
                   <h3
                     id={`${snapshot.id}-title`}
-                    className="text-2xl font-semibold tracking-tight"
+                    className={styles.snapshotTitle}
                   >
                     {snapshot.title}
                   </h3>
                   <p
-                    className={`max-w-2xl text-sm leading-7 ${
-                      isSelected ? "text-slate-200" : "text-slate-600"
+                    className={`${styles.snapshotSummary} ${
+                      isSelected ? styles.snapshotSummarySelected : ""
                     }`}
                   >
                     {snapshot.summary}
@@ -78,57 +75,65 @@ export function ArchiveVaultSnapshotGroup({
                 <Link
                   href={`/archive-vault?snapshot=${snapshot.id}`}
                   aria-current={isSelected ? "page" : undefined}
-                  className={`inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold transition ${
-                    isSelected
-                      ? "bg-amber-200 text-slate-950 hover:bg-amber-100"
-                      : "border border-slate-300 text-slate-700 hover:border-slate-950 hover:text-slate-950"
+                  className={`${styles.snapshotAction} ${
+                    isSelected ? styles.snapshotActionSelected : ""
                   }`}
                 >
                   {isSelected ? "Viewing snapshot" : "Open snapshot"}
                 </Link>
               </div>
 
-              <div className="mt-5 grid gap-4 md:grid-cols-3">
-                <div>
+              <div className={styles.snapshotFacts}>
+                <div
+                  className={`${styles.factCard} ${
+                    isSelected ? styles.factCardSelected : ""
+                  }`}
+                >
+                  <p className={styles.factLabel}>Archive seal</p>
                   <p
-                    className={`text-[11px] font-semibold uppercase tracking-[0.2em] ${
-                      isSelected ? "text-slate-400" : "text-slate-500"
+                    className={`${styles.factValue} ${
+                      isSelected ? styles.factValueSelected : ""
                     }`}
                   >
-                    Archive seal
+                    {snapshot.archivedLabel}
                   </p>
-                  <p className="mt-2 text-sm leading-6">{snapshot.archivedLabel}</p>
                 </div>
-                <div>
+                <div
+                  className={`${styles.factCard} ${
+                    isSelected ? styles.factCardSelected : ""
+                  }`}
+                >
+                  <p className={styles.factLabel}>Source</p>
                   <p
-                    className={`text-[11px] font-semibold uppercase tracking-[0.2em] ${
-                      isSelected ? "text-slate-400" : "text-slate-500"
+                    className={`${styles.factValue} ${
+                      isSelected ? styles.factValueSelected : ""
                     }`}
                   >
-                    Source
+                    {snapshot.source}
                   </p>
-                  <p className="mt-2 text-sm leading-6">{snapshot.source}</p>
                 </div>
-                <div>
+                <div
+                  className={`${styles.factCard} ${
+                    isSelected ? styles.factCardSelected : ""
+                  }`}
+                >
+                  <p className={styles.factLabel}>Vault zone</p>
                   <p
-                    className={`text-[11px] font-semibold uppercase tracking-[0.2em] ${
-                      isSelected ? "text-slate-400" : "text-slate-500"
+                    className={`${styles.factValue} ${
+                      isSelected ? styles.factValueSelected : ""
                     }`}
                   >
-                    Vault zone
+                    {snapshot.vaultZone}
                   </p>
-                  <p className="mt-2 text-sm leading-6">{snapshot.vaultZone}</p>
                 </div>
               </div>
 
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className={styles.snapshotTags}>
                 {snapshot.tags.map((tag) => (
                   <span
                     key={`${snapshot.id}-${tag}`}
-                    className={`rounded-full px-3 py-1 text-xs font-semibold tracking-[0.18em] uppercase ${
-                      isSelected
-                        ? "bg-white/10 text-slate-100"
-                        : "bg-slate-100 text-slate-600"
+                    className={`${styles.snapshotTag} ${
+                      isSelected ? styles.snapshotTagSelected : ""
                     }`}
                   >
                     {tag}
@@ -136,7 +141,7 @@ export function ArchiveVaultSnapshotGroup({
                 ))}
               </div>
 
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className={styles.metadataList}>
                 {snapshot.metadataBadges.map((badge) => (
                   <ArchiveVaultMetadataBadge
                     key={`${snapshot.id}-${badge.label}`}
@@ -146,20 +151,18 @@ export function ArchiveVaultSnapshotGroup({
               </div>
 
               <div
-                className={`mt-5 rounded-[1.2rem] border px-4 py-4 ${
-                  isSelected
-                    ? "border-white/10 bg-white/10"
-                    : "border-slate-200 bg-slate-50/85"
+                className={`${styles.statusCard} ${
+                  isSelected ? styles.statusCardSelected : ""
                 }`}
               >
+                <p className={styles.statusLabel}>Status</p>
                 <p
-                  className={`text-[11px] font-semibold uppercase tracking-[0.2em] ${
-                    isSelected ? "text-slate-400" : "text-slate-500"
+                  className={`${styles.statusValue} ${
+                    isSelected ? styles.statusValueSelected : ""
                   }`}
                 >
-                  Status
+                  {snapshot.status}
                 </p>
-                <p className="mt-2 text-sm font-medium">{snapshot.status}</p>
               </div>
             </article>
           );
