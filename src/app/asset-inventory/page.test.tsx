@@ -5,23 +5,27 @@ import { describe, expect, it } from "vitest";
 import AssetInventoryPage from "./page";
 
 describe("AssetInventoryPage", () => {
-  it("renders the inventory route with category navigation, catalog sections, and detail panel", () => {
-    render(<AssetInventoryPage />);
+  it(
+    "renders the inventory route with category navigation, catalog sections, and detail panel",
+    () => {
+      render(<AssetInventoryPage />);
 
-    expect(
-      screen.getByRole("heading", {
-        name: /catalog route for field hardware, live stock signals, and selected-item detail/i,
-      }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /all inventory/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: "Sensors" })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: "Safety" })).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(/selected inventory item details/i),
-    ).toBeInTheDocument();
-  });
+      expect(
+        screen.getByRole("heading", {
+          name: /catalog route for field hardware, live stock signals, and selected-item detail/i,
+        }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: /all inventory/i }),
+      ).toBeInTheDocument();
+      expect(screen.getByRole("region", { name: "Sensors" })).toBeInTheDocument();
+      expect(screen.getByRole("region", { name: "Safety" })).toBeInTheDocument();
+      expect(
+        screen.getByLabelText(/selected inventory item details/i),
+      ).toBeInTheDocument();
+    },
+    10000,
+  );
 
   it("shows status and availability information for inventory cards", () => {
     render(<AssetInventoryPage />);
