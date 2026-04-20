@@ -1,4 +1,5 @@
 import {
+  fieldGuideChecklistTypeStyles,
   fieldGuidePriorityStyles,
   getFieldGuideCategoryById,
   type FieldGuideProcedure,
@@ -132,13 +133,72 @@ export function ProcedureCard({
         >
           {procedure.checklist.length} checklist items
         </span>
-        {procedure.tags.map((tag) => (
+        {procedure.focusAreas.map((focusArea) => (
           <span
-            key={tag}
+            key={focusArea}
             className={`rounded-full px-3 py-1 text-xs font-medium ${
               selected
                 ? "bg-white/10 text-slate-100"
                 : "bg-slate-100 text-slate-700"
+            }`}
+          >
+            {focusArea}
+          </span>
+        ))}
+      </div>
+
+      <div
+        className={`mt-5 rounded-[1.4rem] border px-4 py-4 ${
+          selected
+            ? "border-white/10 bg-white/7"
+            : "border-black/6 bg-black/[0.03]"
+        }`}
+      >
+        <div className="flex items-center justify-between gap-3">
+          <p
+            className={`text-xs font-semibold uppercase tracking-[0.2em] ${
+              selected ? "text-slate-300" : "text-slate-500"
+            }`}
+          >
+            Checklist Preview
+          </p>
+          <span
+            className={`text-xs font-medium ${
+              selected ? "text-slate-300" : "text-slate-500"
+            }`}
+          >
+            {procedure.checklist.length} total
+          </span>
+        </div>
+        <ul className="mt-3 space-y-3">
+          {procedure.checklist.slice(0, 2).map((item) => (
+            <li
+              key={item.id}
+              className={`rounded-[1.1rem] border px-3 py-3 ${
+                selected
+                  ? "border-white/8 bg-white/[0.04]"
+                  : "border-slate-200 bg-white/75"
+              }`}
+            >
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <p className="text-sm font-medium leading-6">{item.label}</p>
+                <span
+                  className={`inline-flex rounded-full border px-2.5 py-1 text-[11px] font-semibold ${fieldGuideChecklistTypeStyles[item.type]}`}
+                >
+                  {item.type}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        {procedure.tags.map((tag) => (
+          <span
+            key={tag}
+            className={`rounded-full px-3 py-1 text-xs font-medium ${
+              selected ? "bg-white/10 text-slate-100" : "bg-slate-100 text-slate-700"
             }`}
           >
             {tag}

@@ -5,8 +5,11 @@ import { startTransition, useDeferredValue, useState } from "react";
 import {
   getDefaultFieldGuideProcedure,
   getFieldGuideCategoryOptions,
+  getFieldGuideFocusAreaOptions,
+  getFieldGuidePriorityOptions,
   type FieldGuideCategory,
   type FieldGuideProcedure,
+  type ProcedurePriority,
 } from "../_lib/field-guide-data";
 import styles from "../field-guide.module.css";
 import { ProcedureCard } from "./procedure-card";
@@ -45,6 +48,7 @@ function matchesProcedure(procedure: FieldGuideProcedure, query: string) {
     procedure.objective,
     procedure.crew,
     procedure.sceneType,
+    ...procedure.focusAreas,
     ...procedure.tags,
     ...procedure.triggerSignals,
     ...procedure.tools,
@@ -59,6 +63,10 @@ export function FieldGuideShell({
 }: FieldGuideShellProps) {
   const defaultProcedure = getDefaultFieldGuideProcedure(procedures);
   const [activeCategoryId, setActiveCategoryId] = useState("all");
+  const [activePriority, setActivePriority] = useState<ProcedurePriority | "all">(
+    "all",
+  );
+  const [activeFocusArea, setActiveFocusArea] = useState("all");
   const [searchValue, setSearchValue] = useState("");
   const [selectedProcedureId, setSelectedProcedureId] = useState(
     defaultProcedure?.id ?? "",
@@ -66,12 +74,32 @@ export function FieldGuideShell({
   const deferredSearchValue = useDeferredValue(searchValue.trim().toLowerCase());
 
   const categoryOptions = getFieldGuideCategoryOptions(procedures, categories);
+  const priorityOptions = getFieldGuidePriorityOptions(procedures);
+  const focusAreaOptions = getFieldGuideFocusAreaOptions(procedures);
   const visibleProcedures = procedures.filter((procedure) => {
     const matchesCategory =
       activeCategoryId === "all" || procedure.categoryId === activeCategoryId;
+    const matchesPriority =
+      activePriority === "all" || procedure.priority === activePriority;
+    const matchesFocusArea =
+      activeFocusArea === "all" ||
+      procedure.focusAreas.includes(activeFocusArea);
 
-    return matchesCategory && matchesProcedure(procedure, deferredSearchValue);
+    return (
+      matchesCategory &&
+      matchesPriority &&
+      matchesFocusArea &&
+      matchesProcedure(procedure, deferredSearchValue)
+    );
   });
+  const groupedVisibleProcedures = categories
+    .map((category) => ({
+      category,
+      procedures: visibleProcedures.filter(
+        (procedure) => procedure.categoryId === category.id,
+      ),
+    }))
+    .filter((group) => group.procedures.length > 0);
   const selectedProcedure =
     visibleProcedures.find((procedure) => procedure.id === selectedProcedureId) ??
     visibleProcedures[0] ??
@@ -89,7 +117,11 @@ export function FieldGuideShell({
     (count, procedure) => count + procedure.references.length,
     0,
   );
-  const canReset = activeCategoryId !== "all" || searchValue.length > 0;
+  const canReset =
+    activeCategoryId !== "all" ||
+    activePriority !== "all" ||
+    activeFocusArea !== "all" ||
+    searchValue.length > 0;
 
   function handleCategoryChange(categoryId: string) {
     startTransition(() => {
@@ -103,9 +135,29 @@ export function FieldGuideShell({
     });
   }
 
+  function handlePriorityChange(priority: ProcedurePriority | "all") {
+    startTransition(() => {
+      setActivePriority(priority);
+    });
+  }
+
+  function handleFocusAreaChange(focusArea: string) {
+    startTransition(() => {
+      setActiveFocusArea(focusArea);
+    });
+  }
+
+  function handleProcedureSelect(procedureId: string) {
+    startTransition(() => {
+      setSelectedProcedureId(procedureId);
+    });
+  }
+
   function handleResetFilters() {
     startTransition(() => {
       setActiveCategoryId("all");
+      setActivePriority("all");
+      setActiveFocusArea("all");
       setSearchValue("");
     });
   }
@@ -203,11 +255,17 @@ export function FieldGuideShell({
 
         <ProcedureFilterBar
           options={categoryOptions}
+          priorityOptions={priorityOptions}
+          focusAreaOptions={focusAreaOptions}
           activeCategoryId={activeCategoryId}
+          activePriority={activePriority}
+          activeFocusArea={activeFocusArea}
           searchValue={searchValue}
           resultCount={visibleProcedures.length}
           canReset={canReset}
           onCategoryChange={handleCategoryChange}
+          onPriorityChange={handlePriorityChange}
+          onFocusAreaChange={handleFocusAreaChange}
           onSearchChange={handleSearchChange}
           onReset={handleResetFilters}
         />
@@ -235,15 +293,46 @@ export function FieldGuideShell({
               </p>
             </div>
 
-            {visibleProcedures.length > 0 ? (
-              <div className="grid gap-4">
-                {visibleProcedures.map((procedure) => (
-                  <ProcedureCard
-                    key={procedure.id}
-                    procedure={procedure}
-                    selected={procedure.id === selectedProcedure?.id}
-                    onSelect={setSelectedProcedureId}
-                  />
+            {groupedVisibleProcedures.length > 0 ? (
+              <div className="grid gap-6">
+                {groupedVisibleProcedures.map((group) => (
+                  <section
+                    key={group.category.id}
+                    aria-labelledby={`field-guide-group-${group.category.id}`}
+                    className="space-y-4"
+                  >
+                    <div className="flex flex-col gap-3 rounded-[1.6rem] border border-slate-200/75 bg-white/72 px-5 py-4 shadow-[0_18px_60px_-50px_rgba(15,23,42,0.38)] sm:flex-row sm:items-end sm:justify-between">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+                          Procedure Group
+                        </p>
+                        <h3
+                          id={`field-guide-group-${group.category.id}`}
+                          className="mt-2 text-xl font-semibold tracking-tight text-slate-950"
+                        >
+                          {group.category.name}
+                        </h3>
+                        <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                          {group.category.description}
+                        </p>
+                      </div>
+                      <div className="rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white">
+                        {group.procedures.length} procedure
+                        {group.procedures.length === 1 ? "" : "s"}
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4">
+                      {group.procedures.map((procedure) => (
+                        <ProcedureCard
+                          key={procedure.id}
+                          procedure={procedure}
+                          selected={procedure.id === selectedProcedure?.id}
+                          onSelect={handleProcedureSelect}
+                        />
+                      ))}
+                    </div>
+                  </section>
                 ))}
               </div>
             ) : (
@@ -273,7 +362,7 @@ export function FieldGuideShell({
             )}
           </section>
 
-          {selectedProcedure && visibleProcedures.length > 0 ? (
+          {selectedProcedure && groupedVisibleProcedures.length > 0 ? (
             <ProcedureDetailPanel procedure={selectedProcedure} />
           ) : (
             <aside className="rounded-[2rem] border border-slate-200/80 bg-white/78 p-6 shadow-[0_24px_80px_-42px_rgba(15,23,42,0.4)]">
