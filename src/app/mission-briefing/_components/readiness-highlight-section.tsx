@@ -5,24 +5,27 @@ import type {
 } from "../_data/mission-briefing-data";
 
 const toneBadgeStyles: Record<ReadinessHighlightTone, string> = {
-  ready: "border-emerald-300/30 bg-emerald-300/12 text-emerald-100",
-  watch: "border-amber-300/30 bg-amber-300/12 text-amber-100",
-  risk: "border-rose-300/30 bg-rose-300/12 text-rose-100",
+  ready:
+    "border-emerald-300/35 bg-emerald-300/14 text-emerald-50 shadow-[0_10px_25px_rgba(16,185,129,0.18)]",
+  watch:
+    "border-amber-300/35 bg-amber-300/14 text-amber-50 shadow-[0_10px_25px_rgba(245,158,11,0.18)]",
+  risk:
+    "border-rose-300/35 bg-rose-300/14 text-rose-50 shadow-[0_10px_25px_rgba(244,63,94,0.18)]",
 };
 
 const toneSurfaceStyles: Record<ReadinessHighlightTone, string> = {
   ready:
-    "border-emerald-300/14 bg-[linear-gradient(180deg,rgba(16,185,129,0.14),rgba(8,15,27,0.9))]",
+    "border-emerald-300/18 bg-[linear-gradient(180deg,rgba(16,185,129,0.18),rgba(8,15,27,0.9))]",
   watch:
-    "border-amber-300/14 bg-[linear-gradient(180deg,rgba(245,158,11,0.14),rgba(8,15,27,0.9))]",
+    "border-amber-300/18 bg-[linear-gradient(180deg,rgba(245,158,11,0.18),rgba(8,15,27,0.9))]",
   risk:
-    "border-rose-300/14 bg-[linear-gradient(180deg,rgba(244,63,94,0.14),rgba(8,15,27,0.9))]",
+    "border-rose-300/18 bg-[linear-gradient(180deg,rgba(244,63,94,0.18),rgba(8,15,27,0.9))]",
 };
 
 const toneLabels: Record<ReadinessHighlightTone, string> = {
-  ready: "Ready",
-  watch: "Watch",
-  risk: "Risk",
+  ready: "Strong",
+  watch: "Moderate",
+  risk: "Weak",
 };
 
 type ReadinessHighlightSectionProps = {
@@ -75,8 +78,12 @@ export function ReadinessHighlightSection({
         {highlights.map((highlight) => (
           <article
             key={highlight.id}
-            className={`rounded-[1.6rem] border px-4 py-4 ${toneSurfaceStyles[highlight.tone]}`}
+            className={`relative overflow-hidden rounded-[1.6rem] border px-4 py-4 ${toneSurfaceStyles[highlight.tone]}`}
           >
+            <div
+              aria-hidden
+              className="absolute left-0 top-0 h-full w-1.5 rounded-l-[1.6rem] bg-white/50"
+            />
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="text-sm font-semibold text-white">{highlight.label}</p>

@@ -27,6 +27,9 @@ export default function MissionBriefingPage() {
   const riskHighlights = readinessHighlights.filter(
     (highlight) => highlight.tone === "risk",
   ).length;
+  const watchHighlights = readinessHighlights.filter(
+    (highlight) => highlight.tone === "watch",
+  ).length;
   const readyHighlights = readinessHighlights.filter(
     (highlight) => highlight.tone === "ready",
   ).length;
@@ -86,22 +89,34 @@ export default function MissionBriefingPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
                 Briefing pulse
               </p>
-              <div className="mt-5 grid gap-3">
-                <div className="rounded-[1.4rem] border border-cyan-300/16 bg-cyan-300/10 px-4 py-4">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-100/75">
-                    Ready tracks
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-[1.4rem] border border-emerald-300/16 bg-emerald-300/10 px-4 py-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-100/75">
+                    Strong readiness
                   </p>
                   <p className="mt-2 text-3xl font-semibold text-white">
                     {readyHighlights}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-slate-200">
-                    Crew and dock logistics are in the green and can support the
-                    two main branches.
+                    Crew and dock logistics can support the two primary branches
+                    without extra mitigation.
+                  </p>
+                </div>
+                <div className="rounded-[1.4rem] border border-amber-300/16 bg-amber-300/10 px-4 py-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-100/75">
+                    Moderate readiness
+                  </p>
+                  <p className="mt-2 text-3xl font-semibold text-white">
+                    {watchHighlights}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-200">
+                    Relay and weather remain usable, but both need one more
+                    clean review cycle before the commit call.
                   </p>
                 </div>
                 <div className="rounded-[1.4rem] border border-rose-300/16 bg-rose-300/10 px-4 py-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-rose-100/75">
-                    Risk tracks
+                    Weak readiness
                   </p>
                   <p className="mt-2 text-3xl font-semibold text-white">
                     {riskHighlights}
@@ -111,8 +126,8 @@ export default function MissionBriefingPage() {
                     the launch recommendation.
                   </p>
                 </div>
-                <div className="rounded-[1.4rem] border border-amber-300/16 bg-amber-300/10 px-4 py-4">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-100/75">
+                <div className="rounded-[1.4rem] border border-cyan-300/16 bg-cyan-300/10 px-4 py-4 sm:col-span-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-100/75">
                     Command note
                   </p>
                   <p className="mt-2 text-lg font-semibold text-white">
