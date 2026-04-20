@@ -5,6 +5,7 @@ import type {
   QueueMonitorOwner,
   QueueMonitorQueue,
 } from "../_data/queue-monitor-data";
+import styles from "../queue-monitor.module.css";
 
 export type QueueMonitorCardView = {
   item: QueueMonitorItem;
@@ -32,11 +33,13 @@ function getEscalationClasses(level: QueueMonitorEscalationMarker["id"]) {
 
 export function QueueCard({ view }: { view: QueueMonitorCardView }) {
   const { item, queue, owner, escalation } = view;
+  const isPending =
+    item.columnId === "new-intake" || item.columnId === "ready-to-assign";
 
   return (
     <article
       aria-labelledby={`${item.id}-title`}
-      className={`rounded-[1.5rem] border p-4 shadow-[0_18px_40px_rgba(15,23,42,0.05)] ${
+      className={`rounded-[1.5rem] border p-4 shadow-[0_18px_40px_rgba(15,23,42,0.05)] ${styles.queueCard} ${
         item.blocked
           ? "border-amber-300 bg-amber-50/60"
           : escalation.id === "sla-risk"
@@ -45,6 +48,7 @@ export function QueueCard({ view }: { view: QueueMonitorCardView }) {
       }`}
       data-blocked={item.blocked}
       data-escalation={escalation.id}
+      data-pending={isPending}
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="space-y-2">
@@ -171,7 +175,7 @@ export function QueueCard({ view }: { view: QueueMonitorCardView }) {
         {item.tags.map((tag) => (
           <li
             key={tag}
-            className="rounded-full border border-slate-200 bg-white/90 px-3 py-1 text-xs font-medium text-slate-600"
+            className={`rounded-full border border-slate-200 bg-white/90 px-3 py-1 text-xs font-medium text-slate-600 ${styles.tag}`}
           >
             {tag}
           </li>

@@ -1,4 +1,5 @@
 import type { QueueMonitorCardView } from "./queue-card";
+import styles from "../queue-monitor.module.css";
 
 export function EscalationDetail({ view }: { view: QueueMonitorCardView }) {
   const { item, queue, owner, escalation, column } = view;
@@ -6,9 +7,9 @@ export function EscalationDetail({ view }: { view: QueueMonitorCardView }) {
   return (
     <aside
       aria-labelledby="queue-monitor-escalation-heading"
-      className="rounded-[1.9rem] border border-slate-200 bg-slate-950 p-6 text-white shadow-[0_26px_80px_rgba(15,23,42,0.22)] sm:p-7"
+      className={`rounded-[1.9rem] border border-slate-200 bg-slate-950 p-6 text-white shadow-[0_26px_80px_rgba(15,23,42,0.22)] sm:p-7 ${styles.detailPanel}`}
     >
-      <div className="space-y-6">
+      <div className={`space-y-6 ${styles.detailPanelContent}`}>
         <div className="space-y-3">
           <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-sky-200/82">
             Escalation detail

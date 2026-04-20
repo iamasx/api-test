@@ -1,4 +1,5 @@
 import type { QueueMonitorColumnDefinition } from "../_data/queue-monitor-data";
+import styles from "../queue-monitor.module.css";
 import { QueueCard, type QueueMonitorCardView } from "./queue-card";
 
 export function QueueColumn({
@@ -15,7 +16,7 @@ export function QueueColumn({
   return (
     <section
       aria-labelledby={headingId}
-      className="flex min-h-full flex-col rounded-[1.75rem] border border-slate-200 bg-white/78 p-5 shadow-[0_24px_60px_rgba(15,23,42,0.06)]"
+      className={`flex min-h-full flex-col rounded-[1.75rem] border border-slate-200 bg-white/78 p-5 shadow-[0_24px_60px_rgba(15,23,42,0.06)] ${styles.columnShell}`}
       data-column={column.id}
     >
       <div className="space-y-4 border-b border-slate-200 pb-4">

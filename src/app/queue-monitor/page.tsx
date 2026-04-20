@@ -12,6 +12,7 @@ import {
   queueMonitorOwners,
   queueMonitorQueues,
 } from "./_data/queue-monitor-data";
+import styles from "./queue-monitor.module.css";
 
 export const metadata: Metadata = {
   title: "Queue Monitor",
@@ -111,9 +112,11 @@ export default function QueueMonitorPage() {
 
   return (
     <main className="mx-auto flex w-full max-w-[98rem] flex-1 flex-col gap-8 px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
-      <section className="overflow-hidden rounded-[2.25rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_28px_90px_rgba(15,23,42,0.08)]">
+      <section
+        className={`overflow-hidden rounded-[2.25rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_28px_90px_rgba(15,23,42,0.08)] ${styles.heroSurface}`}
+      >
         <div className="grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(18rem,0.85fr)] lg:px-12 lg:py-12">
-          <div className="space-y-6">
+          <div className={`space-y-6 ${styles.heroPanel}`}>
             <div className="flex flex-wrap items-center gap-3">
               <p className="rounded-full bg-sky-100 px-3 py-1 text-sm font-semibold uppercase tracking-[0.28em] text-sky-700">
                 Queue Monitor
@@ -154,7 +157,9 @@ export default function QueueMonitorPage() {
             </div>
           </div>
 
-          <aside className="rounded-[1.85rem] border border-slate-200/80 bg-slate-950 p-6 text-white shadow-[0_24px_60px_rgba(15,23,42,0.16)]">
+          <aside
+            className={`rounded-[1.85rem] border border-slate-200/80 bg-slate-950 p-6 text-white shadow-[0_24px_60px_rgba(15,23,42,0.16)] ${styles.heroAside}`}
+          >
             <div className="space-y-5">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-200/78">
@@ -226,7 +231,7 @@ export default function QueueMonitorPage() {
           {summaryMetrics.map((metric) => (
             <article
               key={metric.label}
-              className="rounded-[1.5rem] border border-slate-200 bg-white/82 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)]"
+              className={`rounded-[1.5rem] border border-slate-200 bg-white/82 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)] ${styles.metricCard}`}
               role="listitem"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
@@ -264,7 +269,8 @@ export default function QueueMonitorPage() {
           {queueSummaries.map(({ queue, itemCount, blockedCount, highestEscalation }) => (
             <article
               key={queue.id}
-              className="rounded-[1.5rem] border border-slate-200 bg-white/82 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)]"
+              className={`rounded-[1.5rem] border border-slate-200 bg-white/82 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.05)] ${styles.queueSummaryCard}`}
+              data-escalation={highestEscalation.id}
               role="listitem"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
@@ -320,16 +326,20 @@ export default function QueueMonitorPage() {
           </p>
         </div>
 
-        <div className="grid gap-6 2xl:grid-cols-[minmax(0,1.6fr)_minmax(22rem,0.9fr)]">
-          <div id="queue-monitor-columns" className="grid gap-5 xl:grid-cols-2">
-            {columnViews.map(({ column, items }) => (
-              <QueueColumn key={column.id} column={column} items={items} />
-            ))}
+        <div className={styles.workflowGrid}>
+          <div className={styles.columnScroller}>
+            <div
+              id="queue-monitor-columns"
+              className={styles.columnGrid}
+              data-testid="queue-monitor-columns"
+            >
+              {columnViews.map(({ column, items }) => (
+                <QueueColumn key={column.id} column={column} items={items} />
+              ))}
+            </div>
           </div>
 
-          <article
-            className="self-start"
-          >
+          <article className={styles.detailRail}>
             <EscalationDetail view={focusedView} />
           </article>
         </div>
