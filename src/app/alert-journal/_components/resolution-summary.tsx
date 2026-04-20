@@ -37,8 +37,8 @@ export function ResolutionSummary({
 
         {!selectionFound && requestedAlertId ? (
           <p className="rounded-[1.25rem] border border-amber-300/30 bg-amber-300/12 px-4 py-4 text-sm leading-6 text-amber-100">
-            Requested alert id "{requestedAlertId}" was not found. Showing the
-            most recent alert instead.
+            Requested alert id &quot;{requestedAlertId}&quot; was not found.
+            Showing the most recent alert instead.
           </p>
         ) : null}
 
