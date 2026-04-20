@@ -1,0 +1,346 @@
+.shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(14, 165, 233, 0.18), transparent 26%),
+    radial-gradient(circle at top right, rgba(249, 115, 22, 0.16), transparent 22%),
+    linear-gradient(180deg, #f7f3ea 0%, #f2efe8 40%, #e8edf3 100%);
+}
+
+.surfaceCard {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.74));
+  box-shadow:
+    0 28px 90px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+}
+
+.heroPanel::before {
+  content: "";
+  position: absolute;
+  inset: auto -5rem -7rem auto;
+  height: 19rem;
+  width: 19rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.24), transparent 70%);
+  z-index: 0;
+}
+
+.heroPanel::after {
+  content: "";
+  position: absolute;
+  inset: -6rem auto auto -4rem;
+  height: 15rem;
+  width: 15rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.18), transparent 72%);
+  z-index: 0;
+}
+
+.heroPanel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.heroAside {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(26, 38, 54, 0.96)),
+    linear-gradient(135deg, rgba(56, 189, 248, 0.18), transparent 60%);
+  color: #f8fafc;
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.22);
+}
+
+.heroMetricCard {
+  border-radius: 1.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(15, 23, 42, 0.12));
+  padding: 1rem;
+}
+
+.summaryGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.summaryCard {
+  position: relative;
+  overflow: hidden;
+  min-height: 100%;
+  border-radius: 1.6rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  padding: 1.3rem;
+  box-shadow:
+    0 18px 44px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.summaryCard::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.36rem;
+  border-radius: 999px;
+}
+
+.summaryToneSteady {
+  background: linear-gradient(180deg, rgba(236, 253, 245, 0.92), rgba(255, 255, 255, 0.84));
+}
+
+.summaryToneSteady::before {
+  background: #10b981;
+}
+
+.summaryToneWatch {
+  background: linear-gradient(180deg, rgba(255, 247, 237, 0.96), rgba(255, 255, 255, 0.84));
+}
+
+.summaryToneWatch::before {
+  background: #f59e0b;
+}
+
+.summaryToneRisk {
+  background: linear-gradient(180deg, rgba(255, 241, 242, 0.96), rgba(255, 255, 255, 0.84));
+}
+
+.summaryToneRisk::before {
+  background: #f43f5e;
+}
+
+.groupGrid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.groupCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.9rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.78));
+  padding: 1.5rem;
+  box-shadow:
+    0 24px 70px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.groupCard::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0.28rem;
+  background: linear-gradient(90deg, rgba(14, 165, 233, 0.85), rgba(249, 115, 22, 0.78));
+}
+
+.infoGrid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.infoCard {
+  border-radius: 1.1rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(248, 250, 252, 0.76);
+  padding: 0.9rem 0.95rem;
+}
+
+.focusGrid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.focusCard {
+  border-radius: 1.15rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(255, 255, 255, 0.74);
+  padding: 1rem;
+}
+
+.milestoneList {
+  display: grid;
+  gap: 1rem;
+}
+
+.milestoneCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.6rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  padding: 1.25rem;
+  box-shadow:
+    0 18px 46px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.68);
+}
+
+.milestoneCard::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.36rem;
+  border-radius: 999px;
+}
+
+.milestoneToneSteady {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(236, 253, 245, 0.84));
+}
+
+.milestoneToneSteady::before {
+  background: #10b981;
+}
+
+.milestoneToneWatch {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 247, 237, 0.86));
+}
+
+.milestoneToneWatch::before {
+  background: #f59e0b;
+}
+
+.milestoneToneRisk {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 241, 242, 0.86));
+}
+
+.milestoneToneRisk::before {
+  background: #f43f5e;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  padding: 0.4rem 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badgeToneSteady {
+  border-color: rgba(16, 185, 129, 0.24);
+  background: rgba(236, 253, 245, 0.94);
+  color: #047857;
+}
+
+.badgeToneWatch {
+  border-color: rgba(245, 158, 11, 0.24);
+  background: rgba(255, 247, 237, 0.94);
+  color: #b45309;
+}
+
+.badgeToneRisk {
+  border-color: rgba(244, 63, 94, 0.22);
+  background: rgba(255, 241, 242, 0.94);
+  color: #be123c;
+}
+
+.detailGrid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.detailCard {
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(248, 250, 252, 0.72);
+  padding: 0.9rem 0.95rem;
+}
+
+.detailList {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.detailListItem {
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(255, 255, 255, 0.72);
+  padding: 0.85rem 0.95rem;
+}
+
+.notePanel {
+  align-self: start;
+}
+
+.cadenceGrid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cadenceCard {
+  border-radius: 1.15rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(248, 250, 252, 0.76);
+  padding: 0.95rem 1rem;
+}
+
+.noteList {
+  display: grid;
+  gap: 1rem;
+}
+
+.noteCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.4rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(255, 255, 255, 0.88);
+  padding: 1rem;
+  box-shadow:
+    0 18px 46px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.noteCard::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.32rem;
+  border-radius: 999px;
+}
+
+.noteToneSteady::before {
+  background: #10b981;
+}
+
+.noteToneWatch::before {
+  background: #f59e0b;
+}
+
+.noteToneRisk::before {
+  background: #f43f5e;
+}
+
+.nextStepCard {
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(248, 250, 252, 0.76);
+  padding: 0.95rem;
+}
+
+@media (min-width: 1280px) {
+  .notePanel {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .surfaceCard,
+  .groupCard,
+  .summaryCard,
+  .milestoneCard,
+  .noteCard,
+  .cadenceCard {
+    border-radius: 1.3rem;
+  }
+}
