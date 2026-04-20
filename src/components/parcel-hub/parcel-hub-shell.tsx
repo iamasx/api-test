@@ -7,22 +7,20 @@ import { LaneBoard } from "./lane-board";
 import { LaneFilterBar, type LaneFilter } from "./lane-filter-bar";
 import {
   exceptionTypes,
-  laneExceptions,
-  packageSummaries,
   parcelHubSyncLabel,
-  shipmentLanes,
-  type ShipmentLane,
 } from "./parcel-hub-data";
 import { ParcelHubHeader } from "./parcel-hub-header";
 import { ParcelSummaryPanel } from "./parcel-summary-panel";
+import { buildParcelHubProjection, type ProjectedLane } from "./parcel-hub-simulator";
+import { RouteBalanceSimulator } from "./route-balance-simulator";
 
-function matchesLaneFilter(lane: ShipmentLane, filter: LaneFilter) {
+function matchesLaneFilter(lane: ProjectedLane, filter: LaneFilter) {
   if (filter === "watch") {
-    return lane.tone !== "steady";
+    return lane.projectedTone !== "steady";
   }
 
   if (filter === "steady") {
-    return lane.tone === "steady";
+    return lane.projectedTone === "steady";
   }
 
   return true;
@@ -33,19 +31,16 @@ export function ParcelHubShell() {
   const [selectedLaneId, setSelectedLaneId] = useState<string | null>(null);
   const [drawerScope, setDrawerScope] = useState<DrawerScope>("open");
   const [resolvedIds, setResolvedIds] = useState<Record<string, boolean>>({});
+  const [activeScenarioId, setActiveScenarioId] = useState<string | null>(null);
 
-  const filteredLanes = shipmentLanes.filter((lane) => matchesLaneFilter(lane, laneFilter));
-  const selectedLane = shipmentLanes.find((lane) => lane.id === selectedLaneId) ?? null;
-  const selectedLaneExceptions = laneExceptions.filter((exception) => exception.laneId === selectedLaneId);
-  const totalParcels = packageSummaries.reduce((sum, summary) => sum + summary.count, 0);
-  const delayedParcels = shipmentLanes.reduce((sum, lane) => sum + lane.delayedParcels, 0);
-  const openExceptions = laneExceptions.filter((exception) => !resolvedIds[exception.id]).length;
-  const resolvedExceptions = laneExceptions.filter((exception) => resolvedIds[exception.id]).length;
-  const laneCounts = {
-    all: shipmentLanes.length,
-    watch: shipmentLanes.filter((lane) => matchesLaneFilter(lane, "watch")).length,
-    steady: shipmentLanes.filter((lane) => matchesLaneFilter(lane, "steady")).length,
-  };
+  const projection = buildParcelHubProjection(activeScenarioId, resolvedIds);
+  const filteredLanes = projection.lanes.filter((lane) =>
+    matchesLaneFilter(lane, laneFilter),
+  );
+  const selectedLane =
+    projection.lanes.find((lane) => lane.id === selectedLaneId) ?? null;
+  const selectedLaneExceptions = selectedLane?.projectedExceptions ?? [];
+  const activeScenario = projection.activeScenario;
 
   const handleLaneFilterChange = (filter: LaneFilter) => {
     startTransition(() => {
@@ -64,6 +59,20 @@ export function ParcelHubShell() {
     });
   };
 
+  const handleScenarioChange = (scenarioId: string | null) => {
+    startTransition(() => {
+      setActiveScenarioId(scenarioId);
+
+      const nextProjection = buildParcelHubProjection(scenarioId, resolvedIds);
+      const nextSelectedLane =
+        nextProjection.lanes.find((lane) => lane.id === selectedLaneId) ?? null;
+
+      if (nextSelectedLane && !matchesLaneFilter(nextSelectedLane, laneFilter)) {
+        setSelectedLaneId(null);
+      }
+    });
+  };
+
   const handleToggleResolved = (exceptionId: string) => {
     startTransition(() => {
       setResolvedIds((current) => ({ ...current, [exceptionId]: !current[exceptionId] }));
@@ -74,26 +83,53 @@ export function ParcelHubShell() {
     <main className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.15),transparent_34%),linear-gradient(180deg,#020617_0%,#0f172a_58%,#111827_100%)] px-4 py-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-6">
         <ParcelHubHeader
-          delayedParcels={delayedParcels}
-          openExceptions={openExceptions}
-          resolvedExceptions={resolvedExceptions}
+          activeScenarioLabel={activeScenario?.label ?? null}
+          delayedParcels={projection.summary.projectedDelayedParcels}
+          delayedParcelsDelta={projection.summary.delayedParcelsDelta}
+          openExceptions={projection.summary.projectedOpenExceptions}
+          openExceptionsDelta={projection.summary.openExceptionsDelta}
+          resolvedExceptions={projection.summary.projectedResolvedExceptions}
+          resolvedInPreview={projection.summary.resolvedInPreview}
+          slaRiskParcels={projection.summary.projectedSlaRiskParcels}
+          slaRiskDelta={projection.summary.slaRiskParcelsDelta}
           syncLabel={parcelHubSyncLabel}
-          totalLanes={shipmentLanes.length}
-          watchLanes={laneCounts.watch}
+          totalLanes={projection.laneCounts.all}
+          watchLanes={projection.summary.projectedWatchLanes}
+          watchLanesDelta={projection.summary.watchLanesDelta}
         />
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.45fr)_minmax(22rem,0.95fr)]">
           <section className="space-y-5">
-            <LaneFilterBar activeFilter={laneFilter} counts={laneCounts} onChange={handleLaneFilterChange} />
-            <LaneBoard lanes={filteredLanes} onInspectLane={handleInspectLane} resolvedIds={resolvedIds} selectedLaneId={selectedLaneId} />
+            <RouteBalanceSimulator
+              activeScenario={activeScenario}
+              activeScenarioId={activeScenarioId}
+              onSelectScenario={handleScenarioChange}
+              scenarioCards={projection.scenarioCards}
+            />
+            <LaneFilterBar
+              activeFilter={laneFilter}
+              counts={projection.laneCounts}
+              onChange={handleLaneFilterChange}
+            />
+            <LaneBoard
+              activeScenarioLabel={activeScenario?.label ?? null}
+              lanes={filteredLanes}
+              onInspectLane={handleInspectLane}
+              selectedLaneId={selectedLaneId}
+            />
           </section>
           <div className="space-y-6">
-            <ParcelSummaryPanel exceptionTypes={exceptionTypes} openExceptions={openExceptions} packageSummaries={packageSummaries} totalParcels={totalParcels} />
+            <ParcelSummaryPanel
+              activeScenarioLabel={activeScenario?.label ?? null}
+              exceptionTypes={exceptionTypes}
+              packageSummaries={projection.packageSummaries}
+              summary={projection.summary}
+            />
             <ExceptionDrawer
+              activeScenarioLabel={activeScenario?.label ?? null}
               exceptions={selectedLaneExceptions}
               onClearSelection={() => setSelectedLaneId(null)}
               onScopeChange={(scope) => setDrawerScope(scope)}
               onToggleResolved={handleToggleResolved}
-              resolvedIds={resolvedIds}
               scope={drawerScope}
               selectedLane={selectedLane}
             />

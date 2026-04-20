@@ -1,10 +1,18 @@
-import type { LaneException, ShipmentLane } from "./parcel-hub-data";
+import type {
+  ProjectedLane,
+  ProjectedLaneException,
+} from "./parcel-hub-simulator";
 
 export type DrawerScope = "open" | "resolved" | "all";
 
 type ExceptionDrawerProps = {
-  exceptions: LaneException[]; onClearSelection: () => void; onScopeChange: (scope: DrawerScope) => void;
-  onToggleResolved: (exceptionId: string) => void; resolvedIds: Record<string, boolean>; scope: DrawerScope; selectedLane: ShipmentLane | null;
+  activeScenarioLabel: string | null;
+  exceptions: ProjectedLaneException[];
+  onClearSelection: () => void;
+  onScopeChange: (scope: DrawerScope) => void;
+  onToggleResolved: (exceptionId: string) => void;
+  scope: DrawerScope;
+  selectedLane: ProjectedLane | null;
 };
 
 const severityClasses = {
@@ -13,19 +21,25 @@ const severityClasses = {
   low: "border-sky-300/20 bg-sky-300/10 text-sky-100",
 };
 
+const previewStateClasses = {
+  active: "border-white/10 bg-white/5 text-slate-200",
+  softened: "border-amber-300/20 bg-amber-300/10 text-amber-100",
+  resolved: "border-emerald-300/20 bg-emerald-300/10 text-emerald-100",
+  introduced: "border-fuchsia-300/20 bg-fuchsia-300/10 text-fuchsia-100",
+};
+
 export function ExceptionDrawer({
+  activeScenarioLabel,
   exceptions,
   onClearSelection,
   onScopeChange,
   onToggleResolved,
-  resolvedIds,
   scope,
   selectedLane,
 }: ExceptionDrawerProps) {
   const scopedExceptions = exceptions.filter((exception) => {
-    const isResolved = Boolean(resolvedIds[exception.id]);
-    if (scope === "open") return !isResolved;
-    if (scope === "resolved") return isResolved;
+    if (scope === "open") return !exception.isResolved;
+    if (scope === "resolved") return exception.isResolved;
     return true;
   });
 
@@ -43,6 +57,21 @@ export function ExceptionDrawer({
               ? `${selectedLane.origin} to ${selectedLane.destination} with ${selectedLane.departureWindow} dispatch window.`
               : "Select a lane card to inspect active exceptions or verify that a clear lane has nothing parked."}
           </p>
+          {selectedLane ? (
+            <div className="mt-3 flex flex-wrap gap-2 text-xs uppercase tracking-[0.22em] text-slate-400">
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-slate-200">
+                {selectedLane.projectedStatusLabel}
+              </span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-slate-200">
+                {selectedLane.projectedOpenExceptions} open after preview
+              </span>
+              {activeScenarioLabel ? (
+                <span className="rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1 text-amber-100">
+                  {activeScenarioLabel}
+                </span>
+              ) : null}
+            </div>
+          ) : null}
         </div>
         {selectedLane ? (
           <button className="rounded-full border border-white/12 bg-white/5 px-3 py-2 text-sm text-slate-200 transition hover:bg-white/10" onClick={onClearSelection} type="button">Close</button>
@@ -74,28 +103,44 @@ export function ExceptionDrawer({
       ) : scopedExceptions.length > 0 ? (
         <div className="mt-5 space-y-3">
           {scopedExceptions.map((exception) => {
-            const isResolved = Boolean(resolvedIds[exception.id]);
-
             return (
               <article className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4" key={exception.id}>
                 <div className="flex flex-wrap items-center gap-2">
                   <span className={`rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] ${severityClasses[exception.severity]}`}>{exception.severity}</span>
                   <span className="rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-300">{exception.type}</span>
+                  <span className={`rounded-full border px-3 py-1 text-xs uppercase tracking-[0.2em] ${previewStateClasses[exception.previewState]}`}>{exception.previewLabel}</span>
                   <span className="text-xs uppercase tracking-[0.2em] text-slate-500">{exception.updatedAt}</span>
                 </div>
                 <h3 className="mt-3 text-lg font-semibold text-white">{exception.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-300">{exception.detail}</p>
+                <div className="mt-3 rounded-[1.25rem] border border-white/10 bg-slate-950/55 p-3">
+                  <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+                    Preview note
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">
+                    {exception.previewNote}
+                  </p>
+                </div>
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-sm text-slate-300">{exception.owner}</p>
-                  <button
-                    className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                      isResolved ? "border border-emerald-300/25 bg-emerald-300/10 text-emerald-100 hover:bg-emerald-300/15" : "bg-amber-300 text-slate-950 hover:bg-amber-200"
-                    }`}
-                    onClick={() => onToggleResolved(exception.id)}
-                    type="button"
-                  >
-                    {isResolved ? "Reopen marker" : "Mark resolved"}
-                  </button>
+                  <div className="space-y-1 text-sm text-slate-300">
+                    <p>{exception.owner}</p>
+                    <p>{exception.affectedParcels} parcels affected</p>
+                  </div>
+                  {exception.canToggleResolved ? (
+                    <button
+                      className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                        exception.isResolved ? "border border-emerald-300/25 bg-emerald-300/10 text-emerald-100 hover:bg-emerald-300/15" : "bg-amber-300 text-slate-950 hover:bg-amber-200"
+                      }`}
+                      onClick={() => onToggleResolved(exception.id)}
+                      type="button"
+                    >
+                      {exception.isResolved ? "Reopen marker" : "Mark resolved"}
+                    </button>
+                  ) : (
+                    <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300">
+                      Preview only
+                    </span>
+                  )}
                 </div>
               </article>
             );

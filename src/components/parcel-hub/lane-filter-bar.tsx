@@ -8,7 +8,7 @@ type LaneFilterBarProps = {
 
 const filterLabels: Record<LaneFilter, string> = {
   all: "All lanes",
-  watch: "Delay watch",
+  watch: "Watch lanes",
   steady: "Clear lanes",
 };
 
