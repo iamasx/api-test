@@ -1,4 +1,5 @@
 import type { QueueBoardColumn } from "../_data/queue-board-data";
+import styles from "../queue-board.module.css";
 import { QueueItemCard } from "./queue-item-card";
 
 export function QueueColumn({ column }: { column: QueueBoardColumn }) {
@@ -7,7 +8,7 @@ export function QueueColumn({ column }: { column: QueueBoardColumn }) {
   return (
     <section
       aria-labelledby={headingId}
-      className="flex min-h-full flex-col rounded-[1.75rem] border border-slate-200 bg-slate-50/80 p-4 shadow-[0_22px_50px_rgba(15,23,42,0.06)] sm:p-5"
+      className={`flex min-h-full flex-col rounded-[1.75rem] border border-slate-200 p-4 shadow-[0_22px_50px_rgba(15,23,42,0.06)] sm:p-5 ${styles.columnShell}`}
       data-column={column.id}
     >
       <div className="space-y-4 border-b border-slate-200 pb-4">

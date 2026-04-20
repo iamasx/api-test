@@ -1,4 +1,9 @@
 import type { QueueBoardColumn } from "../_data/queue-board-data";
+import {
+  queueEscalationLabels,
+  queueStatusLabels,
+} from "../_data/queue-board-data";
+import styles from "../queue-board.module.css";
 
 type QueueBoardCardItem = QueueBoardColumn["items"][number];
 
@@ -6,7 +11,7 @@ export function QueueItemCard({ item }: { item: QueueBoardCardItem }) {
   return (
     <article
       aria-labelledby={`${item.id}-title`}
-      className="rounded-[1.35rem] border border-slate-200 bg-white p-4 shadow-[0_16px_30px_rgba(15,23,42,0.05)]"
+      className={`rounded-[1.35rem] border border-slate-200 bg-white p-4 shadow-[0_16px_30px_rgba(15,23,42,0.05)] ${styles.queueCard}`}
       data-blocked={item.blocked}
       data-escalation={item.escalation}
     >
@@ -19,6 +24,27 @@ export function QueueItemCard({ item }: { item: QueueBoardCardItem }) {
             <span className="rounded-full border border-slate-200 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               {item.workflow}
             </span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className={`${styles.pill} ${styles.statusPill}`}>
+              {queueStatusLabels[item.status]}
+            </span>
+            <span
+              className={`${styles.pill} ${
+                item.escalation === "steady"
+                  ? styles.escalationSteady
+                  : item.escalation === "watch"
+                    ? styles.escalationWatch
+                    : item.escalation === "priority"
+                      ? styles.escalationPriority
+                      : styles.escalationSlaRisk
+              }`}
+            >
+              {queueEscalationLabels[item.escalation]}
+            </span>
+            {item.blocked ? (
+              <span className={`${styles.pill} ${styles.blockedPill}`}>Blocked</span>
+            ) : null}
           </div>
           <div className="space-y-1">
             <h3
@@ -90,7 +116,7 @@ export function QueueItemCard({ item }: { item: QueueBoardCardItem }) {
         {item.tags.map((tag) => (
           <li
             key={tag}
-            className="rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600"
+            className={`rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 ${styles.tag}`}
           >
             {tag}
           </li>

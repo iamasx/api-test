@@ -3,6 +3,7 @@ import Link from "next/link";
 import { QueueColumn } from "./_components/queue-column";
 import { QueueMetricCard } from "./_components/queue-metric-card";
 import { getQueueBoardView } from "./_data/queue-board-data";
+import styles from "./queue-board.module.css";
 
 export const metadata: Metadata = {
   title: "Queue Board",
@@ -15,9 +16,11 @@ export default function QueueBoardPage() {
 
   return (
     <main className="mx-auto flex w-full max-w-[96rem] flex-1 flex-col gap-8 px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
-      <section className="overflow-hidden rounded-[2.25rem] border border-slate-200 bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_42%,#eff6ff_100%)] shadow-[0_30px_100px_rgba(15,23,42,0.1)]">
+      <section
+        className={`overflow-hidden rounded-[2.25rem] border border-slate-200 bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_42%,#eff6ff_100%)] shadow-[0_30px_100px_rgba(15,23,42,0.1)] ${styles.heroSurface}`}
+      >
         <div className="grid gap-8 px-6 py-8 sm:px-8 sm:py-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(20rem,0.9fr)] lg:px-10 lg:py-12">
-          <div className="space-y-6">
+          <div className={`space-y-6 ${styles.heroPanel}`}>
             <div className="flex flex-wrap items-center gap-3">
               <p className="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-sky-800">
                 Queue Board
@@ -54,7 +57,9 @@ export default function QueueBoardPage() {
             </div>
           </div>
 
-          <aside className="rounded-[1.75rem] border border-white/80 bg-slate-950 p-6 text-white shadow-[0_24px_60px_rgba(15,23,42,0.22)] sm:p-7">
+          <aside
+            className={`rounded-[1.75rem] border border-white/80 bg-slate-950 p-6 text-white shadow-[0_24px_60px_rgba(15,23,42,0.22)] sm:p-7 ${styles.heroAside}`}
+          >
             <div className="space-y-5">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-200/80">
@@ -99,6 +104,36 @@ export default function QueueBoardPage() {
                   Summary metrics stay above the board while each stage tracks
                   volume, escalations, blockers, and item-level checkpoints.
                 </p>
+              </div>
+
+              <div className="rounded-[1.25rem] border border-white/12 bg-white/6 px-4 py-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60">
+                  Escalation scale
+                </p>
+                <ul className={`mt-3 ${styles.legendList}`}>
+                  <li className={styles.legendItem}>
+                    <span className={`${styles.pill} ${styles.escalationWatch}`}>Watch</span>
+                    <span className="text-sm leading-6 text-white/76">
+                      Needs tighter monitoring but still has an expected recovery path.
+                    </span>
+                  </li>
+                  <li className={styles.legendItem}>
+                    <span className={`${styles.pill} ${styles.escalationPriority}`}>
+                      Priority
+                    </span>
+                    <span className="text-sm leading-6 text-white/76">
+                      Requires faster coordination because cost or customer impact is rising.
+                    </span>
+                  </li>
+                  <li className={styles.legendItem}>
+                    <span className={`${styles.pill} ${styles.escalationSlaRisk}`}>
+                      SLA Risk
+                    </span>
+                    <span className="text-sm leading-6 text-white/76">
+                      Nearing or breaching the service window without a safe fallback.
+                    </span>
+                  </li>
+                </ul>
               </div>
             </div>
           </aside>
@@ -151,13 +186,12 @@ export default function QueueBoardPage() {
           </p>
         </div>
 
-        <div
-          className="grid gap-5 xl:grid-cols-5"
-          data-testid="queue-board-columns"
-        >
-          {queueBoardView.columns.map((column) => (
-            <QueueColumn key={column.id} column={column} />
-          ))}
+        <div className={styles.boardScroller}>
+          <div className={styles.boardGrid} data-testid="queue-board-columns">
+            {queueBoardView.columns.map((column) => (
+              <QueueColumn key={column.id} column={column} />
+            ))}
+          </div>
         </div>
       </section>
     </main>

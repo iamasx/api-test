@@ -64,6 +64,21 @@ export type QueueBoardView = {
   totalItems: number;
 };
 
+export const queueStatusLabels: Record<QueueStatusId, string> = {
+  captured: "Captured",
+  triage: "Triage",
+  waiting: "Waiting",
+  "in-flight": "In Flight",
+  ready: "Ready To Close",
+};
+
+export const queueEscalationLabels: Record<QueueEscalation, string> = {
+  steady: "Steady",
+  watch: "Watch",
+  priority: "Priority",
+  "sla-risk": "SLA Risk",
+};
+
 export const queueBoardColumns: QueueBoardColumnDefinition[] = [
   {
     id: "captured",
