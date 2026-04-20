@@ -1,4 +1,5 @@
 import type { AlertJournalEntry } from "../_lib/alert-journal-data";
+import styles from "../alert-journal.module.css";
 
 type ResolutionSummaryProps = {
   alert: AlertJournalEntry;
@@ -21,9 +22,9 @@ export function ResolutionSummary({
   return (
     <aside
       aria-label="Resolution detail"
-      className="rounded-[1.9rem] border border-slate-200/80 bg-slate-950 p-6 text-white shadow-[0_28px_90px_rgba(15,23,42,0.2)] sm:p-7"
+      className={`${styles.resolutionRail} rounded-[1.9rem] border border-slate-200/80 bg-slate-950 p-6 text-white shadow-[0_28px_90px_rgba(15,23,42,0.2)] sm:p-7`}
     >
-      <div className="space-y-5">
+      <div className={`${styles.resolutionInner} space-y-5`}>
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-200/76">
             Resolution detail

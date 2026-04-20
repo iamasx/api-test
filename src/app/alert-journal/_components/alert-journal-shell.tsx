@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import type { AlertJournalView } from "../_lib/alert-journal";
+import styles from "../alert-journal.module.css";
 import { AlertDayGroup } from "./alert-day-group";
 import { AlertTagSummary } from "./alert-tag-summary";
 import { ResolutionSummary } from "./resolution-summary";
@@ -11,9 +12,15 @@ type AlertJournalShellProps = {
 
 export function AlertJournalShell({ view }: AlertJournalShellProps) {
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-6 py-8 sm:px-10 lg:px-12 lg:py-12">
-      <section className="overflow-hidden rounded-[2.1rem] border border-slate-200/80 bg-[var(--surface)] shadow-[0_26px_100px_rgba(15,23,42,0.08)]">
-        <div className="grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1.18fr)_minmax(300px,0.82fr)] lg:px-12 lg:py-11">
+    <main
+      className={`${styles.pageShell} mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-6 py-8 sm:px-10 lg:px-12 lg:py-12`}
+    >
+      <section
+        className={`${styles.heroSurface} overflow-hidden rounded-[2.1rem] border border-slate-200/80 bg-[var(--surface)] shadow-[0_26px_100px_rgba(15,23,42,0.08)]`}
+      >
+        <div
+          className={`${styles.heroGrid} grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1.18fr)_minmax(300px,0.82fr)] lg:px-12 lg:py-11`}
+        >
           <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-3">
               <p className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-amber-800">
@@ -52,7 +59,9 @@ export function AlertJournalShell({ view }: AlertJournalShellProps) {
             </div>
           </div>
 
-          <aside className="rounded-[1.85rem] border border-slate-200/80 bg-[linear-gradient(180deg,#0f172a_0%,#172033_100%)] p-6 text-white shadow-[0_26px_70px_rgba(15,23,42,0.2)]">
+          <aside
+            className={`${styles.heroAside} rounded-[1.85rem] border border-slate-200/80 bg-[linear-gradient(180deg,#0f172a_0%,#172033_100%)] p-6 text-white shadow-[0_26px_70px_rgba(15,23,42,0.2)]`}
+          >
             <div className="space-y-5">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-amber-200/76">
@@ -127,11 +136,15 @@ export function AlertJournalShell({ view }: AlertJournalShellProps) {
           </p>
         </div>
 
-        <div aria-label="Alert journal summary metrics" className="grid gap-4 md:grid-cols-2 xl:grid-cols-4" role="list">
+        <div
+          aria-label="Alert journal summary metrics"
+          className="grid gap-4 md:grid-cols-2 xl:grid-cols-4"
+          role="list"
+        >
           {view.summaryMetrics.map((metric) => (
             <article
               key={metric.label}
-              className="rounded-[1.55rem] border border-slate-200/80 bg-white/88 p-5 shadow-[0_16px_50px_rgba(15,23,42,0.05)]"
+              className={`${styles.metricCard} rounded-[1.55rem] border border-slate-200/80 bg-white/88 p-5 shadow-[0_16px_50px_rgba(15,23,42,0.05)]`}
               role="listitem"
             >
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
@@ -157,7 +170,7 @@ export function AlertJournalShell({ view }: AlertJournalShellProps) {
         <section
           id="alert-journal-history"
           aria-labelledby="alert-journal-history-heading"
-          className="space-y-6"
+          className={`${styles.historyStack} space-y-6`}
         >
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-2">

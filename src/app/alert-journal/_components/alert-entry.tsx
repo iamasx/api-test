@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import type { AlertJournalEntry as AlertJournalEntryRecord } from "../_lib/alert-journal-data";
+import styles from "../alert-journal.module.css";
 
 type AlertEntryProps = {
   alert: AlertJournalEntryRecord;
@@ -32,7 +33,9 @@ export function AlertEntry({ alert, isSelected = false }: AlertEntryProps) {
             ? `Viewing resolution for ${alert.title}`
             : `Open resolution for ${alert.title}`
         }
-        className={`block rounded-[1.5rem] border px-5 py-5 transition ${
+        className={`${styles.entryLink} ${
+          isSelected ? styles.entryLinkSelected : ""
+        } block rounded-[1.5rem] border px-5 py-5 ${
           isSelected
             ? "border-slate-950 bg-slate-950 text-white shadow-[0_20px_50px_rgba(15,23,42,0.2)]"
             : "border-slate-200/80 bg-white/92 text-slate-900 shadow-[0_16px_40px_rgba(15,23,42,0.06)] hover:border-slate-300 hover:shadow-[0_20px_50px_rgba(15,23,42,0.1)]"

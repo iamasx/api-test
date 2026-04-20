@@ -1,0 +1,211 @@
+.pageShell {
+  position: relative;
+}
+
+.pageShell::before {
+  content: "";
+  position: absolute;
+  top: 3rem;
+  right: 2rem;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(251, 191, 36, 0.18) 0%,
+    rgba(251, 191, 36, 0.06) 38%,
+    transparent 72%
+  );
+  pointer-events: none;
+  filter: blur(6px);
+}
+
+.heroSurface {
+  position: relative;
+  isolation: isolate;
+}
+
+.heroSurface::before {
+  content: "";
+  position: absolute;
+  inset: auto -6rem -8rem auto;
+  width: 19rem;
+  height: 19rem;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle, rgba(56, 189, 248, 0.24), transparent 62%);
+  pointer-events: none;
+}
+
+.heroSurface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  mask-image: linear-gradient(135deg, rgba(0, 0, 0, 0.75), transparent 80%);
+  pointer-events: none;
+}
+
+.heroGrid {
+  position: relative;
+  z-index: 1;
+}
+
+.heroAside {
+  position: relative;
+  overflow: hidden;
+}
+
+.heroAside::after {
+  content: "";
+  position: absolute;
+  inset: auto -4rem -5rem auto;
+  width: 13rem;
+  height: 13rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.24), transparent 70%);
+  pointer-events: none;
+}
+
+.metricCard {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.metricCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(148, 163, 184, 0.48);
+  box-shadow: 0 20px 55px rgba(15, 23, 42, 0.09);
+}
+
+.tagGrid {
+  align-items: stretch;
+}
+
+.tagCard {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 249, 239, 0.92));
+}
+
+.tagCard::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 0.3rem;
+  background: linear-gradient(90deg, #f59e0b 0%, #fb7185 50%, #38bdf8 100%);
+}
+
+.tagCard::after {
+  content: "";
+  position: absolute;
+  inset: auto -3rem -3rem auto;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.12), transparent 68%);
+  pointer-events: none;
+}
+
+.historyStack {
+  position: relative;
+}
+
+.dayGroup {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 242, 0.95), rgba(255, 255, 255, 0.88));
+}
+
+.dayGroup::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(135deg, rgba(245, 158, 11, 0.08), transparent 40%),
+    radial-gradient(circle at right top, rgba(56, 189, 248, 0.12), transparent 26%);
+  pointer-events: none;
+}
+
+.dayGroupHeader,
+.dayGroupBody {
+  position: relative;
+  z-index: 1;
+}
+
+.entryLink {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.entryLink::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.35rem;
+  background: linear-gradient(180deg, #f59e0b 0%, #38bdf8 100%);
+  opacity: 0.5;
+}
+
+.entryLink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 55px rgba(15, 23, 42, 0.12);
+}
+
+.entryLinkSelected::before {
+  width: 100%;
+  opacity: 0.12;
+}
+
+.resolutionRail {
+  position: sticky;
+  top: 1.5rem;
+}
+
+.resolutionRail::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 2.75rem 2.75rem;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.32), transparent 85%);
+  pointer-events: none;
+}
+
+.resolutionInner {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 1279px) {
+  .resolutionRail {
+    position: static;
+  }
+}
+
+@media (max-width: 767px) {
+  .pageShell::before {
+    width: 14rem;
+    height: 14rem;
+    top: 2rem;
+    right: 0;
+  }
+
+  .heroSurface::after {
+    background-size: 2.2rem 2.2rem;
+  }
+}

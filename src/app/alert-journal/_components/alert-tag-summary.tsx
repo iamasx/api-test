@@ -1,4 +1,5 @@
 import type { AlertJournalTagSummaryItem } from "../_lib/alert-journal";
+import styles from "../alert-journal.module.css";
 
 type AlertTagSummaryProps = {
   groups: AlertJournalTagSummaryItem[];
@@ -29,11 +30,15 @@ export function AlertTagSummary({
         </p>
       </div>
 
-      <div aria-label="Recurring alert tags" className="grid gap-4 md:grid-cols-2 xl:grid-cols-3" role="list">
+      <div
+        aria-label="Recurring alert tags"
+        className={`${styles.tagGrid} grid gap-4 md:grid-cols-2 xl:grid-cols-3`}
+        role="list"
+      >
         {groups.map((group) => (
           <article
             key={group.tag}
-            className="rounded-[1.6rem] border border-slate-200/80 bg-white/88 p-5 shadow-[0_16px_50px_rgba(15,23,42,0.05)]"
+            className={`${styles.tagCard} rounded-[1.6rem] border border-slate-200/80 p-5 shadow-[0_16px_50px_rgba(15,23,42,0.05)]`}
             role="listitem"
           >
             <div className="flex items-start justify-between gap-4">

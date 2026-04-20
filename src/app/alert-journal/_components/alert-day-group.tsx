@@ -2,6 +2,7 @@ import type {
   AlertJournalDay,
   AlertJournalEntry,
 } from "../_lib/alert-journal-data";
+import styles from "../alert-journal.module.css";
 import { AlertEntry } from "./alert-entry";
 
 type AlertDayGroupProps = {
@@ -18,9 +19,11 @@ export function AlertDayGroup({
   return (
     <section
       aria-labelledby={`alert-day-${day.id}`}
-      className="rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface)] p-6 shadow-[0_20px_70px_rgba(15,23,42,0.06)] sm:p-7"
+      className={`${styles.dayGroup} rounded-[1.75rem] border border-slate-200/80 p-6 shadow-[0_20px_70px_rgba(15,23,42,0.06)] sm:p-7`}
     >
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div
+        className={`${styles.dayGroupHeader} flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between`}
+      >
         <div className="space-y-2">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-700">
             {day.shiftLabel}
@@ -37,7 +40,9 @@ export function AlertDayGroup({
         </p>
       </div>
 
-      <div className="mt-6 rounded-[1.5rem] border border-slate-200/80 bg-white/78 p-4 sm:p-5">
+      <div
+        className={`${styles.dayGroupBody} mt-6 rounded-[1.5rem] border border-slate-200/80 bg-white/78 p-4 sm:p-5`}
+      >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm font-semibold text-slate-900">
             {alerts.length} alerts recorded
