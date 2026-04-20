@@ -18,7 +18,7 @@ export function ResponseChecklistSidebar({
   return (
     <aside
       aria-labelledby="response-checklist-heading"
-      className="rounded-[2rem] border border-slate-200/80 bg-slate-950 p-6 text-white shadow-[0_28px_90px_rgba(15,23,42,0.28)] sm:p-7"
+      className="rounded-[2rem] border border-slate-200/80 bg-slate-950 p-6 text-white shadow-[0_28px_90px_rgba(15,23,42,0.28)] sm:p-7 xl:sticky xl:top-6"
     >
       <div className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-300">

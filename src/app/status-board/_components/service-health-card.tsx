@@ -10,6 +10,7 @@ export function ServiceHealthCard({ service }: ServiceHealthCardProps) {
 
   return (
     <li
+      data-state={service.status}
       className={`rounded-[1.5rem] border p-5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] ${styles.panel}`}
     >
       <div className="flex items-start justify-between gap-4">

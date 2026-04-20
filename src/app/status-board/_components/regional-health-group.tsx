@@ -13,7 +13,8 @@ export function RegionalHealthGroup({ group }: RegionalHealthGroupProps) {
   return (
     <section
       aria-labelledby={headingId}
-      className="rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] p-6 shadow-[0_20px_80px_rgba(15,23,42,0.06)] sm:p-8"
+      data-state={group.status}
+      className="overflow-hidden rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] p-6 shadow-[0_20px_80px_rgba(15,23,42,0.06)] sm:p-8"
     >
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-3xl">
