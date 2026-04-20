@@ -8,6 +8,17 @@ type InventoryDetailPanelProps = {
   item: InventoryItem;
 };
 
+const inventoryStateNotes = {
+  Operational:
+    "Asset is ready for immediate deployment and is currently above the local reorder threshold.",
+  "Low Stock":
+    "Supply is below the preferred threshold and should be replenished before the next shift rotation.",
+  Reserved:
+    "Inventory is healthy, but units are earmarked for a scheduled project or team allocation.",
+  Maintenance:
+    "Asset is intentionally unavailable while service work is completed and verified.",
+} satisfies Record<InventoryItem["status"], string>;
+
 export function InventoryDetailPanel({ item }: InventoryDetailPanelProps) {
   const category = getInventoryCategoryById(item.categoryId);
   const statusStyle = inventoryStatusStyles[item.status];
@@ -37,6 +48,13 @@ export function InventoryDetailPanel({ item }: InventoryDetailPanelProps) {
 
       <p className="mt-5 text-sm leading-7 text-slate-300">{item.description}</p>
 
+      <div className={`mt-6 rounded-[1.5rem] border px-4 py-4 ${statusStyle.badge}`}>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em]">
+          Inventory State
+        </p>
+        <p className="mt-2 text-sm leading-7">{inventoryStateNotes[item.status]}</p>
+      </div>
+
       <dl className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
         <div className="rounded-[1.5rem] border border-white/10 bg-white/5 px-4 py-4">
           <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
@@ -51,7 +69,7 @@ export function InventoryDetailPanel({ item }: InventoryDetailPanelProps) {
             Available Units
           </dt>
           <dd className="mt-2 text-sm font-medium text-white">
-            {item.availableUnits}
+            {item.availableUnits} available • reorder point {item.reorderPoint}
           </dd>
         </div>
         <div className="rounded-[1.5rem] border border-white/10 bg-white/5 px-4 py-4">

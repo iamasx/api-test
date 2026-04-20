@@ -62,7 +62,11 @@ export function InventoryCard({
         {item.description}
       </p>
       <dl className="mt-5 grid gap-3 sm:grid-cols-2">
-        <div className="rounded-2xl border border-black/5 bg-black/[0.04] px-4 py-3">
+        <div
+          className={`rounded-2xl border px-4 py-3 ${
+            selected ? "border-white/10 bg-white/8" : "border-black/5 bg-black/[0.04]"
+          }`}
+        >
           <dt
             className={`text-xs font-semibold uppercase tracking-[0.18em] ${
               selected ? "text-slate-300" : "text-slate-500"
@@ -72,7 +76,11 @@ export function InventoryCard({
           </dt>
           <dd className="mt-2 text-sm font-medium">{item.status}</dd>
         </div>
-        <div className="rounded-2xl border border-black/5 bg-black/[0.04] px-4 py-3">
+        <div
+          className={`rounded-2xl border px-4 py-3 ${
+            selected ? "border-white/10 bg-white/8" : "border-black/5 bg-black/[0.04]"
+          }`}
+        >
           <dt
             className={`text-xs font-semibold uppercase tracking-[0.18em] ${
               selected ? "text-slate-300" : "text-slate-500"

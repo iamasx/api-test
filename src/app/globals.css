@@ -26,7 +26,7 @@ body {
   background-image:
     radial-gradient(circle at top, rgba(251, 191, 36, 0.22), transparent 36%),
     linear-gradient(180deg, #fcf8ef 0%, #f4efe7 52%, #ebe5d9 100%);
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
 a {
