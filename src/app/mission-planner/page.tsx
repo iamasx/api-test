@@ -1,31 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { ReadinessSummary } from "./_components/readiness-summary";
+import { ScenarioCard } from "./_components/scenario-card";
+import { StagedChecklist } from "./_components/staged-checklist";
+import {
+  missionPlannerSummary,
+  missionScenarios,
+  missionStages,
+  readinessSignals,
+} from "./_data/mission-planner-data";
+
 export const metadata: Metadata = {
   title: "Mission Planner",
   description:
-    "Initial route shell for mission scenarios, readiness highlights, and staged checklist planning.",
+    "Planning route for comparing mission scenarios, reviewing readiness highlights, and following a staged checklist.",
 };
 
-const shellSections = [
-  {
-    title: "Scenario cards",
-    description:
-      "Mission scenario summaries will appear here with priority, timing, and lead ownership context.",
-  },
-  {
-    title: "Readiness highlights",
-    description:
-      "Planner summaries will call out crew posture, equipment status, and launch window confidence.",
-  },
-  {
-    title: "Staged checklist",
-    description:
-      "The staged plan will break preparation into ordered milestones with clear completion states.",
-  },
-];
-
 export default function MissionPlannerPage() {
+  const activeStage =
+    missionStages.find((stage) => stage.status === "active") ?? missionStages[0];
+  const blockedSignals = readinessSignals.filter(
+    (signal) => signal.tone === "blocked",
+  ).length;
+  const watchSignals = readinessSignals.filter(
+    (signal) => signal.tone === "watch",
+  ).length;
+
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.18),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.22),transparent_28%),linear-gradient(180deg,#0f172a_0%,#111827_52%,#172033_100%)] px-6 py-12 text-slate-50 sm:px-10 lg:px-14">
       <div className="mx-auto flex max-w-6xl flex-col gap-8">
@@ -33,16 +34,29 @@ export default function MissionPlannerPage() {
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl space-y-4">
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-200/78">
-                Mission Planner
+                {missionPlannerSummary.eyebrow}
               </p>
               <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-                Planning shell for scenario routing, readiness calls, and staged execution.
+                {missionPlannerSummary.title}
               </h1>
               <p className="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
-                This route establishes the standalone workspace for issue #92.
-                The next subtasks will add mock planning data, reusable
-                components, and tests without depending on any other page.
+                {missionPlannerSummary.description}
               </p>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="#mission-scenarios"
+                  className="inline-flex items-center justify-center rounded-full bg-sky-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-200"
+                >
+                  Review scenarios
+                </a>
+                <a
+                  href="#mission-stage-checklist"
+                  className="inline-flex items-center justify-center rounded-full border border-white/14 bg-white/6 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:border-amber-300/40 hover:bg-white/10"
+                >
+                  Open staged checklist
+                </a>
+              </div>
             </div>
 
             <Link
@@ -54,24 +68,133 @@ export default function MissionPlannerPage() {
           </div>
         </header>
 
-        <section className="grid gap-5 lg:grid-cols-3">
-          {shellSections.map((section) => (
-            <article
-              key={section.title}
-              className="rounded-[1.75rem] border border-white/10 bg-slate-950/40 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
-                Planned module
+        <section className="grid gap-6 xl:grid-cols-[minmax(0,1.18fr)_minmax(320px,0.82fr)]">
+          <div className="rounded-[1.9rem] border border-white/10 bg-slate-950/45 p-6 shadow-[0_28px_80px_rgba(2,6,23,0.28)]">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+              <div className="space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-300">
+                  Planning baseline
+                </p>
+                <h2 className="text-3xl font-semibold tracking-tight text-white">
+                  Live mission snapshot
+                </h2>
+              </div>
+              <p className="max-w-xl text-sm leading-6 text-slate-300">
+                The planner keeps scenario selection, launch posture, and
+                operational sequencing in one place so handoffs stay explicit.
               </p>
-              <h2 className="mt-3 text-2xl font-semibold text-white">
-                {section.title}
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-slate-300">
-                {section.description}
-              </p>
-            </article>
-          ))}
+            </div>
+
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {missionPlannerSummary.stats.map((stat) => (
+                <article
+                  key={stat.label}
+                  className="rounded-[1.5rem] border border-white/8 bg-white/6 px-5 py-5"
+                >
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                    {stat.label}
+                  </p>
+                  <p className="mt-3 text-3xl font-semibold tracking-tight text-white">
+                    {stat.value}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">
+                    {stat.detail}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <aside className="rounded-[1.9rem] border border-white/10 bg-white/7 p-6 shadow-[0_28px_80px_rgba(2,6,23,0.28)] backdrop-blur">
+            <div className="space-y-5">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-300">
+                  Decision board
+                </p>
+                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
+                  Keep Stage 2 moving
+                </h2>
+              </div>
+
+              <div className="grid gap-3">
+                <div className="rounded-[1.5rem] border border-sky-300/18 bg-sky-300/10 px-4 py-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-100/72">
+                    Active stage
+                  </p>
+                  <p className="mt-2 text-lg font-semibold text-white">
+                    {activeStage.name}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-200">
+                    {activeStage.focus}
+                  </p>
+                </div>
+                <div className="rounded-[1.5rem] border border-amber-300/18 bg-amber-300/10 px-4 py-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-100/72">
+                    Watch items
+                  </p>
+                  <p className="mt-2 text-3xl font-semibold text-white">
+                    {watchSignals}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-200">
+                    Weather and relay timing still need active monitoring before
+                    the full launch window closes.
+                  </p>
+                </div>
+                <div className="rounded-[1.5rem] border border-rose-300/18 bg-rose-300/10 px-4 py-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose-100/72">
+                    Blockers
+                  </p>
+                  <p className="mt-2 text-3xl font-semibold text-white">
+                    {blockedSignals}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-200">
+                    Clear the inland relay certificate check to unlock every
+                    alternate route option.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </aside>
         </section>
+
+        <section
+          id="mission-scenarios"
+          className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] xl:items-start"
+        >
+          <div className="space-y-5">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+              <div className="space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-300">
+                  Scenario cards
+                </p>
+                <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                  Choose the path that best protects the launch window
+                </h2>
+              </div>
+              <p className="max-w-xl text-sm leading-6 text-slate-300">
+                Each card frames the launch plan around timing, ownership, and
+                checkpoints so the operator can compare routes quickly.
+              </p>
+            </div>
+
+            <div
+              aria-label="Mission scenarios"
+              className="grid gap-5"
+              role="list"
+            >
+              {missionScenarios.map((scenario) => (
+                <ScenarioCard key={scenario.id} scenario={scenario} />
+              ))}
+            </div>
+          </div>
+
+          <ReadinessSummary
+            signals={readinessSignals}
+            stats={missionPlannerSummary.stats}
+          />
+        </section>
+
+        <StagedChecklist stages={missionStages} />
       </div>
     </main>
   );
