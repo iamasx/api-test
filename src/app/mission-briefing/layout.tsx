@@ -6,7 +6,7 @@ import styles from "./mission-briefing.module.css";
 export const metadata: Metadata = {
   title: "Mission Briefing",
   description:
-    "Mock scenario planning workspace with timeline phases, readiness indicators, and local decision notes.",
+    "Mock mission briefing workspace with scenario planning, outcome scoring, review controls, and local decision notes.",
 };
 
 export default function MissionBriefingLayout({
