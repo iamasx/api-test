@@ -3,6 +3,13 @@ import type {
   ScenarioOutcomeTone,
   ScenarioOutcomeMatrixRow,
 } from "../_data/scenario-board-data";
+import styles from "../scenario-board.module.css";
+
+const toneClasses: Record<ScenarioOutcomeTone, string> = {
+  strong: styles.cellStrong,
+  balanced: styles.cellBalanced,
+  fragile: styles.cellFragile,
+};
 
 const toneLabel: Record<ScenarioOutcomeTone, string> = {
   strong: "Low risk",
@@ -27,12 +34,13 @@ export function OutcomeMatrix({
 }: OutcomeMatrixProps) {
   return (
     <section
+      id="outcome-matrix"
       aria-labelledby="outcome-matrix-heading"
-      className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_18px_60px_rgba(15,23,42,0.08)] sm:p-8"
+      className="rounded-[2rem] border border-slate-200/70 bg-[linear-gradient(180deg,rgba(255,251,235,0.98),rgba(255,255,255,0.98))] p-6 shadow-[0_30px_110px_rgba(15,23,42,0.12)] sm:p-8"
     >
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-teal-700">
             Outcome matrix
           </p>
           <h2
@@ -47,13 +55,16 @@ export function OutcomeMatrix({
         </p>
       </div>
 
-      <div className="mt-6 overflow-x-auto">
-        <table aria-label={title} className="min-w-[64rem] border-separate border-spacing-y-4">
+      <div
+        className={`${styles.matrixScroll} mt-6 overflow-x-auto`}
+        data-testid="outcome-matrix-wrap"
+      >
+        <table aria-label={title} className={styles.matrixTable}>
           <caption className="sr-only">{title}</caption>
           <thead>
             <tr>
               <th
-                className="rounded-[1.35rem] bg-slate-100 px-5 py-5 text-left align-bottom"
+                className={`${styles.stubCell} px-5 py-5 text-left align-bottom`}
                 scope="col"
               >
                 <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
@@ -64,8 +75,12 @@ export function OutcomeMatrix({
                 </p>
               </th>
               {scenarios.map((scenario) => (
-                <th key={scenario.id} className="px-4 text-left align-bottom" scope="col">
-                  <div className="rounded-[1.35rem] border border-slate-200 bg-slate-50 px-5 py-5">
+                <th
+                  key={scenario.id}
+                  className={`${styles.columnHead} px-4 text-left align-bottom`}
+                  scope="col"
+                >
+                  <div className="rounded-[1.45rem] border border-slate-200 bg-slate-50 px-5 py-5">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
                       {scenario.label}
                     </p>
@@ -84,7 +99,7 @@ export function OutcomeMatrix({
             {rows.map((row) => (
               <tr key={row.id}>
                 <th
-                  className="rounded-[1.35rem] bg-slate-100 px-5 py-5 text-left align-top"
+                  className={`${styles.stubCell} px-5 py-5 text-left align-top`}
                   scope="row"
                 >
                   <p className="text-sm font-semibold text-slate-950">{row.criterion}</p>
@@ -92,13 +107,14 @@ export function OutcomeMatrix({
                     {row.whyItMatters}
                   </p>
                 </th>
-
                 {scenarios.map((scenario) => {
                   const outcome = row.outcomes[scenario.id];
 
                   return (
                     <td key={`${row.id}-${scenario.id}`} className="px-4 align-top">
-                      <div className="rounded-[1.35rem] border border-slate-200 bg-slate-50 px-5 py-5">
+                      <div
+                        className={`${styles.matrixCell} ${toneClasses[outcome.tone]}`}
+                      >
                         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
                           {toneLabel[outcome.tone]}
                         </p>
