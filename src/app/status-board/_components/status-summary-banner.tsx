@@ -10,6 +10,7 @@ export function StatusSummaryBanner({ stat }: StatusSummaryBannerProps) {
 
   return (
     <article
+      role="listitem"
       className={`rounded-[1.6rem] border p-5 shadow-[0_18px_50px_rgba(15,23,42,0.06)] ${styles.panel}`}
     >
       <div className="flex items-start justify-between gap-3">
