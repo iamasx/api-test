@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import FieldGuidePage from "./page";
 
 describe("FieldGuidePage", () => {
-  it("renders the route hero, search controls, and default detail panel", () => {
+  it("renders the route hero, grouped controls, and default detail panel", () => {
     render(<FieldGuidePage />);
 
     expect(
@@ -19,19 +19,34 @@ describe("FieldGuidePage", () => {
     expect(
       screen.getByRole("navigation", { name: /field guide categories/i }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("navigation", { name: /procedure priorities/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/field guide focus areas/i)).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(/field guide workspace summary/i),
+    ).toBeInTheDocument();
 
     const detailPanel = screen.getByLabelText(/selected procedure details/i);
 
     expect(
       within(detailPanel).getByText("Grid Sag Bridge Activation"),
     ).toBeInTheDocument();
+    expect(screen.getByText(/selected focus/i)).toBeInTheDocument();
     expect(within(detailPanel).getByText(/priority note/i)).toBeInTheDocument();
     expect(within(detailPanel).getByText(/crew checklist/i)).toBeInTheDocument();
     expect(within(detailPanel).getByText(/reference notes/i)).toBeInTheDocument();
   });
 
-  it("renders multiple procedure cards with meaningful metadata", () => {
+  it("renders grouped procedure cards with checklist previews and metadata", () => {
     render(<FieldGuidePage />);
+
+    expect(
+      screen.getByRole("heading", { name: /power recovery/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /site restart/i }),
+    ).toBeInTheDocument();
 
     expect(
       screen.getByRole("button", { name: /grid sag bridge activation/i }),
@@ -45,9 +60,22 @@ describe("FieldGuidePage", () => {
     expect(
       screen.getByRole("button", { name: /mast failover brief/i }),
     ).toHaveTextContent("3 checklist items");
+
+    const gridSagCard = screen.getByRole("button", {
+      name: /grid sag bridge activation/i,
+    });
+
+    expect(gridSagCard).toHaveTextContent("Checklist Preview");
+    expect(gridSagCard).toHaveTextContent(
+      /arc-safe gloves and face shield are on before the cabinet is opened/i,
+    );
+    expect(gridSagCard).toHaveTextContent("+2 more checks in the detail panel");
+    expect(
+      screen.getByRole("button", { name: /buffer coil warm start/i }),
+    ).toBeInTheDocument();
   });
 
-  it("filters procedures by category and updates the visible detail selection", async () => {
+  it("filters procedures by category, priority, and focus area", async () => {
     const user = userEvent.setup();
 
     render(<FieldGuidePage />);
@@ -60,21 +88,58 @@ describe("FieldGuidePage", () => {
         name: /signal integrity/i,
       }),
     );
+    await user.click(
+      screen.getByRole("button", { name: /elevated/i }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: /signal recovery/i }),
+    );
 
-    expect(
-      screen.getByRole("button", { name: /relay drift verification/i }),
-    ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /mast failover brief/i }),
     ).toBeInTheDocument();
     expect(
+      screen.queryByRole("button", { name: /relay drift verification/i }),
+    ).not.toBeInTheDocument();
+    expect(
       screen.queryByRole("button", { name: /grid sag bridge activation/i }),
     ).not.toBeInTheDocument();
+
+    const workspaceSummary = screen.getByLabelText(/field guide workspace summary/i);
+
+    expect(within(workspaceSummary).getByText("Signal Integrity")).toBeInTheDocument();
+    expect(
+      within(workspaceSummary).getByText("Priority: Elevated"),
+    ).toBeInTheDocument();
+    expect(
+      within(workspaceSummary).getByText("Focus: Signal recovery"),
+    ).toBeInTheDocument();
 
     const detailPanel = screen.getByLabelText(/selected procedure details/i);
 
     expect(
-      within(detailPanel).getByText("Relay Drift Verification"),
+      within(detailPanel).getByText("Mast Failover Brief"),
+    ).toBeInTheDocument();
+  });
+
+  it("updates the detail panel with focus summaries, checklist totals, and references", async () => {
+    const user = userEvent.setup();
+
+    render(<FieldGuidePage />);
+
+    await user.click(
+      screen.getByRole("button", { name: /air scrubber handoff brief/i }),
+    );
+
+    const detailPanel = screen.getByLabelText(/selected procedure details/i);
+
+    expect(
+      within(detailPanel).getByText("Air Scrubber Handoff Brief"),
+    ).toBeInTheDocument();
+    expect(within(detailPanel).getByText("2026-04-18")).toBeInTheDocument();
+    expect(within(detailPanel).getByText("Perimeter control")).toBeInTheDocument();
+    expect(
+      within(detailPanel).getByText("Ventilation tech once the cable path and airflow are confirmed"),
     ).toBeInTheDocument();
   });
 
@@ -101,6 +166,7 @@ describe("FieldGuidePage", () => {
     expect(
       within(detailPanel).getByText("Mast Failover Brief"),
     ).toBeInTheDocument();
+    expect(screen.getByText("Query: FG-233")).toBeInTheDocument();
 
     await user.clear(searchInput);
     await user.type(searchInput, "zzz");
