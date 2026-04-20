@@ -38,8 +38,11 @@ export function ArchiveDetailPanel({
               role="status"
               className="rounded-[1.25rem] border border-amber-300/40 bg-amber-300/10 px-4 py-3 text-sm leading-6 text-amber-100"
             >
-              Snapshot "{requestedSnapshotId}" was not found. Showing the most
-              recent sealed archive instead.
+              Snapshot ID{" "}
+              <span className="font-semibold text-amber-50">
+                {requestedSnapshotId}
+              </span>{" "}
+              was not found. Showing the most recent sealed archive instead.
             </p>
           ) : null}
 
