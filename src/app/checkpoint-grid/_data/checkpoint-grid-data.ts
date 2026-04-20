@@ -12,7 +12,7 @@ export type CheckpointMilestone = {
   title: string;
   owner: string;
   window: string;
-  status: "Complete" | "In Progress" | "Queued";
+  status: "Complete" | "In Progress" | "Blocked";
   tone: CheckpointTone;
   completion: number;
   summary: string;
@@ -138,11 +138,11 @@ export const checkpointMilestones: CheckpointMilestone[] = [
     title: "Add a recent review-notes panel with explicit follow-up actions",
     owner: "Nadia Ruiz / QA",
     window: "Apr 19-20",
-    status: "Queued",
+    status: "Blocked",
     tone: "risk",
     completion: 46,
     summary:
-      "The review stream is queued behind the tile and summary layout, but the data model is ready to expose note outcomes, timestamps, and next actions.",
+      "The review stream is currently blocked behind the tile and summary layout, but the data model is ready to expose note outcomes, timestamps, and next actions.",
     deliverables: [
       "Group note title, reviewer, and outcome into a quick scan pattern.",
       "Keep the panel broad enough for design, content, and QA feedback in one place.",
@@ -160,11 +160,11 @@ export const checkpointMilestones: CheckpointMilestone[] = [
     title: "Finish route coverage and handoff notes for merge readiness",
     owner: "Eli Booker / Engineering",
     window: "Apr 20",
-    status: "Queued",
+    status: "Blocked",
     tone: "steady",
     completion: 32,
     summary:
-      "Verification closes the loop by checking the route content, protecting the main sections with tests, and leaving a focused handoff path for reviewers.",
+      "Verification is blocked until the route content settles, then it closes the loop with route tests, a build pass, and focused handoff notes for reviewers.",
     deliverables: [
       "Cover hero, milestone, summary, and review-note content in route tests.",
       "Run the production build so the route compiles inside the current app shell.",
@@ -267,8 +267,8 @@ export function getCheckpointGridView() {
   const activeMilestones = checkpointMilestones.filter(
     (milestone) => milestone.status === "In Progress",
   ).length;
-  const queuedMilestones = checkpointMilestones.filter(
-    (milestone) => milestone.status === "Queued",
+  const blockedMilestones = checkpointMilestones.filter(
+    (milestone) => milestone.status === "Blocked",
   ).length;
   const unresolvedReviewNotes = reviewNotes.filter(
     (note) => note.outcome !== "Approved",
@@ -287,9 +287,9 @@ export function getCheckpointGridView() {
       detail: "Tiles still moving through layout, summary, or content review work.",
     },
     {
-      label: "Recent notes",
-      value: `${reviewNotes.length}`,
-      detail: "Latest review observations staged in the side panel for fast scan.",
+      label: "Blocked checkpoints",
+      value: `${blockedMilestones}`,
+      detail: "Review notes and verification still depend on the final route polish.",
     },
   ];
 
@@ -300,7 +300,7 @@ export function getCheckpointGridView() {
       value: `${checkpointMilestones.length} tiles`,
       detail:
         "The board spans kickoff, tile assembly, summary framing, review notes, and final verification.",
-      support: `${completedMilestones} complete, ${activeMilestones} active, ${queuedMilestones} queued.`,
+      support: `${completedMilestones} complete, ${activeMilestones} in progress, ${blockedMilestones} blocked.`,
       tone: "steady",
     },
     {

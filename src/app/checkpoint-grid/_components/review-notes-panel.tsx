@@ -2,6 +2,7 @@ import type {
   CheckpointCadenceItem,
   ReviewNote,
 } from "../_data/checkpoint-grid-data";
+import styles from "../checkpoint-grid.module.css";
 
 type ReviewNotesPanelProps = {
   cadence: CheckpointCadenceItem[];
@@ -9,25 +10,16 @@ type ReviewNotesPanelProps = {
 };
 
 const toneClassNames = {
-  steady: {
-    accent: "bg-emerald-500",
-    badge: "border-emerald-200 bg-emerald-50 text-emerald-700",
-  },
-  watch: {
-    accent: "bg-amber-500",
-    badge: "border-amber-200 bg-amber-50 text-amber-700",
-  },
-  risk: {
-    accent: "bg-rose-500",
-    badge: "border-rose-200 bg-rose-50 text-rose-700",
-  },
+  steady: styles.noteToneSteady,
+  watch: styles.noteToneWatch,
+  risk: styles.noteToneRisk,
 };
 
 export function ReviewNotesPanel({ cadence, notes }: ReviewNotesPanelProps) {
   return (
     <aside
       aria-labelledby="recent-review-notes"
-      className="rounded-[2rem] border border-slate-200 bg-white/82 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-7"
+      className={`${styles.surfaceCard} ${styles.notePanel} p-6 sm:p-7`}
     >
       <div className="space-y-6">
         <div className="space-y-3">
@@ -46,13 +38,9 @@ export function ReviewNotesPanel({ cadence, notes }: ReviewNotesPanelProps) {
           </p>
         </div>
 
-        <div className="grid gap-4" role="list" aria-label="Review cadence">
+        <div className={styles.cadenceGrid} role="list" aria-label="Review cadence">
           {cadence.map((item) => (
-            <article
-              key={item.id}
-              className="rounded-[1.3rem] border border-slate-200 bg-slate-50 px-4 py-4"
-              role="listitem"
-            >
+            <article key={item.id} className={styles.cadenceCard} role="listitem">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
                 {item.label}
               </p>
@@ -69,17 +57,13 @@ export function ReviewNotesPanel({ cadence, notes }: ReviewNotesPanelProps) {
             <p className="text-sm text-slate-600">{notes.length} total</p>
           </div>
 
-          <div className="grid gap-4" role="list" aria-label="Review notes">
+          <div className={styles.noteList} role="list" aria-label="Review notes">
             {notes.map((note) => (
               <article
                 key={note.id}
-                className="relative overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white px-5 py-5"
+                className={`${styles.noteCard} ${toneClassNames[note.tone]}`}
                 role="listitem"
               >
-                <span
-                  aria-hidden
-                  className={`absolute inset-y-0 left-0 w-1.5 rounded-full ${toneClassNames[note.tone].accent}`}
-                />
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <h3 className="text-lg font-semibold tracking-tight text-slate-950">
@@ -90,9 +74,7 @@ export function ReviewNotesPanel({ cadence, notes }: ReviewNotesPanelProps) {
                     </p>
                   </div>
 
-                  <span
-                    className={`inline-flex items-center justify-center rounded-full border px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] whitespace-nowrap ${toneClassNames[note.tone].badge}`}
-                  >
+                  <span className={`${styles.badge} ${toneClassNames[note.tone]}`}>
                     {note.outcome}
                   </span>
                 </div>
@@ -100,7 +82,7 @@ export function ReviewNotesPanel({ cadence, notes }: ReviewNotesPanelProps) {
                 <p className="mt-4 text-sm font-medium text-slate-800">{note.loggedAt}</p>
                 <p className="mt-3 text-sm leading-6 text-slate-600">{note.summary}</p>
 
-                <div className="my-5 h-px w-full bg-gradient-to-r from-slate-300/70 to-slate-300/10" />
+                <div className={styles.divider} />
 
                 <div className="space-y-2">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">

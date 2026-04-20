@@ -5,6 +5,7 @@ import { MilestoneTile } from "./_components/milestone-tile";
 import { ProgressSummaryCard } from "./_components/progress-summary-card";
 import { ReviewNotesPanel } from "./_components/review-notes-panel";
 import { getCheckpointGridView } from "./_data/checkpoint-grid-data";
+import styles from "./checkpoint-grid.module.css";
 
 export const metadata: Metadata = {
   title: "Checkpoint Grid",
@@ -16,9 +17,9 @@ export default function CheckpointGridPage() {
   const view = getCheckpointGridView();
 
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,#f8f4ed_0%,#f5f7fb_48%,#edf3f9_100%)]">
+    <main className={styles.shell}>
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
-        <section className="rounded-[2.2rem] border border-slate-200 bg-white/82 p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-10 lg:p-12">
+        <section className={`${styles.surfaceCard} ${styles.heroPanel} rounded-[2.2rem] p-8 sm:p-10 lg:p-12`}>
           <div className="flex flex-wrap items-center justify-between gap-4">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">
               {view.summary.eyebrow}
@@ -55,7 +56,7 @@ export default function CheckpointGridPage() {
               </div>
             </div>
 
-            <aside className="rounded-[1.8rem] border border-slate-200 bg-slate-50/90 p-5 sm:p-6">
+            <aside className={`${styles.surfaceCard} rounded-[1.8rem] p-5 sm:p-6`}>
               <div className="space-y-5">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
@@ -110,7 +111,7 @@ export default function CheckpointGridPage() {
           </div>
 
           <div
-            className="grid gap-4 md:grid-cols-2 xl:grid-cols-4"
+            className={styles.summaryGrid}
             role="list"
             aria-label="Checkpoint progress summaries"
           >
@@ -145,11 +146,7 @@ export default function CheckpointGridPage() {
               </p>
             </div>
 
-            <div
-              className="grid gap-4 md:grid-cols-2"
-              role="list"
-              aria-label="Checkpoint milestones"
-            >
+            <div className={styles.milestoneGrid} role="list" aria-label="Checkpoint milestones">
               {view.milestones.map((milestone) => (
                 <MilestoneTile key={milestone.id} milestone={milestone} />
               ))}
