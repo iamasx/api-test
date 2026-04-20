@@ -2,12 +2,20 @@
 
 import { startTransition, useState } from "react";
 import {
+  countActiveEscalations,
+  createIncidentStageState,
+  getIncidentWorkflowStage,
+  getNextIncidentStage,
+  getPreviousIncidentStage,
+  getVisibleTimelineEntries,
   incidentResponders,
   incidents,
   incidentSeverities,
-  incidentTimeline,
+  incidentStages,
   type IncidentSeverity,
   type IncidentSeverityFilter,
+  type IncidentStage,
+  type IncidentStageId,
   type ResponderRecord,
   type SeverityLevel,
 } from "@/app/incident-deck/mock-data";
@@ -16,6 +24,7 @@ import { IncidentStack } from "./incident-stack";
 import { ResponderPanel } from "./responder-panel";
 import { ResponseTimeline } from "./response-timeline";
 import { SeverityFilterBar } from "./severity-filter-bar";
+import { WorkflowStageBoard } from "./workflow-stage-board";
 
 export function IncidentDeckShell() {
   const [selectedSeverity, setSelectedSeverity] =
@@ -26,6 +35,9 @@ export function IncidentDeckShell() {
   const [selectedResponderId, setSelectedResponderId] = useState<string | null>(
     null,
   );
+  const [incidentStageState, setIncidentStageState] = useState<
+    Record<string, IncidentStageId>
+  >(() => createIncidentStageState());
 
   const visibleIncidents = incidents.filter(
     (incident) =>
@@ -38,6 +50,13 @@ export function IncidentDeckShell() {
       : (visibleIncidents[0]?.id ?? null);
   const activeIncident =
     incidents.find((incident) => incident.id === activeIncidentId) ?? null;
+  const activeStageId = activeIncident
+    ? (incidentStageState[activeIncident.id] ?? activeIncident.initialStageId)
+    : null;
+  const activeWorkflow =
+    activeIncident && activeStageId
+      ? getIncidentWorkflowStage(activeIncident, activeStageId)
+      : null;
   const activeResponders = activeIncident
     ? activeIncident.responderIds.flatMap((responderId) => {
         const responder = incidentResponders.find(
@@ -50,11 +69,14 @@ export function IncidentDeckShell() {
   const selectedResponder =
     activeResponders.find((responder) => responder.id === selectedResponderId) ??
     null;
-  const timelineEntries = incidentTimeline.filter((entry) => {
-    if (entry.incidentId !== activeIncident?.id) return false;
-    if (!selectedResponderId) return true;
-    return entry.responderIds.includes(selectedResponderId);
-  });
+  const timelineEntries =
+    activeIncident && activeStageId
+      ? getVisibleTimelineEntries(
+          activeIncident,
+          activeStageId,
+          selectedResponderId,
+        )
+      : [];
   const severitySummary = incidentSeverities
     .map((severity) => ({
       ...severity,
@@ -62,9 +84,30 @@ export function IncidentDeckShell() {
         .length,
     }))
     .filter((severity) => severity.count > 0);
+  const stageSummary = incidentStages
+    .map((stage) => ({
+      ...stage,
+      count: incidents.filter(
+        (incident) =>
+          (incidentStageState[incident.id] ?? incident.initialStageId) ===
+          stage.id,
+      ).length,
+    }))
+    .filter((stage) => stage.count > 0);
+  const liveHandoffCount = incidents.filter((incident) => {
+    const stageId = incidentStageState[incident.id] ?? incident.initialStageId;
+    return stageId === "handoff";
+  }).length;
+  const engagedEscalationCount = incidents.reduce((count, incident) => {
+    const stageId = incidentStageState[incident.id] ?? incident.initialStageId;
+    return count + countActiveEscalations(incident, stageId);
+  }, 0);
   const severityLookup = Object.fromEntries(
     incidentSeverities.map((severity) => [severity.id, severity]),
   ) as Record<IncidentSeverity, SeverityLevel>;
+  const stageLookup = Object.fromEntries(
+    incidentStages.map((stage) => [stage.id, stage]),
+  ) as Record<IncidentStageId, IncidentStage>;
   const respondersById = Object.fromEntries(
     incidentResponders.map((responder) => [responder.id, responder]),
   ) as Record<string, ResponderRecord>;
@@ -83,6 +126,17 @@ export function IncidentDeckShell() {
     });
   }
 
+  function handleSetIncidentStage(incidentId: string, stageId: IncidentStageId) {
+    startTransition(() => {
+      setSelectedIncidentId(incidentId);
+      setSelectedResponderId(null);
+      setIncidentStageState((current) => ({
+        ...current,
+        [incidentId]: stageId,
+      }));
+    });
+  }
+
   function handleFocusResponder(incidentId: string, responderId: string) {
     startTransition(() => {
       setSelectedIncidentId(incidentId);
@@ -92,6 +146,25 @@ export function IncidentDeckShell() {
           : responderId,
       );
     });
+  }
+
+  function advanceActiveStage() {
+    if (!activeIncident || !activeStageId) {
+      return;
+    }
+
+    handleSetIncidentStage(activeIncident.id, getNextIncidentStage(activeStageId));
+  }
+
+  function rewindActiveStage() {
+    if (!activeIncident || !activeStageId) {
+      return;
+    }
+
+    handleSetIncidentStage(
+      activeIncident.id,
+      getPreviousIncidentStage(activeStageId),
+    );
   }
 
   function handleSelectResponder(responderId: string) {
@@ -107,6 +180,7 @@ export function IncidentDeckShell() {
       setSelectedSeverity("all");
       setSelectedIncidentId(incidents[0]?.id ?? null);
       setSelectedResponderId(null);
+      setIncidentStageState(createIncidentStageState());
     });
   }
 
@@ -122,6 +196,9 @@ export function IncidentDeckShell() {
         <IncidentDeckHeader
           selectedSeverity={selectedSeverity}
           severitySummary={severitySummary}
+          stageSummary={stageSummary}
+          liveHandoffCount={liveHandoffCount}
+          engagedEscalationCount={engagedEscalationCount}
           totalCount={incidents.length}
           visibleCount={visibleIncidents.length}
         />
@@ -141,28 +218,58 @@ export function IncidentDeckShell() {
             respondersById={respondersById}
             selectedResponderId={selectedResponderId}
             severityLookup={severityLookup}
+            stageLookup={stageLookup}
+            stageState={incidentStageState}
             onFocusResponder={handleFocusResponder}
             onResetFilters={resetFilters}
             onSelectIncident={handleSelectIncident}
           />
 
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
-            <ResponseTimeline
-              entries={timelineEntries}
-              hasResponderFocus={selectedResponderId !== null}
+          <div className="space-y-6">
+            <WorkflowStageBoard
+              currentStageId={activeStageId}
               incident={activeIncident}
               respondersById={respondersById}
-              selectedResponder={selectedResponder}
-              onClearResponder={clearResponderFocus}
-              onSelectResponder={handleSelectResponder}
+              stages={incidentStages}
+              workflow={activeWorkflow}
+              onAdvanceStage={advanceActiveStage}
+              onRewindStage={rewindActiveStage}
+              onSelectStage={(stageId) => {
+                if (!activeIncident) {
+                  return;
+                }
+
+                handleSetIncidentStage(activeIncident.id, stageId);
+              }}
             />
-            <ResponderPanel
-              incident={activeIncident}
-              responders={activeResponders}
-              selectedResponder={selectedResponder}
-              onClearResponder={clearResponderFocus}
-              onSelectResponder={handleSelectResponder}
-            />
+
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
+              <ResponseTimeline
+                activeStage={
+                  activeStageId ? (stageLookup[activeStageId] ?? null) : null
+                }
+                entries={timelineEntries}
+                hasResponderFocus={selectedResponderId !== null}
+                incident={activeIncident}
+                respondersById={respondersById}
+                selectedResponder={selectedResponder}
+                workflow={activeWorkflow}
+                onClearResponder={clearResponderFocus}
+                onSelectResponder={handleSelectResponder}
+              />
+              <ResponderPanel
+                activeStage={
+                  activeStageId ? (stageLookup[activeStageId] ?? null) : null
+                }
+                incident={activeIncident}
+                responders={activeResponders}
+                respondersById={respondersById}
+                selectedResponder={selectedResponder}
+                workflow={activeWorkflow}
+                onClearResponder={clearResponderFocus}
+                onSelectResponder={handleSelectResponder}
+              />
+            </div>
           </div>
         </div>
       </div>

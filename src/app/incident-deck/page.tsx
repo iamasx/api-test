@@ -4,7 +4,7 @@ import { IncidentDeckShell } from "@/components/incident-deck/incident-deck-shel
 export const metadata: Metadata = {
   title: "Incident Deck",
   description:
-    "Mock incident workspace with local severity filters, response timeline, and responder detail state.",
+    "Mock incident workspace with staged triage, escalation lanes, and response handoff tracking.",
 };
 
 export default function IncidentDeckPage() {

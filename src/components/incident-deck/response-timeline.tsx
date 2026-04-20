@@ -1,11 +1,15 @@
 import type {
   IncidentRecord,
+  IncidentStage,
+  IncidentWorkflowStage,
   ResponderRecord,
   TimelineEntry,
 } from "@/app/incident-deck/mock-data";
 
 type ResponseTimelineProps = {
   incident: IncidentRecord | null;
+  activeStage: IncidentStage | null;
+  workflow: IncidentWorkflowStage | null;
   entries: TimelineEntry[];
   hasResponderFocus: boolean;
   respondersById: Record<string, ResponderRecord>;
@@ -16,6 +20,8 @@ type ResponseTimelineProps = {
 
 export function ResponseTimeline({
   incident,
+  activeStage,
+  workflow,
   entries,
   hasResponderFocus,
   respondersById,
@@ -45,11 +51,36 @@ export function ResponseTimeline({
             </button>
           ) : null}
         </div>
-        <p className="text-sm leading-6 text-slate-300">
-          {incident
-            ? incident.activeTask
-            : "Select an incident lane to inspect the response sequence and latest handoff notes."}
-        </p>
+        {incident && activeStage && workflow ? (
+          <div className="rounded-[1.35rem] border border-white/10 bg-white/5 p-4">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
+                  Current stage
+                </p>
+                <h3 className="mt-2 text-lg font-semibold text-white">
+                  {activeStage.label}
+                </h3>
+              </div>
+              <span
+                className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ring-1 ${activeStage.surfaceClass}`}
+              >
+                {workflow.status}
+              </span>
+            </div>
+            <p className="mt-3 text-sm leading-6 text-slate-300">
+              {workflow.activeTask}
+            </p>
+            <p className="mt-3 text-sm leading-6 text-slate-400">
+              {workflow.handoff.summary}
+            </p>
+          </div>
+        ) : (
+          <p className="text-sm leading-6 text-slate-300">
+            Select an incident lane to inspect the response sequence and latest
+            handoff notes.
+          </p>
+        )}
       </div>
 
       {incident ? (
@@ -61,9 +92,14 @@ export function ResponseTimeline({
                 key={entry.id}
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="rounded-full border border-white/10 bg-slate-950/50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-slate-300">
-                    {entry.kind}
-                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="rounded-full border border-white/10 bg-slate-950/50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-slate-300">
+                      {entry.kind}
+                    </span>
+                    <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-slate-300">
+                      {entry.stageId}
+                    </span>
+                  </div>
                   <div className="text-right text-sm text-slate-400">
                     <p>{entry.at}</p>
                     <p>{entry.channel}</p>
@@ -110,7 +146,7 @@ export function ResponseTimeline({
             <p className="mt-3 text-sm leading-6 text-slate-300">
               {hasResponderFocus
                 ? "Clear the responder filter to bring back every recovery event for the selected incident."
-                : "This incident does not have local timeline activity yet."}
+                : "Advance the staged workflow to reveal later escalation and handoff entries."}
             </p>
             {hasResponderFocus ? (
               <button

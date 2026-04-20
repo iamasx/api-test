@@ -28,7 +28,8 @@ export function SeverityFilterBar({
             Severity lanes
           </p>
           <p className="mt-2 text-sm text-slate-300">
-            Showing {visibleCount} of {totalCount} active incidents in the deck.
+            Showing {visibleCount} of {totalCount} active incidents across the
+            staged triage workflow.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">

@@ -1,8 +1,14 @@
 import type {
+  IncidentStage,
+  IncidentStageId,
   IncidentRecord,
   IncidentSeverity,
   ResponderRecord,
   SeverityLevel,
+} from "@/app/incident-deck/mock-data";
+import {
+  countActiveEscalations,
+  getIncidentWorkflowStage,
 } from "@/app/incident-deck/mock-data";
 
 type IncidentStackProps = {
@@ -11,6 +17,8 @@ type IncidentStackProps = {
   selectedResponderId: string | null;
   respondersById: Record<string, ResponderRecord>;
   severityLookup: Record<IncidentSeverity, SeverityLevel>;
+  stageLookup: Record<IncidentStageId, IncidentStage>;
+  stageState: Record<string, IncidentStageId>;
   onSelectIncident: (incidentId: string) => void;
   onFocusResponder: (incidentId: string, responderId: string) => void;
   onResetFilters: () => void;
@@ -22,6 +30,8 @@ export function IncidentStack({
   selectedResponderId,
   respondersById,
   severityLookup,
+  stageLookup,
+  stageState,
   onSelectIncident,
   onFocusResponder,
   onResetFilters,
@@ -43,7 +53,11 @@ export function IncidentStack({
         <div className="space-y-4">
           {incidents.map((incident) => {
             const severity = severityLookup[incident.severity];
+            const stageId = stageState[incident.id] ?? incident.initialStageId;
+            const stage = stageLookup[stageId];
+            const workflow = getIncidentWorkflowStage(incident, stageId);
             const isActive = incident.id === activeIncidentId;
+            const activeEscalationCount = countActiveEscalations(incident, stageId);
 
             return (
               <article
@@ -71,22 +85,32 @@ export function IncidentStack({
                         {incident.summary}
                       </p>
                     </div>
-                    <span
-                      className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ${severity.badgeClass}`}
-                    >
-                      {severity.label}
-                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      <span
+                        className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ${severity.badgeClass}`}
+                      >
+                        {severity.label}
+                      </span>
+                      <span
+                        className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ring-1 ${stage.surfaceClass}`}
+                      >
+                        {stage.label}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="grid gap-3 text-sm text-slate-300 sm:grid-cols-2">
+                  <div className="grid gap-3 text-sm text-slate-300 sm:grid-cols-2 xl:grid-cols-4">
                     <div className="rounded-2xl border border-white/10 bg-slate-950/45 p-3">
                       <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
-                        Lead
+                        Owner
                       </p>
                       <p className="mt-2 font-medium text-white">
-                        {incident.lead}
+                        {respondersById[workflow.ownership.primaryOwnerId]?.name ??
+                          incident.lead}
                       </p>
-                      <p className="mt-1 text-slate-400">{incident.openedAt}</p>
+                      <p className="mt-1 text-slate-400">
+                        {workflow.ownership.state}
+                      </p>
                     </div>
                     <div className="rounded-2xl border border-white/10 bg-slate-950/45 p-3">
                       <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
@@ -97,6 +121,24 @@ export function IncidentStack({
                       </p>
                       <p className="mt-1 text-slate-400">{incident.region}</p>
                     </div>
+                    <div className="rounded-2xl border border-white/10 bg-slate-950/45 p-3">
+                      <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
+                        Stage review
+                      </p>
+                      <p className="mt-2 font-medium text-white">
+                        {workflow.ownership.nextReview}
+                      </p>
+                      <p className="mt-1 text-slate-400">{stage.shortLabel}</p>
+                    </div>
+                    <div className="rounded-2xl border border-white/10 bg-slate-950/45 p-3">
+                      <p className="text-xs uppercase tracking-[0.24em] text-slate-500">
+                        Escalation lanes
+                      </p>
+                      <p className="mt-2 font-medium text-white">
+                        {activeEscalationCount}
+                      </p>
+                      <p className="mt-1 text-slate-400">{incident.openedAt}</p>
+                    </div>
                   </div>
 
                   <div className="rounded-2xl border border-white/10 bg-slate-950/55 p-4">
@@ -104,7 +146,10 @@ export function IncidentStack({
                       Active task
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-200">
-                      {incident.activeTask}
+                      {workflow.activeTask}
+                    </p>
+                    <p className="mt-3 text-sm leading-6 text-slate-400">
+                      {workflow.stageFocus}
                     </p>
                   </div>
 
