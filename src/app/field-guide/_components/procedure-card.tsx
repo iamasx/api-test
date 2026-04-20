@@ -4,6 +4,7 @@ import {
   getFieldGuideCategoryById,
   type FieldGuideProcedure,
 } from "../_lib/field-guide-data";
+import styles from "../field-guide.module.css";
 
 type ProcedureCardProps = {
   procedure: FieldGuideProcedure;
@@ -25,7 +26,9 @@ export function ProcedureCard({
       type="button"
       aria-label={procedure.title}
       onClick={() => onSelect(procedure.id)}
-      className={`w-full rounded-[1.9rem] border p-5 text-left transition ${
+      className={`${styles.procedureCard} ${
+        selected ? styles.selectedProcedureCard : ""
+      } w-full rounded-[1.9rem] border p-5 text-left transition ${
         selected
           ? "border-slate-950 bg-slate-950 text-white shadow-[0_28px_80px_-38px_rgba(15,23,42,0.9)]"
           : "border-slate-200/80 bg-white/85 text-slate-950 hover:border-slate-300 hover:bg-white"
@@ -149,7 +152,7 @@ export function ProcedureCard({
       </div>
 
       <div
-        className={`mt-5 rounded-[1.4rem] border px-4 py-4 ${
+        className={`${styles.checklistPreview} mt-5 rounded-[1.4rem] border px-4 py-4 ${
           selected
             ? "border-white/10 bg-white/7"
             : "border-black/6 bg-black/[0.03]"

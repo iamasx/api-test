@@ -6,6 +6,7 @@ import type {
   FieldGuidePriorityOption,
   ProcedurePriority,
 } from "../_lib/field-guide-data";
+import styles from "../field-guide.module.css";
 
 type ProcedureFilterBarProps = {
   options: FieldGuideCategoryOption[];
@@ -45,7 +46,9 @@ export function ProcedureFilterBar({
   }
 
   return (
-    <section className="rounded-[2rem] border border-slate-200/80 bg-white/82 p-5 shadow-[0_18px_70px_-42px_rgba(15,23,42,0.45)] backdrop-blur">
+    <section
+      className={`${styles.filterPanel} rounded-[2rem] border border-slate-200/80 bg-white/82 p-5 shadow-[0_18px_70px_-42px_rgba(15,23,42,0.45)] backdrop-blur`}
+    >
       <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">

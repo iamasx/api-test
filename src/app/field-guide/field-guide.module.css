@@ -69,3 +69,140 @@
     radial-gradient(circle at top, rgba(20, 184, 166, 0.08), transparent 42%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.85));
 }
+
+.routeHighlightCard {
+  position: relative;
+  overflow: hidden;
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.88)),
+    radial-gradient(circle at top right, rgba(45, 212, 191, 0.12), transparent 34%);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.routeHighlightCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.28), transparent 48%),
+    repeating-linear-gradient(
+      135deg,
+      rgba(148, 163, 184, 0.08) 0,
+      rgba(148, 163, 184, 0.08) 1px,
+      transparent 1px,
+      transparent 22px
+    );
+  pointer-events: none;
+}
+
+.routeHighlightCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 28px 80px -56px rgba(15, 23, 42, 0.45);
+}
+
+.filterPanel {
+  position: relative;
+  overflow: hidden;
+}
+
+.filterPanel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(45, 212, 191, 0.7), rgba(14, 165, 233, 0.35), transparent);
+}
+
+.workspacePanel,
+.workspacePanelDark,
+.groupHeader,
+.procedureCard,
+.checklistPreview,
+.detailPanel {
+  position: relative;
+  overflow: hidden;
+}
+
+.workspacePanel::after,
+.workspacePanelDark::after,
+.groupHeader::after,
+.checklistPreview::after,
+.detailPanel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.workspacePanel::after {
+  background:
+    radial-gradient(circle at top right, rgba(20, 184, 166, 0.08), transparent 32%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.26), transparent 52%);
+}
+
+.workspacePanelDark::after {
+  background:
+    radial-gradient(circle at top right, rgba(45, 212, 191, 0.14), transparent 36%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 52%);
+}
+
+.groupHeader {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.82)),
+    radial-gradient(circle at top right, rgba(20, 184, 166, 0.12), transparent 30%);
+}
+
+.groupHeader::after {
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.04), transparent 48%);
+}
+
+.procedureCard {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.procedureCard:hover {
+  transform: translateY(-2px);
+}
+
+.selectedProcedureCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(45, 212, 191, 0.32);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.checklistPreview::after {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 52%);
+}
+
+.detailPanel::after {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%),
+    radial-gradient(circle at top right, rgba(45, 212, 191, 0.14), transparent 34%);
+  opacity: 0.72;
+}
+
+.detailPanel > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .heroPanel::before {
+    width: 12rem;
+  }
+
+  .groupHeader {
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.88)),
+      radial-gradient(circle at top center, rgba(20, 184, 166, 0.14), transparent 42%);
+  }
+}

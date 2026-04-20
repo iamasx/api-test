@@ -247,7 +247,7 @@ export function FieldGuideShell({
           {shellHighlights.map((highlight) => (
             <div
               key={highlight.label}
-              className="rounded-[1.7rem] border border-slate-200/80 bg-white/82 px-5 py-5 shadow-[0_18px_70px_-48px_rgba(15,23,42,0.35)]"
+              className={`${styles.routeHighlightCard} rounded-[1.7rem] border border-slate-200/80 bg-white/82 px-5 py-5 shadow-[0_18px_70px_-48px_rgba(15,23,42,0.35)]`}
             >
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
                 {highlight.label}
@@ -280,7 +280,9 @@ export function FieldGuideShell({
           aria-label="Field guide workspace summary"
           className="grid gap-4 xl:grid-cols-[minmax(0,1.3fr)_minmax(280px,0.7fr)]"
         >
-          <div className="rounded-[1.8rem] border border-slate-200/80 bg-white/78 px-5 py-5 shadow-[0_18px_70px_-48px_rgba(15,23,42,0.38)]">
+          <div
+            className={`${styles.workspacePanel} rounded-[1.8rem] border border-slate-200/80 bg-white/78 px-5 py-5 shadow-[0_18px_70px_-48px_rgba(15,23,42,0.38)]`}
+          >
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
               Active Filters
             </p>
@@ -308,7 +310,9 @@ export function FieldGuideShell({
             </p>
           </div>
 
-          <div className="rounded-[1.8rem] border border-slate-200/80 bg-slate-950 px-5 py-5 text-white shadow-[0_24px_80px_-50px_rgba(15,23,42,0.65)]">
+          <div
+            className={`${styles.workspacePanelDark} rounded-[1.8rem] border border-slate-200/80 bg-slate-950 px-5 py-5 text-white shadow-[0_24px_80px_-50px_rgba(15,23,42,0.65)]`}
+          >
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
               Selected Focus
             </p>
@@ -354,7 +358,9 @@ export function FieldGuideShell({
                     aria-labelledby={`field-guide-group-${group.category.id}`}
                     className="space-y-4"
                   >
-                    <div className="flex flex-col gap-3 rounded-[1.6rem] border border-slate-200/75 bg-white/72 px-5 py-4 shadow-[0_18px_60px_-50px_rgba(15,23,42,0.38)] sm:flex-row sm:items-end sm:justify-between">
+                    <div
+                      className={`${styles.groupHeader} flex flex-col gap-3 rounded-[1.6rem] border border-slate-200/75 bg-white/72 px-5 py-4 shadow-[0_18px_60px_-50px_rgba(15,23,42,0.38)] sm:flex-row sm:items-end sm:justify-between`}
+                    >
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
                           Procedure Group

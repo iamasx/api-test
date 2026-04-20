@@ -4,6 +4,7 @@ import {
   getFieldGuideCategoryById,
   type FieldGuideProcedure,
 } from "../_lib/field-guide-data";
+import styles from "../field-guide.module.css";
 
 type ProcedureDetailPanelProps = {
   procedure: FieldGuideProcedure;
@@ -39,7 +40,7 @@ export function ProcedureDetailPanel({
   return (
     <aside
       aria-label="Selected procedure details"
-      className="rounded-[2rem] border border-slate-900/90 bg-slate-950 p-6 text-white shadow-[0_32px_110px_-45px_rgba(15,23,42,0.92)] xl:sticky xl:top-6"
+      className={`${styles.detailPanel} rounded-[2rem] border border-slate-900/90 bg-slate-950 p-6 text-white shadow-[0_32px_110px_-45px_rgba(15,23,42,0.92)] xl:sticky xl:top-6`}
     >
       <div className="flex items-start justify-between gap-4">
         <div>
