@@ -1,25 +1,42 @@
 import type { ChangeEvent } from "react";
 
-import type { FieldGuideCategoryOption } from "../_lib/field-guide-data";
+import type {
+  FieldGuideCategoryOption,
+  FieldGuideFocusAreaOption,
+  FieldGuidePriorityOption,
+  ProcedurePriority,
+} from "../_lib/field-guide-data";
 
 type ProcedureFilterBarProps = {
   options: FieldGuideCategoryOption[];
+  priorityOptions: FieldGuidePriorityOption[];
+  focusAreaOptions: FieldGuideFocusAreaOption[];
   activeCategoryId: string;
+  activePriority: ProcedurePriority | "all";
+  activeFocusArea: string;
   searchValue: string;
   resultCount: number;
   canReset: boolean;
   onCategoryChange: (categoryId: string) => void;
+  onPriorityChange: (priority: ProcedurePriority | "all") => void;
+  onFocusAreaChange: (focusArea: string) => void;
   onSearchChange: (value: string) => void;
   onReset: () => void;
 };
 
 export function ProcedureFilterBar({
   options,
+  priorityOptions,
+  focusAreaOptions,
   activeCategoryId,
+  activePriority,
+  activeFocusArea,
   searchValue,
   resultCount,
   canReset,
   onCategoryChange,
+  onPriorityChange,
+  onFocusAreaChange,
   onSearchChange,
   onReset,
 }: ProcedureFilterBarProps) {
@@ -117,6 +134,82 @@ export function ProcedureFilterBar({
             })}
           </div>
         </nav>
+      </div>
+
+      <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        <nav aria-label="Procedure priorities">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+            Priority bands
+          </p>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            {priorityOptions.map((option) => {
+              const isActive = option.id === activePriority;
+
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => onPriorityChange(option.id)}
+                  className={`rounded-[1.2rem] border px-4 py-4 text-left transition ${
+                    isActive
+                      ? "border-teal-600 bg-teal-600 text-white shadow-lg shadow-teal-950/12"
+                      : "border-slate-200 bg-slate-50/70 text-slate-950 hover:border-slate-300 hover:bg-white"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-sm font-semibold">{option.name}</span>
+                    <span
+                      className={`inline-flex min-w-9 justify-center rounded-full px-2.5 py-1 text-xs font-semibold ${
+                        isActive
+                          ? "bg-white/12 text-white"
+                          : "bg-slate-900 text-white"
+                      }`}
+                    >
+                      {option.count}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+            Focus areas
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3" aria-label="Field guide focus areas">
+            {focusAreaOptions.map((option) => {
+              const isActive = option.id === activeFocusArea;
+
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => onFocusAreaChange(option.id)}
+                  className={`inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition ${
+                    isActive
+                      ? "border-slate-950 bg-slate-950 text-white"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:text-slate-950"
+                  }`}
+                >
+                  <span>{option.name}</span>
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                      isActive
+                        ? "bg-white/12 text-white"
+                        : "bg-slate-100 text-slate-700"
+                    }`}
+                  >
+                    {option.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );

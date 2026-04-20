@@ -1,12 +1,15 @@
 "use client";
 
-import { startTransition, useDeferredValue, useState } from "react";
+import { startTransition, useState } from "react";
 
 import {
   getDefaultFieldGuideProcedure,
   getFieldGuideCategoryOptions,
+  getFieldGuideFocusAreaOptions,
+  getFieldGuidePriorityOptions,
   type FieldGuideCategory,
   type FieldGuideProcedure,
+  type ProcedurePriority,
 } from "../_lib/field-guide-data";
 import styles from "../field-guide.module.css";
 import { ProcedureCard } from "./procedure-card";
@@ -17,6 +20,21 @@ type FieldGuideShellProps = {
   categories: FieldGuideCategory[];
   procedures: FieldGuideProcedure[];
 };
+
+const shellHighlights = [
+  {
+    label: "Searchable Catalog",
+    detail: "Procedure cards stay grouped beside the working detail panel.",
+  },
+  {
+    label: "Checklist Ready",
+    detail: "Execution checklists remain paired with the active procedure.",
+  },
+  {
+    label: "Reference Detail",
+    detail: "Reference notes stay visible without leaving the route context.",
+  },
+] as const;
 
 function matchesProcedure(procedure: FieldGuideProcedure, query: string) {
   if (!query) {
@@ -30,6 +48,7 @@ function matchesProcedure(procedure: FieldGuideProcedure, query: string) {
     procedure.objective,
     procedure.crew,
     procedure.sceneType,
+    ...procedure.focusAreas,
     ...procedure.tags,
     ...procedure.triggerSignals,
     ...procedure.tools,
@@ -44,19 +63,43 @@ export function FieldGuideShell({
 }: FieldGuideShellProps) {
   const defaultProcedure = getDefaultFieldGuideProcedure(procedures);
   const [activeCategoryId, setActiveCategoryId] = useState("all");
+  const [activePriority, setActivePriority] = useState<ProcedurePriority | "all">(
+    "all",
+  );
+  const [activeFocusArea, setActiveFocusArea] = useState("all");
   const [searchValue, setSearchValue] = useState("");
   const [selectedProcedureId, setSelectedProcedureId] = useState(
     defaultProcedure?.id ?? "",
   );
-  const deferredSearchValue = useDeferredValue(searchValue.trim().toLowerCase());
+  const normalizedSearchValue = searchValue.trim().toLowerCase();
 
   const categoryOptions = getFieldGuideCategoryOptions(procedures, categories);
+  const priorityOptions = getFieldGuidePriorityOptions(procedures);
+  const focusAreaOptions = getFieldGuideFocusAreaOptions(procedures);
   const visibleProcedures = procedures.filter((procedure) => {
     const matchesCategory =
       activeCategoryId === "all" || procedure.categoryId === activeCategoryId;
+    const matchesPriority =
+      activePriority === "all" || procedure.priority === activePriority;
+    const matchesFocusArea =
+      activeFocusArea === "all" ||
+      procedure.focusAreas.includes(activeFocusArea);
 
-    return matchesCategory && matchesProcedure(procedure, deferredSearchValue);
+    return (
+      matchesCategory &&
+      matchesPriority &&
+      matchesFocusArea &&
+      matchesProcedure(procedure, normalizedSearchValue)
+    );
   });
+  const groupedVisibleProcedures = categories
+    .map((category) => ({
+      category,
+      procedures: visibleProcedures.filter(
+        (procedure) => procedure.categoryId === category.id,
+      ),
+    }))
+    .filter((group) => group.procedures.length > 0);
   const selectedProcedure =
     visibleProcedures.find((procedure) => procedure.id === selectedProcedureId) ??
     visibleProcedures[0] ??
@@ -74,7 +117,19 @@ export function FieldGuideShell({
     (count, procedure) => count + procedure.references.length,
     0,
   );
-  const canReset = activeCategoryId !== "all" || searchValue.length > 0;
+  const activeFilterLabels = [
+    searchValue.trim() ? `Query: ${searchValue.trim()}` : null,
+    activeCategoryId !== "all"
+      ? categoryOptions.find((option) => option.id === activeCategoryId)?.name
+      : null,
+    activePriority !== "all" ? `Priority: ${activePriority}` : null,
+    activeFocusArea !== "all" ? `Focus: ${activeFocusArea}` : null,
+  ].filter(Boolean);
+  const canReset =
+    activeCategoryId !== "all" ||
+    activePriority !== "all" ||
+    activeFocusArea !== "all" ||
+    searchValue.length > 0;
 
   function handleCategoryChange(categoryId: string) {
     startTransition(() => {
@@ -83,14 +138,32 @@ export function FieldGuideShell({
   }
 
   function handleSearchChange(value: string) {
+    setSearchValue(value);
+  }
+
+  function handlePriorityChange(priority: ProcedurePriority | "all") {
     startTransition(() => {
-      setSearchValue(value);
+      setActivePriority(priority);
+    });
+  }
+
+  function handleFocusAreaChange(focusArea: string) {
+    startTransition(() => {
+      setActiveFocusArea(focusArea);
+    });
+  }
+
+  function handleProcedureSelect(procedureId: string) {
+    startTransition(() => {
+      setSelectedProcedureId(procedureId);
     });
   }
 
   function handleResetFilters() {
     startTransition(() => {
       setActiveCategoryId("all");
+      setActivePriority("all");
+      setActiveFocusArea("all");
       setSearchValue("");
     });
   }
@@ -99,6 +172,7 @@ export function FieldGuideShell({
     <div className={`${styles.shell} text-slate-950`}>
       <main className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-5 py-8 sm:px-8 lg:px-10 lg:py-10">
         <section
+          aria-labelledby="field-guide-title"
           className={`${styles.heroPanel} rounded-[2.5rem] border border-slate-200/80 bg-slate-950 px-6 py-8 text-white shadow-[0_36px_110px_-48px_rgba(15,23,42,0.9)] sm:px-8 lg:px-10`}
         >
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(280px,0.95fr)]">
@@ -106,7 +180,10 @@ export function FieldGuideShell({
               <p className="text-xs font-semibold uppercase tracking-[0.32em] text-teal-300">
                 Field Guide
               </p>
-              <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl">
+              <h1
+                id="field-guide-title"
+                className="mt-4 max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl"
+              >
                 Search procedures, run the checklist, and keep reference detail
                 close to the active response.
               </h1>
@@ -163,16 +240,88 @@ export function FieldGuideShell({
           </div>
         </section>
 
+        <section
+          aria-label="Field guide route highlights"
+          className="grid gap-4 md:grid-cols-3"
+        >
+          {shellHighlights.map((highlight) => (
+            <div
+              key={highlight.label}
+              className="rounded-[1.7rem] border border-slate-200/80 bg-white/82 px-5 py-5 shadow-[0_18px_70px_-48px_rgba(15,23,42,0.35)]"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+                {highlight.label}
+              </p>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                {highlight.detail}
+              </p>
+            </div>
+          ))}
+        </section>
+
         <ProcedureFilterBar
           options={categoryOptions}
+          priorityOptions={priorityOptions}
+          focusAreaOptions={focusAreaOptions}
           activeCategoryId={activeCategoryId}
+          activePriority={activePriority}
+          activeFocusArea={activeFocusArea}
           searchValue={searchValue}
           resultCount={visibleProcedures.length}
           canReset={canReset}
           onCategoryChange={handleCategoryChange}
+          onPriorityChange={handlePriorityChange}
+          onFocusAreaChange={handleFocusAreaChange}
           onSearchChange={handleSearchChange}
           onReset={handleResetFilters}
         />
+
+        <section
+          aria-label="Field guide workspace summary"
+          className="grid gap-4 xl:grid-cols-[minmax(0,1.3fr)_minmax(280px,0.7fr)]"
+        >
+          <div className="rounded-[1.8rem] border border-slate-200/80 bg-white/78 px-5 py-5 shadow-[0_18px_70px_-48px_rgba(15,23,42,0.38)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+              Active Filters
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {activeFilterLabels.length > 0 ? (
+                activeFilterLabels.map((filterLabel) => (
+                  <span
+                    key={filterLabel}
+                    className="rounded-full border border-slate-200 bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700"
+                  >
+                    {filterLabel}
+                  </span>
+                ))
+              ) : (
+                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-800">
+                  All procedures visible
+                </span>
+              )}
+            </div>
+            <p className="mt-4 text-sm leading-6 text-slate-600">
+              {groupedVisibleProcedures.length} procedure group
+              {groupedVisibleProcedures.length === 1 ? "" : "s"} in view with{" "}
+              {visibleProcedures.length} active procedure
+              {visibleProcedures.length === 1 ? "" : "s"} ready for review.
+            </p>
+          </div>
+
+          <div className="rounded-[1.8rem] border border-slate-200/80 bg-slate-950 px-5 py-5 text-white shadow-[0_24px_80px_-50px_rgba(15,23,42,0.65)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
+              Selected Focus
+            </p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight">
+              {selectedProcedure?.title ?? "No visible procedure"}
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-300">
+              {selectedProcedure
+                ? `${selectedProcedure.code} • ${selectedProcedure.focusAreas.join(" • ")}`
+                : "Adjust the filters or search term to restore a procedure and re-open the detail panel."}
+            </p>
+          </div>
+        </section>
 
         <div className="grid gap-8 xl:grid-cols-[minmax(0,1.45fr)_420px]">
           <section
@@ -197,15 +346,46 @@ export function FieldGuideShell({
               </p>
             </div>
 
-            {visibleProcedures.length > 0 ? (
-              <div className="grid gap-4">
-                {visibleProcedures.map((procedure) => (
-                  <ProcedureCard
-                    key={procedure.id}
-                    procedure={procedure}
-                    selected={procedure.id === selectedProcedure?.id}
-                    onSelect={setSelectedProcedureId}
-                  />
+            {groupedVisibleProcedures.length > 0 ? (
+              <div className="grid gap-6">
+                {groupedVisibleProcedures.map((group) => (
+                  <section
+                    key={group.category.id}
+                    aria-labelledby={`field-guide-group-${group.category.id}`}
+                    className="space-y-4"
+                  >
+                    <div className="flex flex-col gap-3 rounded-[1.6rem] border border-slate-200/75 bg-white/72 px-5 py-4 shadow-[0_18px_60px_-50px_rgba(15,23,42,0.38)] sm:flex-row sm:items-end sm:justify-between">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+                          Procedure Group
+                        </p>
+                        <h3
+                          id={`field-guide-group-${group.category.id}`}
+                          className="mt-2 text-xl font-semibold tracking-tight text-slate-950"
+                        >
+                          {group.category.name}
+                        </h3>
+                        <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                          {group.category.description}
+                        </p>
+                      </div>
+                      <div className="rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white">
+                        {group.procedures.length} procedure
+                        {group.procedures.length === 1 ? "" : "s"}
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4">
+                      {group.procedures.map((procedure) => (
+                        <ProcedureCard
+                          key={procedure.id}
+                          procedure={procedure}
+                          selected={procedure.id === selectedProcedure?.id}
+                          onSelect={handleProcedureSelect}
+                        />
+                      ))}
+                    </div>
+                  </section>
                 ))}
               </div>
             ) : (
@@ -235,7 +415,7 @@ export function FieldGuideShell({
             )}
           </section>
 
-          {selectedProcedure && visibleProcedures.length > 0 ? (
+          {selectedProcedure && groupedVisibleProcedures.length > 0 ? (
             <ProcedureDetailPanel procedure={selectedProcedure} />
           ) : (
             <aside className="rounded-[2rem] border border-slate-200/80 bg-white/78 p-6 shadow-[0_24px_80px_-42px_rgba(15,23,42,0.4)]">

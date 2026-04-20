@@ -1,21 +1,12 @@
 import {
+  fieldGuideChecklistTypeStyles,
   fieldGuidePriorityStyles,
   getFieldGuideCategoryById,
   type FieldGuideProcedure,
-  type ProcedureChecklistItem,
 } from "../_lib/field-guide-data";
 
 type ProcedureDetailPanelProps = {
   procedure: FieldGuideProcedure;
-};
-
-const checklistTypeStyles: Record<
-  ProcedureChecklistItem["type"],
-  string
-> = {
-  Required: "border-rose-200 bg-rose-50 text-rose-700",
-  "Verify on site": "border-amber-200 bg-amber-50 text-amber-700",
-  Recommended: "border-sky-200 bg-sky-50 text-sky-700",
 };
 
 const priorityDescriptions: Record<FieldGuideProcedure["priority"], string> = {
@@ -32,6 +23,18 @@ export function ProcedureDetailPanel({
 }: ProcedureDetailPanelProps) {
   const category = getFieldGuideCategoryById(procedure.categoryId);
   const priorityStyle = fieldGuidePriorityStyles[procedure.priority];
+  const checklistSummary = procedure.checklist.reduce(
+    (summary, item) => {
+      summary[item.type] += 1;
+
+      return summary;
+    },
+    {
+      Required: 0,
+      "Verify on site": 0,
+      Recommended: 0,
+    },
+  );
 
   return (
     <aside
@@ -73,7 +76,22 @@ export function ProcedureDetailPanel({
         </p>
       </div>
 
-      <dl className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-1">
+      <div className="mt-6 grid gap-3 md:grid-cols-3 xl:grid-cols-1 2xl:grid-cols-3">
+        {Object.entries(checklistSummary).map(([label, count]) => (
+          <div
+            key={label}
+            className={`rounded-[1.35rem] border px-4 py-4 ${fieldGuideChecklistTypeStyles[label as keyof typeof checklistSummary]}`}
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.18em]">
+              {label}
+            </p>
+            <p className="mt-2 text-2xl font-semibold">{count}</p>
+            <p className="mt-1 text-xs font-medium">Checklist calls</p>
+          </div>
+        ))}
+      </div>
+
+      <dl className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-2">
         <div className="rounded-[1.4rem] border border-white/10 bg-white/5 px-4 py-4">
           <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
             Crew
@@ -106,7 +124,39 @@ export function ProcedureDetailPanel({
             {procedure.triggerSignals.length} conditions
           </dd>
         </div>
+        <div className="rounded-[1.4rem] border border-white/10 bg-white/5 px-4 py-4">
+          <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+            Focus Areas
+          </dt>
+          <dd className="mt-2 text-sm font-medium text-white">
+            {procedure.focusAreas.length} active lanes
+          </dd>
+        </div>
+        <div className="rounded-[1.4rem] border border-white/10 bg-white/5 px-4 py-4">
+          <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+            Last Reviewed
+          </dt>
+          <dd className="mt-2 text-sm font-medium text-white">
+            {procedure.lastReviewed}
+          </dd>
+        </div>
       </dl>
+
+      <div className="mt-6 rounded-[1.6rem] border border-white/10 bg-white/5 p-4">
+        <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-200">
+          Focus Areas
+        </h3>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {procedure.focusAreas.map((focusArea) => (
+            <span
+              key={focusArea}
+              className="rounded-full border border-white/10 bg-white/8 px-3 py-1 text-xs font-medium text-slate-100"
+            >
+              {focusArea}
+            </span>
+          ))}
+        </div>
+      </div>
 
       <div className="mt-6 rounded-[1.6rem] border border-white/10 bg-white/5 p-4">
         <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-200">
@@ -175,13 +225,13 @@ export function ProcedureDetailPanel({
                   </p>
                 </div>
                 <span
-                  className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold ${checklistTypeStyles[item.type]}`}
+                  className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold ${fieldGuideChecklistTypeStyles[item.type]}`}
                 >
                   {item.type}
                 </span>
               </div>
               <div
-                className={`mt-4 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${checklistTypeStyles[item.type]}`}
+                className={`mt-4 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${fieldGuideChecklistTypeStyles[item.type]}`}
               >
                 {item.type} check
               </div>
