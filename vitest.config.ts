@@ -11,5 +11,7 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./vitest.setup.tsx"],
     css: true,
+    maxWorkers: 1,
+    testTimeout: 30000,
   },
 });

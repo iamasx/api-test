@@ -5,7 +5,7 @@ import { SignalLabWorkspace } from "@/components/signal-lab/signal-lab-workspace
 export const metadata: Metadata = {
   title: "Signal Lab",
   description:
-    "Synthetic monitoring workspace with stream cards, anomaly markers, and inspector panels.",
+    "Comparison-first signal workspace with pinned anomaly streams, confidence trends, and a dedicated inspector.",
 };
 
 export default function SignalLabPage() {
