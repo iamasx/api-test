@@ -4,6 +4,7 @@ import { AuditEntryCard } from "./audit-entry-card";
 import { ReviewFlagCard } from "./review-flag-card";
 import { ReviewerSummary } from "./reviewer-summary";
 import type { AuditTrailView } from "../_lib/audit-trail";
+import styles from "../audit-trail.module.css";
 
 type AuditTrailShellProps = {
   view: AuditTrailView;
@@ -11,8 +12,12 @@ type AuditTrailShellProps = {
 
 export function AuditTrailShell({ view }: AuditTrailShellProps) {
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-6 py-8 sm:px-10 lg:px-12">
-      <section className="overflow-hidden rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.08)]">
+    <main
+      className={`${styles.pageShell} mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-6 py-8 sm:px-10 lg:px-12`}
+    >
+      <section
+        className={`${styles.heroPanel} overflow-hidden rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.08)]`}
+      >
         <div className="grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)] lg:px-12 lg:py-10">
           <div className="space-y-5">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-amber-700">
@@ -30,7 +35,9 @@ export function AuditTrailShell({ view }: AuditTrailShellProps) {
             </div>
           </div>
 
-          <section className="rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface-strong)] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+          <section
+            className={`${styles.summaryPanel} rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface-strong)] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]`}
+          >
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
               Route summary
             </p>
@@ -38,7 +45,7 @@ export function AuditTrailShell({ view }: AuditTrailShellProps) {
               {view.summaryMetrics.map((metric) => (
                 <div
                   key={metric.label}
-                  className="rounded-[1.25rem] border border-slate-200 bg-white/80 p-4"
+                  className={`${styles.summaryMetricCard} rounded-[1.25rem] border border-slate-200 bg-white/80 p-4`}
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
                     {metric.label}
@@ -56,7 +63,9 @@ export function AuditTrailShell({ view }: AuditTrailShellProps) {
         </div>
       </section>
 
-      <section className="rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] p-6 shadow-[0_18px_65px_rgba(15,23,42,0.08)]">
+      <section
+        className={`${styles.filterSection} rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] p-6 shadow-[0_18px_65px_rgba(15,23,42,0.08)]`}
+      >
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-3">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
@@ -85,11 +94,11 @@ export function AuditTrailShell({ view }: AuditTrailShellProps) {
               key={filter.id}
               href={filter.href}
               aria-current={filter.isActive ? "page" : undefined}
-              className={
+              className={`${
                 filter.isActive
-                  ? "rounded-full border border-slate-950 bg-slate-950 px-4 py-2 text-sm font-semibold text-slate-50"
-                  : "rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700"
-              }
+                  ? `${styles.filterLink} ${styles.filterLinkActive} rounded-full border border-slate-950 bg-slate-950 px-4 py-2 text-sm font-semibold text-slate-50`
+                  : `${styles.filterLink} rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700`
+              }`}
             >
               {filter.label} ({filter.matchCount})
             </Link>
@@ -97,10 +106,12 @@ export function AuditTrailShell({ view }: AuditTrailShellProps) {
         </nav>
       </section>
 
-      <div className="grid gap-8 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
+      <div
+        className={`${styles.contentGrid} grid gap-8 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]`}
+      >
         <section
           aria-labelledby="audit-trail-timeline-title"
-          className="rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] p-6 shadow-[0_18px_65px_rgba(15,23,42,0.08)]"
+          className={`${styles.timelineSection} rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] p-6 shadow-[0_18px_65px_rgba(15,23,42,0.08)]`}
         >
           <div className="space-y-3">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
@@ -122,14 +133,11 @@ export function AuditTrailShell({ view }: AuditTrailShellProps) {
           <ol
             role="list"
             aria-label="Audit timeline"
-            className="mt-8 ml-3 border-l border-slate-200"
+            className={styles.timelineList}
           >
             {view.entries.map(({ entry, flags, reviewers }) => (
-              <li key={entry.id} className="relative mb-6 pl-8 last:mb-0">
-                <span
-                  aria-hidden="true"
-                  className="absolute left-[-0.46rem] top-8 h-3.5 w-3.5 rounded-full border-4 border-sky-100 bg-sky-500"
-                />
+              <li key={entry.id} className={styles.timelineItem}>
+                <span aria-hidden="true" className={styles.timelineMarker} />
                 <AuditEntryCard
                   entry={entry}
                   flags={flags}
@@ -143,7 +151,7 @@ export function AuditTrailShell({ view }: AuditTrailShellProps) {
         <aside className="flex flex-col gap-8">
           <section
             aria-labelledby="audit-review-flags-title"
-            className="rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] p-6 shadow-[0_18px_65px_rgba(15,23,42,0.08)]"
+            className={`${styles.flagSection} rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] p-6 shadow-[0_18px_65px_rgba(15,23,42,0.08)]`}
           >
             <div className="space-y-3">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">

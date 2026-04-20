@@ -3,6 +3,7 @@ import type {
   AuditReviewFlag,
   AuditReviewer,
 } from "../_lib/audit-trail-data";
+import styles from "../audit-trail.module.css";
 
 type AuditEntryCardProps = {
   entry: AuditChangeEntry;
@@ -10,13 +11,52 @@ type AuditEntryCardProps = {
   reviewers: AuditReviewer[];
 };
 
+function getReviewStateClass(reviewState: AuditChangeEntry["reviewState"]) {
+  switch (reviewState) {
+    case "Escalated":
+      return styles.entryStateEscalated;
+    case "Needs review":
+      return styles.entryStateNeedsReview;
+    case "Watching":
+      return styles.entryStateWatching;
+    case "Approved":
+      return styles.entryStateApproved;
+  }
+}
+
+function getRiskClass(risk: AuditChangeEntry["risk"]) {
+  switch (risk) {
+    case "Critical":
+      return styles.riskCritical;
+    case "Elevated":
+      return styles.riskElevated;
+    case "Moderate":
+      return styles.riskModerate;
+    case "Low":
+      return styles.riskLow;
+  }
+}
+
+function getLinkedFlagClass(severity: AuditReviewFlag["severity"]) {
+  switch (severity) {
+    case "Critical":
+      return styles.linkedFlagCritical;
+    case "Elevated":
+      return styles.linkedFlagElevated;
+    case "Watch":
+      return styles.linkedFlagWatch;
+  }
+}
+
 export function AuditEntryCard({
   entry,
   flags,
   reviewers,
 }: AuditEntryCardProps) {
   return (
-    <article className="rounded-[1.75rem] border border-slate-200/80 bg-white/80 p-6 shadow-[0_18px_55px_rgba(15,23,42,0.07)]">
+    <article
+      className={`${styles.entryCard} rounded-[1.75rem] border border-slate-200/80 bg-white/80 p-6 shadow-[0_18px_55px_rgba(15,23,42,0.07)]`}
+    >
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-2">
@@ -28,13 +68,19 @@ export function AuditEntryCard({
             </h3>
           </div>
           <div className="flex flex-wrap gap-2">
-            <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-700">
+            <span
+              className={`${styles.metaBadge} rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-700`}
+            >
               {entry.changeType}
             </span>
-            <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-800">
+            <span
+              className={`${styles.entryStateBadge} ${getReviewStateClass(entry.reviewState)} rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em]`}
+            >
               {entry.reviewState}
             </span>
-            <span className="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-800">
+            <span
+              className={`${styles.riskBadge} ${getRiskClass(entry.risk)} rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em]`}
+            >
               {entry.risk} risk
             </span>
           </div>
@@ -42,7 +88,9 @@ export function AuditEntryCard({
 
         <p className="text-base leading-7 text-slate-600">{entry.summary}</p>
 
-        <dl className="grid gap-4 rounded-[1.4rem] border border-slate-200/80 bg-slate-50/80 p-4 md:grid-cols-2 xl:grid-cols-3">
+        <dl
+          className={`${styles.entryMetaGrid} grid gap-4 rounded-[1.4rem] border border-slate-200/80 bg-slate-50/80 p-4 md:grid-cols-2 xl:grid-cols-3`}
+        >
           <div>
             <dt className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
               Service
@@ -97,7 +145,7 @@ export function AuditEntryCard({
           {entry.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600"
+              className={`${styles.tagPill} rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600`}
             >
               #{tag}
             </span>
@@ -105,7 +153,9 @@ export function AuditEntryCard({
         </div>
 
         <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(260px,0.95fr)]">
-          <section className="rounded-[1.4rem] border border-slate-200/80 bg-white/85 p-4">
+          <section
+            className={`${styles.detailSection} rounded-[1.4rem] border border-slate-200/80 bg-white/85 p-4`}
+          >
             <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
               Review checkpoints
             </h4>
@@ -121,7 +171,9 @@ export function AuditEntryCard({
             </ul>
           </section>
 
-          <section className="rounded-[1.4rem] border border-slate-200/80 bg-white/85 p-4">
+          <section
+            className={`${styles.detailSection} rounded-[1.4rem] border border-slate-200/80 bg-white/85 p-4`}
+          >
             <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
               Evidence
             </h4>
@@ -139,7 +191,9 @@ export function AuditEntryCard({
         </div>
 
         {flags.length > 0 ? (
-          <section className="rounded-[1.4rem] border border-slate-200/80 bg-slate-950 px-4 py-4 text-slate-100">
+          <section
+            className={`${styles.flagPanel} rounded-[1.4rem] border border-slate-200/80 bg-slate-950 px-4 py-4 text-slate-100`}
+          >
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-300">
                 Linked review flags
@@ -152,7 +206,7 @@ export function AuditEntryCard({
               {flags.map((flag) => (
                 <span
                   key={flag.id}
-                  className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold text-slate-100"
+                  className={`${styles.linkedFlagPill} ${getLinkedFlagClass(flag.severity)} rounded-full border px-3 py-1 text-xs font-semibold`}
                 >
                   {flag.severity} · {flag.label}
                 </span>

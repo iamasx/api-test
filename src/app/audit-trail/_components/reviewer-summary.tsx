@@ -1,4 +1,5 @@
 import type { AuditReviewer } from "../_lib/audit-trail-data";
+import styles from "../audit-trail.module.css";
 
 type ReviewerSummaryProps = {
   reviewers: AuditReviewer[];
@@ -8,7 +9,7 @@ export function ReviewerSummary({ reviewers }: ReviewerSummaryProps) {
   return (
     <section
       aria-labelledby="audit-reviewer-summary-title"
-      className="rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] p-6 shadow-[0_18px_65px_rgba(15,23,42,0.08)]"
+      className={`${styles.reviewerSection} rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] p-6 shadow-[0_18px_65px_rgba(15,23,42,0.08)]`}
     >
       <div className="space-y-3">
         <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
@@ -27,11 +28,11 @@ export function ReviewerSummary({ reviewers }: ReviewerSummaryProps) {
         </p>
       </div>
 
-      <div className="mt-6 grid gap-4 xl:grid-cols-2">
+      <div className={`${styles.reviewerGrid} mt-6 grid gap-4 xl:grid-cols-2`}>
         {reviewers.map((reviewer) => (
           <article
             key={reviewer.id}
-            className="rounded-[1.5rem] border border-slate-200/80 bg-white/82 p-5 shadow-[0_14px_40px_rgba(15,23,42,0.05)]"
+            className={`${styles.reviewerCard} rounded-[1.5rem] border border-slate-200/80 bg-white/82 p-5 shadow-[0_14px_40px_rgba(15,23,42,0.05)]`}
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
@@ -82,7 +83,9 @@ export function ReviewerSummary({ reviewers }: ReviewerSummaryProps) {
               </div>
             </dl>
 
-            <div className="mt-5 rounded-[1.3rem] border border-slate-200/80 bg-slate-50/80 p-4">
+            <div
+              className={`${styles.reviewerNote} mt-5 rounded-[1.3rem] border border-slate-200/80 bg-slate-50/80 p-4`}
+            >
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
                 Current note
               </p>
