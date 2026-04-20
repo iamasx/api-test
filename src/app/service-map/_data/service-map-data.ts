@@ -465,6 +465,10 @@ export function getServiceMapSummary() {
     (highlight) => highlight.status === "severe" || highlight.status === "elevated",
   ).length;
 
+  if (!highestRiskNode) {
+    throw new Error("Expected service map nodes to contain at least one service.");
+  }
+
   return {
     totalClusters: serviceMapClusters.length,
     totalServices: serviceMapNodes.length,
