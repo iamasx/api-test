@@ -48,7 +48,7 @@ export function ArchiveVaultFilters({
           </strong>
           <span>client-side matches</span>
           {hasFilters ? (
-            <button onClick={onReset} type="button">
+            <button className={styles.ghostButton} onClick={onReset} type="button">
               Reset
             </button>
           ) : null}

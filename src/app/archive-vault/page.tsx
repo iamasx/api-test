@@ -3,7 +3,7 @@ import { ArchiveVaultShell } from "@/components/archive-vault/archive-vault-shel
 
 export const metadata: Metadata = {
   title: "Archive Vault",
-  description: "Mock snapshot browser with local compare and detail panels.",
+  description: "Mock snapshot diff explorer with local review exports and queue state.",
 };
 
 export default function ArchiveVaultPage() {
