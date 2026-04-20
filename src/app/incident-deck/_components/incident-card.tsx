@@ -1,31 +1,32 @@
 import type { IncidentRecord } from "../_data/incident-deck-data";
+import styles from "../incident-deck.module.css";
 
 type IncidentCardProps = {
   incident: IncidentRecord;
 };
 
 const toneClassNames = {
-  critical: "border-rose-300/70 bg-rose-50/80",
-  watch: "border-amber-300/70 bg-amber-50/75",
-  steady: "border-emerald-300/70 bg-emerald-50/75",
+  critical: styles.toneCritical,
+  watch: styles.toneWatch,
+  steady: styles.toneSteady,
 };
 
 const severityClassNames = {
-  "SEV-1": "border-rose-300/70 bg-rose-100 text-rose-800",
-  "SEV-2": "border-amber-300/70 bg-amber-100 text-amber-800",
-  "SEV-3": "border-sky-300/70 bg-sky-100 text-sky-800",
+  "SEV-1": styles.severityCritical,
+  "SEV-2": styles.severityWatch,
+  "SEV-3": styles.severityInfo,
 };
 
 const statusClassNames = {
-  Investigating: "border-slate-300 bg-white text-slate-700",
-  Mitigating: "border-rose-300/70 bg-white text-rose-700",
-  Monitoring: "border-emerald-300/70 bg-white text-emerald-700",
+  Investigating: styles.statusDefault,
+  Mitigating: styles.statusCritical,
+  Monitoring: styles.statusSteady,
 };
 
 export function IncidentCard({ incident }: IncidentCardProps) {
   return (
     <article
-      className={`rounded-[1.75rem] border p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)] ${toneClassNames[incident.tone]}`}
+      className={`${styles.incidentCard} ${toneClassNames[incident.tone]}`}
       role="listitem"
     >
       <div className="flex flex-col gap-4 border-b border-slate-200/80 pb-5">
@@ -41,12 +42,12 @@ export function IncidentCard({ incident }: IncidentCardProps) {
 
           <div className="flex flex-wrap gap-2">
             <span
-              className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${severityClassNames[incident.severity]}`}
+              className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${styles.chip} ${severityClassNames[incident.severity]}`}
             >
               {incident.severity}
             </span>
             <span
-              className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${statusClassNames[incident.status]}`}
+              className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${styles.chip} ${statusClassNames[incident.status]}`}
             >
               {incident.status}
             </span>
@@ -58,8 +59,8 @@ export function IncidentCard({ incident }: IncidentCardProps) {
         </p>
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-[1.2rem] border border-slate-200 bg-white/80 px-4 py-4">
+      <div className={`${styles.metaGrid} mt-5`}>
+        <div className={styles.metaBlock}>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
             Commander
           </p>
@@ -67,19 +68,19 @@ export function IncidentCard({ incident }: IncidentCardProps) {
             {incident.incidentCommander}
           </p>
         </div>
-        <div className="rounded-[1.2rem] border border-slate-200 bg-white/80 px-4 py-4">
+        <div className={styles.metaBlock}>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
             Channel
           </p>
           <p className="mt-2 text-sm font-medium text-slate-900">{incident.channel}</p>
         </div>
-        <div className="rounded-[1.2rem] border border-slate-200 bg-white/80 px-4 py-4">
+        <div className={styles.metaBlock}>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
             Region
           </p>
           <p className="mt-2 text-sm font-medium text-slate-900">{incident.region}</p>
         </div>
-        <div className="rounded-[1.2rem] border border-slate-200 bg-white/80 px-4 py-4">
+        <div className={styles.metaBlock}>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
             Next update
           </p>
@@ -89,7 +90,7 @@ export function IncidentCard({ incident }: IncidentCardProps) {
         </div>
       </div>
 
-      <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+      <div className={`${styles.detailGrid} mt-5`}>
         <div className="space-y-5">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -124,38 +125,27 @@ export function IncidentCard({ incident }: IncidentCardProps) {
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               Active workstreams
             </p>
-            <ul
-              className="mt-3 grid gap-3"
-              aria-label={`${incident.service} workstreams`}
-            >
+            <ul className={styles.stackList} aria-label={`${incident.service} workstreams`}>
               {incident.workstreams.map((workstream) => (
-                <li
-                  key={workstream}
-                  className="rounded-[1.1rem] border border-slate-200 bg-white/80 px-4 py-3 text-sm leading-6 text-slate-700"
-                >
-                  {workstream}
-                </li>
+                <li key={workstream}>{workstream}</li>
               ))}
             </ul>
           </div>
 
-          <div className="rounded-[1.2rem] border border-slate-200 bg-white/80 px-4 py-4">
+          <div className={styles.metaBlock}>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               Ownership lanes
             </p>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className={`${styles.chipRow} mt-3`}>
               {incident.owners.map((owner) => (
-                <span
-                  key={owner}
-                  className="inline-flex rounded-full border border-slate-300 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-700"
-                >
+                <span key={owner} className={styles.chip}>
                   {owner}
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="rounded-[1.2rem] border border-slate-200 bg-slate-950 px-4 py-4 text-slate-50">
+          <div className={`${styles.darkNote} px-4 py-4 text-slate-50`}>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
               Latest note
             </p>

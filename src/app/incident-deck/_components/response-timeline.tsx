@@ -1,4 +1,5 @@
 import type { TimelineEvent } from "../_data/incident-deck-data";
+import styles from "../incident-deck.module.css";
 
 type ResponseTimelineProps = {
   events: TimelineEvent[];
@@ -7,9 +8,9 @@ type ResponseTimelineProps = {
 };
 
 const toneClassNames = {
-  critical: "border-rose-300/70 bg-rose-50/80",
-  watch: "border-amber-300/70 bg-amber-50/80",
-  steady: "border-emerald-300/70 bg-emerald-50/80",
+  critical: styles.toneCritical,
+  watch: styles.toneWatch,
+  steady: styles.toneSteady,
 };
 
 export function ResponseTimeline({
@@ -37,7 +38,7 @@ export function ResponseTimeline({
         </p>
       </div>
 
-      <div className="grid gap-4" role="list" aria-label="Response timeline">
+      <div className={styles.timelineList} role="list" aria-label="Response timeline">
         {events.map((event) => {
           const linkedServices = event.linkedIncidentIds
             .map((incidentId) => incidentServiceById[incidentId])
@@ -46,13 +47,13 @@ export function ResponseTimeline({
           return (
             <article
               key={event.id}
-              className={`rounded-[1.5rem] border p-5 shadow-[0_18px_48px_rgba(15,23,42,0.06)] ${toneClassNames[event.tone]}`}
+              className={`${styles.timelineItem} ${toneClassNames[event.tone]}`}
               role="listitem"
             >
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex rounded-full border border-slate-300 bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-700">
+                    <span className={styles.chip}>
                       {event.type}
                     </span>
                     <span className="text-sm font-medium text-slate-700">
@@ -73,16 +74,13 @@ export function ResponseTimeline({
                   </div>
                 </div>
 
-                <div className="rounded-[1.2rem] border border-slate-200 bg-white/80 px-4 py-4 lg:max-w-xs">
+                <div className={`${styles.metaBlock} lg:max-w-xs`}>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                     Linked incidents
                   </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className={`${styles.chipRow} mt-3`}>
                     {linkedServices.map((service) => (
-                      <span
-                        key={`${event.id}-${service}`}
-                        className="inline-flex rounded-full border border-slate-300 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-700"
-                      >
+                      <span key={`${event.id}-${service}`} className={styles.chip}>
                         {service}
                       </span>
                     ))}
