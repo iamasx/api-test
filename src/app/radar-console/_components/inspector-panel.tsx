@@ -6,13 +6,7 @@ import type {
   RadarSector,
   RadarSignalPriority,
 } from "../_data/radar-console-data";
-
-export type InspectorQueueItem = {
-  href: string;
-  isSelected: boolean;
-  signal: RadarSignalPriority;
-  sector: RadarSector;
-};
+import type { InspectorQueueItem } from "../_lib/radar-console";
 
 type InspectorPanelProps = {
   metadata: RadarInspectorMetadata;
