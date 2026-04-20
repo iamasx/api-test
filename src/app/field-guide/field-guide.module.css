@@ -1,0 +1,71 @@
+.shell {
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at top left, rgba(20, 184, 166, 0.16), transparent 24%),
+    radial-gradient(circle at top right, rgba(56, 189, 248, 0.16), transparent 28%),
+    linear-gradient(180deg, #fcf8ef 0%, #f3f7f4 40%, #eef4fb 100%);
+}
+
+.heroPanel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.heroPanel::before {
+  content: "";
+  position: absolute;
+  inset: auto -12% -35% auto;
+  width: 18rem;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.24), transparent 68%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.heroPanel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%),
+    repeating-linear-gradient(
+      115deg,
+      rgba(148, 163, 184, 0.08) 0,
+      rgba(148, 163, 184, 0.08) 1px,
+      transparent 1px,
+      transparent 26px
+    );
+  opacity: 0.52;
+  pointer-events: none;
+}
+
+.heroPanel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.catalogColumn {
+  position: relative;
+}
+
+.catalogColumn::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 14rem;
+  background: radial-gradient(circle at top center, rgba(15, 23, 42, 0.08), transparent 72%);
+  pointer-events: none;
+}
+
+.catalogColumn > * {
+  position: relative;
+  z-index: 1;
+}
+
+.emptyState {
+  background-image:
+    radial-gradient(circle at top, rgba(20, 184, 166, 0.08), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.85));
+}

@@ -17,6 +17,7 @@ export function ProcedureCard({
 }: ProcedureCardProps) {
   const category = getFieldGuideCategoryById(procedure.categoryId);
   const priorityStyle = fieldGuidePriorityStyles[procedure.priority];
+  const accent = category?.accent ?? "from-slate-200/70 via-slate-100/80 to-transparent";
 
   return (
     <button
@@ -28,39 +29,49 @@ export function ProcedureCard({
           : "border-slate-200/80 bg-white/85 text-slate-950 hover:border-slate-300 hover:bg-white"
       }`}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p
-            className={`text-xs font-semibold uppercase tracking-[0.26em] ${
-              selected ? "text-teal-200" : "text-slate-500"
-            }`}
-          >
-            {category?.name ?? "Field Procedure"}
-          </p>
-          <h3 className="mt-2 text-xl font-semibold tracking-tight">
-            {procedure.title}
-          </h3>
-          <p
-            className={`mt-2 text-sm ${
-              selected ? "text-slate-300" : "text-slate-500"
-            }`}
-          >
-            {procedure.code} • {procedure.estimatedWindow}
-          </p>
-        </div>
-
-        <span
-          className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold ${
-            selected ? "border-white/15 bg-white/8 text-white" : priorityStyle.badge
+      <div className={`rounded-[1.5rem] bg-gradient-to-br p-[1px] ${accent}`}>
+        <div
+          className={`rounded-[calc(1.5rem-1px)] px-4 py-4 ${
+            selected ? "bg-slate-900/92" : "bg-white/86"
           }`}
         >
-          <span
-            className={`h-2 w-2 rounded-full ${
-              selected ? "bg-white" : priorityStyle.dot
-            }`}
-          />
-          {procedure.priority}
-        </span>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p
+                className={`text-xs font-semibold uppercase tracking-[0.26em] ${
+                  selected ? "text-teal-200" : "text-slate-500"
+                }`}
+              >
+                {category?.name ?? "Field Procedure"}
+              </p>
+              <h3 className="mt-2 text-xl font-semibold tracking-tight">
+                {procedure.title}
+              </h3>
+              <p
+                className={`mt-2 text-sm ${
+                  selected ? "text-slate-300" : "text-slate-500"
+                }`}
+              >
+                {procedure.code} • {procedure.estimatedWindow}
+              </p>
+            </div>
+
+            <span
+              className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold ${
+                selected
+                  ? "border-white/15 bg-white/8 text-white"
+                  : priorityStyle.badge
+              }`}
+            >
+              <span
+                className={`h-2 w-2 rounded-full ${
+                  selected ? "bg-white" : priorityStyle.dot
+                }`}
+              />
+              {procedure.priority}
+            </span>
+          </div>
+        </div>
       </div>
 
       <p
@@ -102,7 +113,25 @@ export function ProcedureCard({
         </div>
       </dl>
 
-      <div className="mt-5 flex flex-wrap gap-2">
+      <div className="mt-5 flex flex-wrap items-center gap-2">
+        <span
+          className={`rounded-full px-3 py-1 text-xs font-semibold ${
+            selected
+              ? "bg-white/10 text-slate-100"
+              : "bg-slate-900 text-white"
+          }`}
+        >
+          {procedure.steps.length} steps
+        </span>
+        <span
+          className={`rounded-full px-3 py-1 text-xs font-semibold ${
+            selected
+              ? "bg-white/10 text-slate-100"
+              : "bg-teal-100 text-teal-900"
+          }`}
+        >
+          {procedure.checklist.length} checklist items
+        </span>
         {procedure.tags.map((tag) => (
           <span
             key={tag}

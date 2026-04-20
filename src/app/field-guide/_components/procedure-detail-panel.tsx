@@ -18,6 +18,15 @@ const checklistTypeStyles: Record<
   Recommended: "border-sky-200 bg-sky-50 text-sky-700",
 };
 
+const priorityDescriptions: Record<FieldGuideProcedure["priority"], string> = {
+  Routine:
+    "Use the standard verification path and capture any drift before escalating the incident.",
+  Elevated:
+    "Keep crew coordination explicit, confirm the perimeter, and tighten the handoff note before release.",
+  Critical:
+    "Treat the procedure like an active stabilization window: shorten the gap between confirmation, action, and reassessment.",
+};
+
 export function ProcedureDetailPanel({
   procedure,
 }: ProcedureDetailPanelProps) {
@@ -54,6 +63,15 @@ export function ProcedureDetailPanel({
       <p className="mt-5 text-sm leading-7 text-slate-300">
         {procedure.objective}
       </p>
+
+      <div className="mt-6 rounded-[1.55rem] border border-white/10 bg-gradient-to-br from-white/12 via-white/[0.07] to-transparent p-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+          Priority Note
+        </p>
+        <p className="mt-3 text-sm leading-7 text-slate-200">
+          {priorityDescriptions[procedure.priority]}
+        </p>
+      </div>
 
       <dl className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-1">
         <div className="rounded-[1.4rem] border border-white/10 bg-white/5 px-4 py-4">
@@ -161,6 +179,11 @@ export function ProcedureDetailPanel({
                 >
                   {item.type}
                 </span>
+              </div>
+              <div
+                className={`mt-4 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${checklistTypeStyles[item.type]}`}
+              >
+                {item.type} check
               </div>
             </li>
           ))}

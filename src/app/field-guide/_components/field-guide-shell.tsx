@@ -8,6 +8,7 @@ import {
   type FieldGuideCategory,
   type FieldGuideProcedure,
 } from "../_lib/field-guide-data";
+import styles from "../field-guide.module.css";
 import { ProcedureCard } from "./procedure-card";
 import { ProcedureDetailPanel } from "./procedure-detail-panel";
 import { ProcedureFilterBar } from "./procedure-filter-bar";
@@ -87,9 +88,11 @@ export function FieldGuideShell({
   }
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#fcf8ef_0%,#f3f7f4_40%,#eef4fb_100%)] text-slate-950">
+    <div className={`${styles.shell} text-slate-950`}>
       <main className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-5 py-8 sm:px-8 lg:px-10 lg:py-10">
-        <section className="overflow-hidden rounded-[2.5rem] border border-slate-200/80 bg-slate-950 px-6 py-8 text-white shadow-[0_36px_110px_-48px_rgba(15,23,42,0.9)] sm:px-8 lg:px-10">
+        <section
+          className={`${styles.heroPanel} rounded-[2.5rem] border border-slate-200/80 bg-slate-950 px-6 py-8 text-white shadow-[0_36px_110px_-48px_rgba(15,23,42,0.9)] sm:px-8 lg:px-10`}
+        >
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(280px,0.95fr)]">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.32em] text-teal-300">
@@ -119,7 +122,7 @@ export function FieldGuideShell({
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-              <div className="rounded-[1.75rem] border border-white/10 bg-white/6 p-5">
+              <div className="rounded-[1.75rem] border border-white/10 bg-white/8 p-5 backdrop-blur">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
                   Procedures
                 </p>
@@ -128,7 +131,7 @@ export function FieldGuideShell({
                   Mock response playbooks
                 </p>
               </div>
-              <div className="rounded-[1.75rem] border border-white/10 bg-white/6 p-5">
+              <div className="rounded-[1.75rem] border border-white/10 bg-white/8 p-5 backdrop-blur">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
                   Critical
                 </p>
@@ -139,7 +142,7 @@ export function FieldGuideShell({
                   Highest-priority procedures
                 </p>
               </div>
-              <div className="rounded-[1.75rem] border border-white/10 bg-white/6 p-5">
+              <div className="rounded-[1.75rem] border border-white/10 bg-white/8 p-5 backdrop-blur">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
                   Checklist Items
                 </p>
@@ -164,7 +167,7 @@ export function FieldGuideShell({
         <div className="grid gap-8 xl:grid-cols-[minmax(0,1.45fr)_420px]">
           <section
             aria-labelledby="field-guide-procedures"
-            className="space-y-5"
+            className={`${styles.catalogColumn} space-y-5`}
           >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
@@ -196,7 +199,9 @@ export function FieldGuideShell({
                 ))}
               </div>
             ) : (
-              <div className="rounded-[2rem] border border-dashed border-slate-300 bg-white/70 px-6 py-10 text-center shadow-[0_20px_60px_-44px_rgba(15,23,42,0.55)]">
+              <div
+                className={`${styles.emptyState} rounded-[2rem] border border-dashed border-slate-300 px-6 py-10 text-center shadow-[0_20px_60px_-44px_rgba(15,23,42,0.55)]`}
+              >
                 <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-500">
                   No matching procedures
                 </p>
