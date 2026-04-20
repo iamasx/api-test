@@ -1,4 +1,5 @@
 import type { RevisionSummary } from "../_data/runbook-studio-data";
+import styles from "../runbook-studio.module.css";
 
 type RevisionSummaryPanelProps = {
   summary: RevisionSummary;
@@ -10,7 +11,7 @@ export function RevisionSummaryPanel({
   return (
     <aside
       aria-label="Runbook revision summary"
-      className="rounded-[1.9rem] border border-slate-300/70 bg-slate-950 p-6 text-slate-50 shadow-[0_24px_90px_rgba(15,23,42,0.16)]"
+      className={`${styles.summaryPanel} rounded-[1.9rem] border border-slate-300/70 p-6 text-slate-50`}
     >
       <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
         {summary.label}
@@ -26,7 +27,7 @@ export function RevisionSummaryPanel({
         {summary.metrics.map((metric) => (
           <article
             key={metric.label}
-            className="rounded-[1.4rem] border border-white/10 bg-white/8 px-4 py-4"
+            className={`${styles.metricCard} rounded-[1.4rem] border border-white/10 px-4 py-4`}
           >
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
               {metric.label}
@@ -50,7 +51,7 @@ export function RevisionSummaryPanel({
             {summary.changedAreas.map((item) => (
               <li
                 key={item}
-                className="rounded-2xl border border-white/10 bg-white/6 px-3 py-3 leading-6"
+                className={`${styles.summaryItem} rounded-2xl border border-white/10 px-3 py-3 leading-6`}
               >
                 {item}
               </li>
@@ -66,7 +67,7 @@ export function RevisionSummaryPanel({
             {summary.nextReviews.map((item) => (
               <li
                 key={item}
-                className="rounded-2xl border border-white/10 bg-white/6 px-3 py-3 leading-6"
+                className={`${styles.summaryItem} rounded-2xl border border-white/10 px-3 py-3 leading-6`}
               >
                 {item}
               </li>
@@ -82,7 +83,7 @@ export function RevisionSummaryPanel({
             {summary.releaseNotes.map((item) => (
               <li
                 key={item}
-                className="rounded-2xl border border-white/10 bg-white/6 px-3 py-3 leading-6"
+                className={`${styles.summaryItem} rounded-2xl border border-white/10 px-3 py-3 leading-6`}
               >
                 {item}
               </li>

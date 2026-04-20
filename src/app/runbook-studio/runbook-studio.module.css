@@ -1,0 +1,319 @@
+.shell {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 16%, rgba(217, 119, 6, 0.16), transparent 22%),
+    radial-gradient(circle at 88% 10%, rgba(14, 165, 233, 0.16), transparent 22%),
+    radial-gradient(circle at 80% 88%, rgba(15, 23, 42, 0.14), transparent 26%),
+    linear-gradient(180deg, #f5eee2 0%, #efe5d8 46%, #ddd1c4 100%);
+}
+
+.shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(125deg, rgba(255, 255, 255, 0.22), transparent 40%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(148, 163, 184, 0.08) 0,
+      rgba(148, 163, 184, 0.08) 1px,
+      transparent 1px,
+      transparent 84px
+    );
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.92), transparent 95%);
+}
+
+.heroPanel {
+  position: relative;
+  background:
+    linear-gradient(150deg, rgba(255, 251, 245, 0.96), rgba(255, 247, 237, 0.84)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.45), rgba(15, 23, 42, 0.04));
+  box-shadow: 0 34px 120px rgba(15, 23, 42, 0.14);
+}
+
+.heroPanel::after {
+  content: "";
+  position: absolute;
+  right: -5rem;
+  top: -4rem;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.22), transparent 66%);
+  filter: blur(14px);
+  pointer-events: none;
+}
+
+.statCard {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(248, 250, 252, 0.62));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.coverageCard {
+  background:
+    radial-gradient(circle at top right, rgba(251, 191, 36, 0.18), transparent 36%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.94));
+}
+
+.groupSection {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 245, 0.92), rgba(255, 247, 237, 0.8));
+  box-shadow: 0 24px 90px rgba(15, 23, 42, 0.1);
+}
+
+.groupSection::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2rem;
+  bottom: 2rem;
+  width: 0.4rem;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, rgba(217, 119, 6, 0.8), rgba(14, 165, 233, 0.6));
+  opacity: 0.9;
+}
+
+.groupNote {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(248, 250, 252, 0.76));
+}
+
+.summaryRail {
+  position: sticky;
+  top: 2rem;
+}
+
+.summaryPanel {
+  background:
+    radial-gradient(circle at top right, rgba(251, 191, 36, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.95));
+  box-shadow: 0 30px 100px rgba(15, 23, 42, 0.24);
+}
+
+.metricCard {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(15, 23, 42, 0.16));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.summaryItem {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(15, 23, 42, 0.08));
+}
+
+.procedureCard {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.78));
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+}
+
+.procedureCard::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.25rem;
+  bottom: 1.25rem;
+  width: 0.38rem;
+  border-radius: 9999px;
+}
+
+.runbookActive {
+  border-color: rgba(14, 165, 233, 0.34);
+}
+
+.runbookActive::before {
+  background: linear-gradient(180deg, rgba(14, 165, 233, 0.92), rgba(16, 185, 129, 0.82));
+  box-shadow: 0 0 22px rgba(14, 165, 233, 0.22);
+}
+
+.runbookApproved {
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.runbookApproved::before {
+  background: linear-gradient(180deg, rgba(34, 197, 94, 0.92), rgba(132, 204, 22, 0.82));
+  box-shadow: 0 0 22px rgba(34, 197, 94, 0.18);
+}
+
+.runbookDraft {
+  border-color: rgba(217, 119, 6, 0.32);
+}
+
+.runbookDraft::before {
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.92), rgba(234, 88, 12, 0.82));
+  box-shadow: 0 0 22px rgba(245, 158, 11, 0.22);
+}
+
+.stateBadge {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.stateBadgeActive {
+  border-color: rgba(14, 165, 233, 0.32);
+  background: rgba(224, 242, 254, 0.9);
+  color: #075985;
+}
+
+.stateBadgeApproved {
+  border-color: rgba(34, 197, 94, 0.28);
+  background: rgba(220, 252, 231, 0.86);
+  color: #166534;
+}
+
+.stateBadgeDraft {
+  border-color: rgba(245, 158, 11, 0.32);
+  background: rgba(254, 243, 199, 0.92);
+  color: #92400e;
+}
+
+.neutralBadge {
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.88));
+}
+
+.revisionCard {
+  background: linear-gradient(180deg, rgba(255, 251, 235, 0.88), rgba(248, 250, 252, 0.84));
+}
+
+.revisionState {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 9999px;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.revisionPublished {
+  border-color: rgba(34, 197, 94, 0.28);
+  background: rgba(220, 252, 231, 0.88);
+  color: #166534;
+}
+
+.revisionApproval {
+  border-color: rgba(14, 165, 233, 0.26);
+  background: rgba(224, 242, 254, 0.9);
+  color: #075985;
+}
+
+.revisionEditing {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(254, 243, 199, 0.9);
+  color: #92400e;
+}
+
+.detailPanel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 250, 252, 0.74));
+}
+
+.tagChip {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.86));
+}
+
+.previewSection {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 245, 0.94), rgba(255, 247, 237, 0.84));
+  box-shadow: 0 26px 90px rgba(15, 23, 42, 0.1);
+}
+
+.previewSection::before {
+  content: "";
+  position: absolute;
+  inset-x: 0;
+  top: 0;
+  height: 14rem;
+  pointer-events: none;
+  background: radial-gradient(circle at top, rgba(14, 165, 233, 0.12), transparent 52%);
+}
+
+.previewCard {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.82));
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+}
+
+.previewActive {
+  border-color: rgba(14, 165, 233, 0.32);
+}
+
+.previewReady {
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.previewWatch {
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.previewState {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38);
+}
+
+.previewStateActive {
+  border-color: rgba(14, 165, 233, 0.32);
+  background: rgba(224, 242, 254, 0.88);
+  color: #075985;
+}
+
+.previewStateReady {
+  border-color: rgba(34, 197, 94, 0.28);
+  background: rgba(220, 252, 231, 0.86);
+  color: #166534;
+}
+
+.previewStateWatch {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(254, 243, 199, 0.9);
+  color: #92400e;
+}
+
+.previewMeta {
+  background:
+    linear-gradient(180deg, rgba(255, 251, 235, 0.86), rgba(248, 250, 252, 0.82));
+}
+
+.stepCard {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.88));
+}
+
+.outputChip {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.86));
+}
+
+@media (max-width: 1279px) {
+  .summaryRail {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .heroPanel,
+  .groupSection,
+  .summaryPanel,
+  .previewSection,
+  .procedureCard,
+  .previewCard {
+    border-radius: 1.5rem;
+  }
+
+  .groupSection::before,
+  .procedureCard::before {
+    top: 1rem;
+    bottom: 1rem;
+  }
+}

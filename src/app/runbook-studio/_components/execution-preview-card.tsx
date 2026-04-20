@@ -1,4 +1,5 @@
 import type { ExecutionPreview } from "../_data/runbook-studio-data";
+import styles from "../runbook-studio.module.css";
 
 type ExecutionPreviewCardProps = {
   preview: ExecutionPreview;
@@ -17,13 +18,39 @@ function getPreviewStateLabel(state: ExecutionPreview["state"]) {
   }
 }
 
+function getPreviewCardClass(state: ExecutionPreview["state"]) {
+  switch (state) {
+    case "active":
+      return styles.previewActive;
+    case "ready":
+      return styles.previewReady;
+    case "watch":
+      return styles.previewWatch;
+    default:
+      return "";
+  }
+}
+
+function getPreviewStateClass(state: ExecutionPreview["state"]) {
+  switch (state) {
+    case "active":
+      return styles.previewStateActive;
+    case "ready":
+      return styles.previewStateReady;
+    case "watch":
+      return styles.previewStateWatch;
+    default:
+      return "";
+  }
+}
+
 export function ExecutionPreviewCard({
   preview,
 }: ExecutionPreviewCardProps) {
   return (
     <article
       aria-labelledby={`${preview.id}-title`}
-      className="rounded-[1.75rem] border border-slate-300/70 bg-white/88 p-6 shadow-[0_18px_70px_rgba(15,23,42,0.08)]"
+      className={`${styles.previewCard} ${getPreviewCardClass(preview.state)} rounded-[1.75rem] border p-6`}
       data-preview-state={preview.state}
       role="listitem"
     >
@@ -45,13 +72,17 @@ export function ExecutionPreviewCard({
           </div>
         </div>
 
-        <div className="rounded-full border border-slate-300 bg-slate-50 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-600">
+        <div
+          className={`${styles.previewState} ${getPreviewStateClass(preview.state)} rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em]`}
+        >
           {getPreviewStateLabel(preview.state)}
         </div>
       </div>
 
       <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-        <div className="rounded-[1.35rem] border border-slate-200 bg-slate-50/90 px-4 py-4">
+        <div
+          className={`${styles.previewMeta} rounded-[1.35rem] border border-slate-200 px-4 py-4`}
+        >
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
             Preview metadata
           </p>
@@ -78,7 +109,7 @@ export function ExecutionPreviewCard({
               {preview.signals.map((signal) => (
                 <li
                   key={signal}
-                  className="rounded-2xl border border-slate-200 bg-white px-3 py-3 leading-6"
+                  className={`${styles.outputChip} rounded-2xl border border-slate-200 px-3 py-3 leading-6`}
                 >
                   {signal}
                 </li>
@@ -96,7 +127,7 @@ export function ExecutionPreviewCard({
               {preview.steps.map((step, index) => (
                 <li
                   key={step.id}
-                  className="rounded-[1.25rem] border border-slate-200 bg-white px-4 py-4 text-sm text-slate-600"
+                  className={`${styles.stepCard} rounded-[1.25rem] border border-slate-200 px-4 py-4 text-sm text-slate-600`}
                 >
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
                     Step {index + 1} · {step.timing}
@@ -119,7 +150,7 @@ export function ExecutionPreviewCard({
               {preview.outputs.map((output) => (
                 <li
                   key={output}
-                  className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2"
+                  className={`${styles.outputChip} rounded-full border border-slate-200 px-3 py-2`}
                 >
                   {output}
                 </li>

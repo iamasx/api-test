@@ -1,4 +1,5 @@
 import type { RunbookProcedure } from "../_data/runbook-studio-data";
+import styles from "../runbook-studio.module.css";
 
 type ProcedureCardProps = {
   procedure: RunbookProcedure;
@@ -17,6 +18,32 @@ function getRunbookStatusLabel(status: RunbookProcedure["status"]) {
   }
 }
 
+function getRunbookCardClass(status: RunbookProcedure["status"]) {
+  switch (status) {
+    case "active":
+      return styles.runbookActive;
+    case "approved":
+      return styles.runbookApproved;
+    case "draft":
+      return styles.runbookDraft;
+    default:
+      return "";
+  }
+}
+
+function getRunbookStatusBadgeClass(status: RunbookProcedure["status"]) {
+  switch (status) {
+    case "active":
+      return styles.stateBadgeActive;
+    case "approved":
+      return styles.stateBadgeApproved;
+    case "draft":
+      return styles.stateBadgeDraft;
+    default:
+      return "";
+  }
+}
+
 function getRevisionStateLabel(state: RunbookProcedure["revision"]["state"]) {
   switch (state) {
     case "published":
@@ -30,11 +57,24 @@ function getRevisionStateLabel(state: RunbookProcedure["revision"]["state"]) {
   }
 }
 
+function getRevisionStateClass(state: RunbookProcedure["revision"]["state"]) {
+  switch (state) {
+    case "published":
+      return styles.revisionPublished;
+    case "approval":
+      return styles.revisionApproval;
+    case "editing":
+      return styles.revisionEditing;
+    default:
+      return "";
+  }
+}
+
 export function ProcedureCard({ procedure }: ProcedureCardProps) {
   return (
     <article
       aria-labelledby={`${procedure.id}-title`}
-      className="rounded-[1.6rem] border border-slate-300/70 bg-white/85 p-6 shadow-[0_18px_70px_rgba(15,23,42,0.08)]"
+      className={`${styles.procedureCard} ${getRunbookCardClass(procedure.status)} rounded-[1.6rem] border p-6`}
       data-runbook-status={procedure.status}
       role="listitem"
     >
@@ -42,13 +82,19 @@ export function ProcedureCard({ procedure }: ProcedureCardProps) {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-3">
             <div className="flex flex-wrap gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
-              <span className="rounded-full border border-slate-300 bg-slate-50 px-2.5 py-1">
+              <span
+                className={`${styles.stateBadge} ${styles.neutralBadge} rounded-full border border-slate-300 px-2.5 py-1`}
+              >
                 {procedure.code}
               </span>
-              <span className="rounded-full border border-slate-300 bg-slate-50 px-2.5 py-1">
+              <span
+                className={`${styles.stateBadge} ${getRunbookStatusBadgeClass(procedure.status)} rounded-full border px-2.5 py-1`}
+              >
                 {getRunbookStatusLabel(procedure.status)}
               </span>
-              <span className="rounded-full border border-slate-300 bg-slate-50 px-2.5 py-1">
+              <span
+                className={`${styles.stateBadge} ${styles.neutralBadge} rounded-full border border-slate-300 px-2.5 py-1`}
+              >
                 {procedure.priority}
               </span>
             </div>
@@ -65,17 +111,29 @@ export function ProcedureCard({ procedure }: ProcedureCardProps) {
             </div>
           </div>
 
-          <div className="min-w-52 rounded-[1.25rem] border border-slate-200 bg-slate-50/90 px-4 py-4">
+          <div
+            className={`${styles.revisionCard} min-w-52 rounded-[1.25rem] border border-slate-200 px-4 py-4`}
+          >
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
               Revision
             </p>
             <p className="mt-2 text-lg font-semibold text-slate-950">
               {procedure.revision.version}
             </p>
-            <p className="mt-1 text-sm text-slate-600">
-              {getRevisionStateLabel(procedure.revision.state)}
+            <p className="mt-2">
+              <span
+                className={`${styles.revisionState} ${getRevisionStateClass(procedure.revision.state)}`}
+              >
+                {getRevisionStateLabel(procedure.revision.state)}
+              </span>
             </p>
             <p className="mt-3 text-sm text-slate-600">
+              Edited by {procedure.revision.editor}
+            </p>
+            <p className="mt-1 text-sm text-slate-600">
+              Reviewed by {procedure.revision.reviewer}
+            </p>
+            <p className="mt-1 text-sm text-slate-600">
               Updated {procedure.revision.updatedAt}
             </p>
           </div>
@@ -113,7 +171,9 @@ export function ProcedureCard({ procedure }: ProcedureCardProps) {
           </div>
 
           <div className="space-y-4">
-            <div className="rounded-[1.3rem] border border-slate-200 bg-slate-50/90 px-4 py-4">
+            <div
+              className={`${styles.detailPanel} rounded-[1.3rem] border border-slate-200 px-4 py-4`}
+            >
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
                 Execution preview
               </p>
@@ -149,7 +209,7 @@ export function ProcedureCard({ procedure }: ProcedureCardProps) {
                 {procedure.dependencies.map((dependency) => (
                   <li
                     key={dependency}
-                    className="rounded-full border border-slate-200 bg-white px-3 py-2"
+                    className={`${styles.tagChip} rounded-full border border-slate-200 px-3 py-2`}
                   >
                     {dependency}
                   </li>
@@ -165,7 +225,7 @@ export function ProcedureCard({ procedure }: ProcedureCardProps) {
                 {procedure.execution.outputs.map((output) => (
                   <li
                     key={output}
-                    className="rounded-2xl border border-slate-200 bg-white px-3 py-3 leading-6"
+                    className={`${styles.tagChip} rounded-2xl border border-slate-200 px-3 py-3 leading-6`}
                   >
                     {output}
                   </li>

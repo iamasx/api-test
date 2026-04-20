@@ -10,6 +10,7 @@ import {
   runbookGroups,
   runbookStudioOverview,
 } from "./_data/runbook-studio-data";
+import styles from "./runbook-studio.module.css";
 
 export const metadata: Metadata = {
   title: "Runbook Studio",
@@ -40,9 +41,11 @@ export default function RunbookStudioPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,#f5eee2_0%,#efe5d8_46%,#ddd1c4_100%)] px-6 py-12 text-slate-950 sm:px-10 lg:px-14">
+    <main className={`${styles.shell} px-6 py-12 text-slate-950 sm:px-10 lg:px-14`}>
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-        <header className="overflow-hidden rounded-[2.25rem] border border-slate-300/70 bg-[rgba(255,251,245,0.92)] p-8 shadow-[0_28px_110px_rgba(15,23,42,0.12)] sm:p-10">
+        <header
+          className={`${styles.heroPanel} overflow-hidden rounded-[2.25rem] border border-slate-300/70 p-8 sm:p-10`}
+        >
           <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
             <div className="max-w-3xl space-y-4">
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-800">
@@ -96,7 +99,7 @@ export default function RunbookStudioPage() {
             {runbookStudioOverview.stats.map((stat) => (
               <article
                 key={stat.label}
-                className="rounded-[1.5rem] border border-slate-300/70 bg-white/82 px-5 py-5 shadow-[0_16px_55px_rgba(15,23,42,0.06)]"
+                className={`${styles.statCard} rounded-[1.5rem] border border-slate-300/70 px-5 py-5`}
               >
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
                   {stat.label}
@@ -109,7 +112,9 @@ export default function RunbookStudioPage() {
                 </p>
               </article>
             ))}
-            <article className="rounded-[1.5rem] border border-slate-300/70 bg-slate-950 px-5 py-5 text-slate-50 shadow-[0_16px_55px_rgba(15,23,42,0.12)]">
+            <article
+              className={`${styles.coverageCard} rounded-[1.5rem] border border-slate-300/70 px-5 py-5 text-slate-50`}
+            >
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
                 Workflow coverage
               </p>
@@ -153,7 +158,7 @@ export default function RunbookStudioPage() {
               <section
                 key={group.id}
                 aria-labelledby={`${group.id}-heading`}
-                className="space-y-4 rounded-[2rem] border border-slate-300/70 bg-[rgba(255,251,245,0.86)] p-6 shadow-[0_22px_80px_rgba(15,23,42,0.08)]"
+                className={`${styles.groupSection} space-y-4 rounded-[2rem] border border-slate-300/70 p-6`}
               >
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                   <div className="space-y-3">
@@ -173,7 +178,9 @@ export default function RunbookStudioPage() {
                     </div>
                   </div>
 
-                  <div className="max-w-sm rounded-[1.35rem] border border-slate-300/70 bg-white/80 px-4 py-4 text-sm leading-6 text-slate-600">
+                  <div
+                    className={`${styles.groupNote} max-w-sm rounded-[1.35rem] border border-slate-300/70 px-4 py-4 text-sm leading-6 text-slate-600`}
+                  >
                     <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
                       Handoff note
                     </p>
@@ -190,13 +197,15 @@ export default function RunbookStudioPage() {
             ))}
           </div>
 
-          <RevisionSummaryPanel summary={revisionSummary} />
+          <div className={styles.summaryRail}>
+            <RevisionSummaryPanel summary={revisionSummary} />
+          </div>
         </section>
 
         <section
           id="execution-previews"
           aria-labelledby="execution-previews-heading"
-          className="space-y-5 rounded-[2.1rem] border border-slate-300/70 bg-[rgba(255,251,245,0.9)] p-6 shadow-[0_24px_90px_rgba(15,23,42,0.08)] sm:p-8"
+          className={`${styles.previewSection} space-y-5 rounded-[2.1rem] border border-slate-300/70 p-6 sm:p-8`}
         >
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-2">
