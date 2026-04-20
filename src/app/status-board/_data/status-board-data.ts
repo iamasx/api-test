@@ -32,6 +32,20 @@ export interface RegionalHealthGroup {
   services: ServiceHealthItem[];
 }
 
+export interface ResponseChecklistItem {
+  id: string;
+  title: string;
+  owner: string;
+  dueBy: string;
+  completed: boolean;
+  detail: string;
+}
+
+export interface ResponseSidebarNote {
+  label: string;
+  value: string;
+}
+
 export const statusBoardSummary = {
   eyebrow: "Status Board",
   title: "Track regional service health and response posture in one place.",
@@ -289,3 +303,57 @@ export const regionalHealthGroups = [
     ],
   },
 ] satisfies RegionalHealthGroup[];
+
+export const responseChecklist = [
+  {
+    id: "carrier-escalation",
+    title: "Confirm carrier escalation coverage for North America fanout retries",
+    owner: "Messaging platform",
+    dueBy: "Due in 9 minutes",
+    completed: false,
+    detail:
+      "Validate whether the backup routing policy should be extended through the east region peak window.",
+  },
+  {
+    id: "frankfurt-storage",
+    title: "Review Frankfurt storage recovery before reopening large export jobs",
+    owner: "Insights platform",
+    dueBy: "Due in 6 minutes",
+    completed: false,
+    detail:
+      "Keep enterprise export queues throttled until storage rehydration clears the recovery checkpoint.",
+  },
+  {
+    id: "latam-autoscale",
+    title: "Approve additional ingest workers for the Sao Paulo billing spike",
+    owner: "Records platform",
+    dueBy: "Due in 12 minutes",
+    completed: false,
+    detail:
+      "Worker saturation is increasing queue time for invoice and verification uploads across LATAM.",
+  },
+  {
+    id: "support-failover",
+    title: "Verify support intake failover after the Bogota balancer rotation",
+    owner: "Support systems",
+    dueBy: "Review in 4 minutes",
+    completed: true,
+    detail:
+      "Primary unhealthy node has been removed and active traffic is now pinned to the healthy pair.",
+  },
+] satisfies ResponseChecklistItem[];
+
+export const responseSidebarNotes = [
+  {
+    label: "Escalation lead",
+    value: "Aisha Morgan · Reliability command",
+  },
+  {
+    label: "Next operations review",
+    value: "09:00 UTC regional handoff",
+  },
+  {
+    label: "Customer advisory",
+    value: "Prepared for Europe exports and LATAM support intake",
+  },
+] satisfies ResponseSidebarNote[];
