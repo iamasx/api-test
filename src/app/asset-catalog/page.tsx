@@ -4,7 +4,8 @@ import { AssetCatalogShell } from "@/components/asset-catalog/asset-catalog-shel
 
 export const metadata: Metadata = {
   title: "Asset Catalog | API Test",
-  description: "Searchable mock asset catalog with availability filters and local reservation previews.",
+  description:
+    "Reservation planning workspace with asset forecasting, bundle recommendations, and route-local preview flows.",
 };
 
 export default function AssetCatalogPage() {
