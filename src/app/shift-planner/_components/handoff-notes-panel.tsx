@@ -1,13 +1,20 @@
 import type { HandoffNote } from "../_data/shift-planner-data";
+import styles from "../shift-planner.module.css";
 
 type HandoffNotesPanelProps = {
   notes: HandoffNote[];
 };
 
 const statusClassNames = {
-  confirmed: "border-emerald-200 bg-emerald-50/80 text-emerald-900",
-  watch: "border-amber-200 bg-amber-50/80 text-amber-900",
-  pending: "border-rose-200 bg-rose-50/80 text-rose-900",
+  confirmed: styles.toneConfirmed,
+  watch: styles.toneWatch,
+  pending: styles.tonePending,
+};
+
+const handoffCardToneClassNames = {
+  confirmed: styles.handoffConfirmed,
+  watch: styles.handoffWatch,
+  pending: styles.handoffPending,
 };
 
 export function HandoffNotesPanel({ notes }: HandoffNotesPanelProps) {
@@ -18,7 +25,7 @@ export function HandoffNotesPanel({ notes }: HandoffNotesPanelProps) {
   return (
     <aside
       aria-labelledby="shift-planner-handoffs"
-      className="rounded-[1.8rem] border border-slate-200 bg-white/85 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)]"
+      className={`${styles.panelCard} rounded-[1.8rem] p-6`}
     >
       <div className="space-y-6">
         <div className="space-y-3">
@@ -38,7 +45,7 @@ export function HandoffNotesPanel({ notes }: HandoffNotesPanelProps) {
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">
-          <div className="rounded-[1.3rem] border border-slate-200 bg-slate-50/80 px-4 py-4">
+          <div className={`${styles.warningStat} rounded-[1.3rem] px-4 py-4`}>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               Confirmed
             </p>
@@ -46,7 +53,7 @@ export function HandoffNotesPanel({ notes }: HandoffNotesPanelProps) {
               {confirmedNotes}
             </p>
           </div>
-          <div className="rounded-[1.3rem] border border-slate-200 bg-slate-50/80 px-4 py-4">
+          <div className={`${styles.warningStat} rounded-[1.3rem] px-4 py-4`}>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               On watch
             </p>
@@ -54,7 +61,7 @@ export function HandoffNotesPanel({ notes }: HandoffNotesPanelProps) {
               {watchNotes}
             </p>
           </div>
-          <div className="rounded-[1.3rem] border border-slate-200 bg-slate-50/80 px-4 py-4">
+          <div className={`${styles.warningStat} rounded-[1.3rem] px-4 py-4`}>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               Pending
             </p>
@@ -68,7 +75,7 @@ export function HandoffNotesPanel({ notes }: HandoffNotesPanelProps) {
           {notes.map((note) => (
             <article
               key={note.id}
-              className="rounded-[1.45rem] border border-slate-200 bg-slate-50/80 p-5"
+              className={`${styles.handoffCard} ${handoffCardToneClassNames[note.status]} rounded-[1.45rem] p-5`}
               role="listitem"
             >
               <div className="flex items-start justify-between gap-4">
@@ -82,7 +89,7 @@ export function HandoffNotesPanel({ notes }: HandoffNotesPanelProps) {
                 </div>
 
                 <span
-                  className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${statusClassNames[note.status]}`}
+                  className={`${styles.toneBadge} ${statusClassNames[note.status]}`}
                 >
                   {note.status}
                 </span>
@@ -92,11 +99,14 @@ export function HandoffNotesPanel({ notes }: HandoffNotesPanelProps) {
                 {note.summary}
               </p>
 
-              <div className="mt-4 rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4">
+              <div className={`${styles.infoBlock} mt-4 rounded-[1.2rem] px-4 py-4`}>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                   Blocking context
                 </p>
-                <ul className="mt-3 space-y-3" aria-label={`${note.title} blockers`}>
+                <ul
+                  className={styles.bulletList}
+                  aria-label={`${note.title} blockers`}
+                >
                   {note.blockers.map((blocker) => (
                     <li key={blocker} className="text-sm leading-6 text-slate-700">
                       {blocker}
@@ -105,7 +115,7 @@ export function HandoffNotesPanel({ notes }: HandoffNotesPanelProps) {
                 </ul>
               </div>
 
-              <div className="mt-4 rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4">
+              <div className={`${styles.infoBlock} mt-4 rounded-[1.2rem] px-4 py-4`}>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                   Next step
                 </p>

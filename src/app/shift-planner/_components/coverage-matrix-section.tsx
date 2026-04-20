@@ -3,22 +3,23 @@ import type {
   CoverageLane,
   CoverageSegmentView,
 } from "../_data/shift-planner-data";
+import styles from "../shift-planner.module.css";
 
 type CoverageMatrixSectionProps = {
   segment: CoverageSegmentView;
 };
 
 const cellToneClassNames = {
-  staffed: "border-emerald-200 bg-emerald-50/70 text-emerald-950",
-  thin: "border-amber-200 bg-amber-50/80 text-amber-950",
-  missing: "border-rose-200 bg-rose-50/80 text-rose-950",
-  flex: "border-sky-200 bg-sky-50/80 text-sky-950",
+  staffed: styles.coverageStaffed,
+  thin: styles.coverageThin,
+  missing: styles.coverageMissing,
+  flex: styles.coverageFlex,
 };
 
 const summaryToneClassNames = {
-  steady: "border-emerald-200 bg-emerald-50/70 text-emerald-900",
-  watch: "border-amber-200 bg-amber-50/80 text-amber-900",
-  risk: "border-rose-200 bg-rose-50/80 text-rose-900",
+  steady: styles.segmentMetricToneSteady,
+  watch: styles.segmentMetricToneWatch,
+  risk: styles.segmentMetricToneRisk,
 };
 
 function getCell(lane: CoverageLane, roleId: string) {
@@ -43,7 +44,7 @@ export function CoverageMatrixSection({
   return (
     <article
       aria-labelledby={headingId}
-      className="rounded-[1.8rem] border border-slate-200 bg-white/85 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)]"
+      className={`${styles.segmentCard} rounded-[1.8rem] p-6`}
       role="listitem"
     >
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
@@ -74,7 +75,7 @@ export function CoverageMatrixSection({
         {segment.summaries.map((summary) => (
           <div
             key={summary.id}
-            className={`rounded-[1.35rem] border px-4 py-4 ${summaryToneClassNames[summary.tone]}`}
+            className={`${styles.segmentMetric} ${summaryToneClassNames[summary.tone]} rounded-[1.35rem] px-4 py-4`}
           >
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em]">
               {summary.label}
@@ -92,7 +93,7 @@ export function CoverageMatrixSection({
       <div className="mt-6 overflow-x-auto">
         <table
           aria-label={segment.label}
-          className="min-w-[1020px] w-full border-separate border-spacing-y-3"
+          className={`${styles.matrixTable} min-w-[1020px] w-full`}
         >
           <thead>
             <tr className="text-left align-bottom text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -116,7 +117,7 @@ export function CoverageMatrixSection({
             {segment.lanes.map((lane) => (
               <tr key={lane.id} className="align-top">
                 <th
-                  className="rounded-l-[1.4rem] border border-r-0 border-slate-200 bg-slate-50/80 px-4 py-4 text-left"
+                  className={`${styles.laneCell} px-4 py-4 text-left`}
                   scope="row"
                 >
                   <div className="space-y-2">
@@ -127,7 +128,7 @@ export function CoverageMatrixSection({
                   </div>
                 </th>
 
-                <td className="border border-l-0 border-r-0 border-slate-200 bg-slate-50/80 px-4 py-4">
+                <td className={`${styles.focusCell} px-4 py-4`}>
                   <div className="space-y-2 text-sm text-slate-600">
                     <p className="font-medium text-slate-900">{lane.focus}</p>
                     <p>{lane.queueDepth}</p>
@@ -136,14 +137,17 @@ export function CoverageMatrixSection({
 
                 {segment.columns.map((column) => {
                   const cell = getCell(lane, column.id);
+                  const isFirstColumn = column.id === segment.columns[0]?.id;
+                  const isLastColumn =
+                    column.id === segment.columns[segment.columns.length - 1]?.id;
 
                   return (
                     <td
                       key={`${lane.id}-${column.id}`}
-                      className="border border-l-0 border-r-0 border-slate-200 bg-slate-50/80 px-3 py-4"
+                      className={`${styles.coverageCellWrap} ${isFirstColumn ? styles.coverageCellWrapFirst : ""} ${isLastColumn ? styles.coverageCellWrapLast : ""} px-3 py-4`}
                     >
                       <div
-                        className={`rounded-[1.25rem] border px-3 py-3 ${cellToneClassNames[cell.tone]}`}
+                        className={`${styles.coverageCell} ${cellToneClassNames[cell.tone]}`}
                       >
                         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] opacity-80">
                           {formatCoverageValue(cell)}
@@ -159,7 +163,7 @@ export function CoverageMatrixSection({
                   );
                 })}
 
-                <td className="rounded-r-[1.4rem] border border-l-0 border-slate-200 bg-slate-50/80 px-4 py-4">
+                <td className={`${styles.noteCell} px-4 py-4`}>
                   <p className="text-sm leading-6 text-slate-600">{lane.note}</p>
                 </td>
               </tr>

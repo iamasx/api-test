@@ -2,6 +2,7 @@ import type {
   CoverageSegment,
   OpenShiftWarning,
 } from "../_data/shift-planner-data";
+import styles from "../shift-planner.module.css";
 
 type StaffingWarningPanelProps = {
   warnings: OpenShiftWarning[];
@@ -9,8 +10,13 @@ type StaffingWarningPanelProps = {
 };
 
 const severityClassNames = {
-  watch: "border-amber-200 bg-amber-50/80 text-amber-900",
-  critical: "border-rose-200 bg-rose-50/80 text-rose-900",
+  watch: styles.toneWatch,
+  critical: styles.toneCritical,
+};
+
+const warningCardToneClassNames = {
+  watch: styles.warningWatch,
+  critical: styles.warningCritical,
 };
 
 function getSegmentLabelMap(segments: Pick<CoverageSegment, "id" | "label">[]) {
@@ -33,7 +39,7 @@ export function StaffingWarningPanel({
   return (
     <aside
       aria-labelledby="shift-planner-warnings"
-      className="rounded-[1.8rem] border border-slate-200 bg-white/85 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)]"
+      className={`${styles.panelCard} rounded-[1.8rem] p-6`}
     >
       <div className="space-y-6">
         <div className="space-y-3">
@@ -53,7 +59,7 @@ export function StaffingWarningPanel({
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">
-          <div className="rounded-[1.3rem] border border-slate-200 bg-slate-50/80 px-4 py-4">
+          <div className={`${styles.warningStat} rounded-[1.3rem] px-4 py-4`}>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               Active warnings
             </p>
@@ -61,7 +67,7 @@ export function StaffingWarningPanel({
               {warnings.length}
             </p>
           </div>
-          <div className="rounded-[1.3rem] border border-slate-200 bg-slate-50/80 px-4 py-4">
+          <div className={`${styles.warningStat} rounded-[1.3rem] px-4 py-4`}>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               Critical warnings
             </p>
@@ -78,7 +84,7 @@ export function StaffingWarningPanel({
           {warnings.map((warning) => (
             <article
               key={warning.id}
-              className="rounded-[1.45rem] border border-slate-200 bg-slate-50/80 p-5"
+              className={`${styles.warningCard} ${warningCardToneClassNames[warning.severity]} rounded-[1.45rem] p-5`}
               role="listitem"
             >
               <div className="flex items-start justify-between gap-4">
@@ -92,7 +98,7 @@ export function StaffingWarningPanel({
                 </div>
 
                 <span
-                  className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${severityClassNames[warning.severity]}`}
+                  className={`${styles.toneBadge} ${severityClassNames[warning.severity]}`}
                 >
                   {warning.severity}
                 </span>
@@ -106,14 +112,14 @@ export function StaffingWarningPanel({
                 {warning.affectedSegments.map((segmentId) => (
                   <span
                     key={`${warning.id}-${segmentId}`}
-                    className="rounded-full border border-slate-300 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600"
+                    className={`${styles.segmentPill} rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-600`}
                   >
                     {segmentLabelMap[segmentId]}
                   </span>
                 ))}
               </div>
 
-              <div className="mt-4 rounded-[1.2rem] border border-slate-200 bg-white px-4 py-4">
+              <div className={`${styles.infoBlock} mt-4 rounded-[1.2rem] px-4 py-4`}>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                   Recommended move
                 </p>
