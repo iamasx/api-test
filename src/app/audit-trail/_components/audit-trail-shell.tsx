@@ -169,16 +169,21 @@ export function AuditTrailShell({ view }: AuditTrailShellProps) {
               </p>
             </div>
 
-            <div className="mt-6 grid gap-4">
+            <ul
+              role="list"
+              aria-label="Review flags"
+              className="mt-6 grid gap-4"
+            >
               {view.reviewFlags.map(({ flag, entry, reviewer }) => (
-                <ReviewFlagCard
-                  key={flag.id}
-                  flag={flag}
-                  reviewer={reviewer}
-                  entryTitle={entry.title}
-                />
+                <li key={flag.id}>
+                  <ReviewFlagCard
+                    flag={flag}
+                    reviewer={reviewer}
+                    entryTitle={entry.title}
+                  />
+                </li>
               ))}
-            </div>
+            </ul>
           </section>
         </aside>
       </div>
