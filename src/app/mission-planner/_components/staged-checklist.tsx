@@ -22,6 +22,12 @@ const taskStatusStyles: Record<TaskStatus, string> = {
   pending: "border-slate-300/18 bg-slate-200/8 text-slate-100",
 };
 
+const taskStatusDotStyles: Record<TaskStatus, string> = {
+  done: "bg-emerald-300",
+  watch: "bg-amber-300",
+  pending: "bg-slate-300/70",
+};
+
 const taskStatusLabels: Record<TaskStatus, string> = {
   done: "Done",
   watch: "Watch",
@@ -54,18 +60,27 @@ export function StagedChecklist({ stages }: StagedChecklistProps) {
       </div>
 
       <div className="grid gap-5 xl:grid-cols-3" role="list" aria-label="Mission stages">
-        {stages.map((stage) => (
+        {stages.map((stage, index) => (
           <article
             key={stage.id}
-            className="rounded-[1.8rem] border border-white/10 bg-slate-950/55 p-6 shadow-[0_24px_60px_rgba(2,6,23,0.26)]"
+            className="relative overflow-hidden rounded-[1.8rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.82),rgba(9,15,28,0.94))] p-6 shadow-[0_24px_60px_rgba(2,6,23,0.26)]"
             role="listitem"
           >
+            <div
+              aria-hidden
+              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent"
+            />
             <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <p className="text-sm font-medium text-slate-300">{stage.window}</p>
-                <h3 className="mt-2 text-2xl font-semibold tracking-tight text-white">
-                  {stage.name}
-                </h3>
+              <div className="flex items-start gap-4">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/6 text-sm font-semibold text-white">
+                  {index + 1}
+                </span>
+                <div>
+                  <p className="text-sm font-medium text-slate-300">{stage.window}</p>
+                  <h3 className="mt-2 text-2xl font-semibold tracking-tight text-white">
+                    {stage.name}
+                  </h3>
+                </div>
               </div>
               <span
                 className={`inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${stageStatusStyles[stage.status]}`}
@@ -74,7 +89,12 @@ export function StagedChecklist({ stages }: StagedChecklistProps) {
               </span>
             </div>
 
-            <p className="mt-4 text-sm leading-6 text-slate-300">{stage.focus}</p>
+            <div className="mt-4 rounded-[1.4rem] border border-white/8 bg-white/5 px-4 py-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Stage focus
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-300">{stage.focus}</p>
+            </div>
 
             <ul className="mt-5 space-y-3">
               {stage.tasks.map((task) => (
@@ -83,11 +103,17 @@ export function StagedChecklist({ stages }: StagedChecklistProps) {
                   className="rounded-[1.4rem] border border-white/8 bg-white/5 px-4 py-4"
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div>
-                      <p className="text-sm font-semibold text-white">{task.label}</p>
-                      <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-                        {task.owner}
-                      </p>
+                    <div className="flex items-start gap-3">
+                      <span
+                        aria-hidden
+                        className={`mt-2 h-2.5 w-2.5 shrink-0 rounded-full ${taskStatusDotStyles[task.status]}`}
+                      />
+                      <div>
+                        <p className="text-sm font-semibold text-white">{task.label}</p>
+                        <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                          {task.owner}
+                        </p>
+                      </div>
                     </div>
                     <span
                       className={`inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${taskStatusStyles[task.status]}`}

@@ -18,6 +18,12 @@ const priorityLabels: Record<MissionPriority, string> = {
   watch: "Watch branch",
 };
 
+const priorityGlowStyles: Record<MissionPriority, string> = {
+  critical: "bg-rose-300/30",
+  timed: "bg-amber-300/26",
+  watch: "bg-sky-300/24",
+};
+
 type ScenarioCardProps = {
   scenario: MissionScenario;
 };
@@ -25,19 +31,35 @@ type ScenarioCardProps = {
 export function ScenarioCard({ scenario }: ScenarioCardProps) {
   return (
     <article
-      className="rounded-[1.8rem] border border-white/10 bg-slate-950/55 p-6 shadow-[0_24px_60px_rgba(2,6,23,0.28)] backdrop-blur"
+      className="group relative overflow-hidden rounded-[1.8rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.82),rgba(9,15,28,0.9))] p-6 shadow-[0_24px_60px_rgba(2,6,23,0.28)] backdrop-blur transition-transform duration-300 hover:-translate-y-1"
       role="listitem"
     >
+      <div
+        aria-hidden
+        className={`absolute left-6 top-0 h-24 w-32 -translate-y-1/3 rounded-full blur-3xl transition-opacity duration-300 group-hover:opacity-100 ${priorityGlowStyles[scenario.priority]}`}
+      />
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"
+      />
+
       <div className="flex flex-wrap items-start justify-between gap-3">
         <span
           className={`inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] ${priorityStyles[scenario.priority]}`}
         >
           {priorityLabels[scenario.priority]}
         </span>
-        <p className="text-sm font-medium text-slate-300">{scenario.launchWindow}</p>
+        <div className="text-right">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+            Window
+          </p>
+          <p className="mt-1 text-sm font-medium text-slate-200">
+            {scenario.launchWindow}
+          </p>
+        </div>
       </div>
 
-      <div className="mt-5 space-y-3">
+      <div className="relative mt-5 space-y-3">
         <h3 className="text-2xl font-semibold tracking-tight text-white">
           {scenario.title}
         </h3>
@@ -70,9 +92,13 @@ export function ScenarioCard({ scenario }: ScenarioCardProps) {
           {scenario.checkpoints.map((checkpoint) => (
             <li
               key={checkpoint}
-              className="rounded-2xl border border-white/8 bg-slate-900/80 px-4 py-3 text-sm leading-6 text-slate-200"
+              className="flex gap-3 rounded-2xl border border-white/8 bg-slate-900/80 px-4 py-3 text-sm leading-6 text-slate-200"
             >
-              {checkpoint}
+              <span
+                aria-hidden
+                className={`mt-2 h-2.5 w-2.5 shrink-0 rounded-full ${priorityGlowStyles[scenario.priority]}`}
+              />
+              <span>{checkpoint}</span>
             </li>
           ))}
         </ul>

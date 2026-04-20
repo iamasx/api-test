@@ -10,6 +10,15 @@ const signalToneStyles: Record<MissionReadinessTone, string> = {
   blocked: "border-rose-300/25 bg-rose-300/10 text-rose-50",
 };
 
+const signalSurfaceStyles: Record<MissionReadinessTone, string> = {
+  ready:
+    "border-emerald-300/14 bg-[linear-gradient(180deg,rgba(16,185,129,0.14),rgba(15,23,42,0.45))]",
+  watch:
+    "border-amber-300/14 bg-[linear-gradient(180deg,rgba(245,158,11,0.14),rgba(15,23,42,0.45))]",
+  blocked:
+    "border-rose-300/14 bg-[linear-gradient(180deg,rgba(244,63,94,0.14),rgba(15,23,42,0.45))]",
+};
+
 const signalToneLabels: Record<MissionReadinessTone, string> = {
   ready: "Ready",
   watch: "Watch",
@@ -28,7 +37,7 @@ export function ReadinessSummary({
   return (
     <section
       aria-label="Mission readiness summary"
-      className="rounded-[2rem] border border-white/10 bg-white/7 p-6 shadow-[0_28px_80px_rgba(2,6,23,0.28)] backdrop-blur"
+      className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(15,23,42,0.16))] p-6 shadow-[0_28px_80px_rgba(2,6,23,0.28)] backdrop-blur xl:sticky xl:top-8"
     >
       <div className="space-y-3">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-300">
@@ -44,11 +53,11 @@ export function ReadinessSummary({
         </p>
       </div>
 
-      <div className="mt-6 grid gap-3">
+      <div className="mt-6 grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="rounded-[1.5rem] border border-white/8 bg-slate-950/45 px-4 py-4"
+            className="rounded-[1.5rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.78),rgba(9,15,28,0.92))] px-4 py-4"
           >
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
               {stat.label}
@@ -65,7 +74,7 @@ export function ReadinessSummary({
         {signals.map((signal) => (
           <article
             key={signal.id}
-            className="rounded-[1.5rem] border border-white/8 bg-slate-950/40 px-4 py-4"
+            className={`rounded-[1.5rem] border px-4 py-4 ${signalSurfaceStyles[signal.tone]}`}
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>

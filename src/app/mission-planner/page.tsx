@@ -28,9 +28,21 @@ export default function MissionPlannerPage() {
   ).length;
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.18),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.22),transparent_28%),linear-gradient(180deg,#0f172a_0%,#111827_52%,#172033_100%)] px-6 py-12 text-slate-50 sm:px-10 lg:px-14">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8">
-        <header className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/6 p-8 shadow-[0_32px_120px_rgba(2,6,23,0.45)] backdrop-blur sm:p-10">
+    <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.18),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.22),transparent_28%),linear-gradient(180deg,#0f172a_0%,#111827_52%,#172033_100%)] px-6 py-12 text-slate-50 sm:px-10 lg:px-14">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top,rgba(125,211,252,0.16),transparent_46%)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-0 left-0 h-80 w-80 rounded-full bg-amber-300/10 blur-3xl"
+      />
+      <div className="relative mx-auto flex max-w-6xl flex-col gap-8">
+        <header className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(15,23,42,0.12))] p-8 shadow-[0_32px_120px_rgba(2,6,23,0.45)] backdrop-blur sm:p-10">
+          <div
+            aria-hidden
+            className="absolute -right-12 top-8 h-36 w-36 rounded-full border border-sky-200/12 bg-sky-300/10 blur-2xl"
+          />
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl space-y-4">
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-200/78">
@@ -69,7 +81,7 @@ export default function MissionPlannerPage() {
         </header>
 
         <section className="grid gap-6 xl:grid-cols-[minmax(0,1.18fr)_minmax(320px,0.82fr)]">
-          <div className="rounded-[1.9rem] border border-white/10 bg-slate-950/45 p-6 shadow-[0_28px_80px_rgba(2,6,23,0.28)]">
+          <div className="rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.68),rgba(9,15,28,0.9))] p-6 shadow-[0_28px_80px_rgba(2,6,23,0.28)]">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
               <div className="space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-300">
@@ -89,7 +101,7 @@ export default function MissionPlannerPage() {
               {missionPlannerSummary.stats.map((stat) => (
                 <article
                   key={stat.label}
-                  className="rounded-[1.5rem] border border-white/8 bg-white/6 px-5 py-5"
+                  className="rounded-[1.5rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(15,23,42,0.22))] px-5 py-5"
                 >
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
                     {stat.label}
@@ -105,7 +117,7 @@ export default function MissionPlannerPage() {
             </div>
           </div>
 
-          <aside className="rounded-[1.9rem] border border-white/10 bg-white/7 p-6 shadow-[0_28px_80px_rgba(2,6,23,0.28)] backdrop-blur">
+          <aside className="rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(15,23,42,0.2))] p-6 shadow-[0_28px_80px_rgba(2,6,23,0.28)] backdrop-blur">
             <div className="space-y-5">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-300">
