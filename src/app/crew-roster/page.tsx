@@ -4,6 +4,7 @@ import { CrewRosterView, getCrewRosterView } from "./_data/crew-roster-data";
 import { DutyRotationPanel } from "./_components/duty-rotation-panel";
 import { ShiftGroupSection } from "./_components/shift-group-section";
 import { StaffingSummaryCard } from "./_components/staffing-summary-card";
+import styles from "./crew-roster.module.css";
 
 export const metadata: Metadata = {
   title: "Crew Roster",
@@ -13,8 +14,10 @@ export const metadata: Metadata = {
 
 function HeroStats({ view }: { view: CrewRosterView }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-3 xl:grid-cols-1">
-      <div className="rounded-[1.5rem] border border-white/10 bg-white/8 p-5">
+    <div className={`grid gap-4 sm:grid-cols-3 xl:grid-cols-1 ${styles.heroStatsGrid}`}>
+      <div
+        className={`rounded-[1.5rem] border border-white/10 bg-white/8 p-5 ${styles.heroStatCard}`}
+      >
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50">
           Staffed seats
         </p>
@@ -27,7 +30,9 @@ function HeroStats({ view }: { view: CrewRosterView }) {
         </p>
       </div>
 
-      <div className="rounded-[1.5rem] border border-white/10 bg-white/8 p-5">
+      <div
+        className={`rounded-[1.5rem] border border-white/10 bg-white/8 p-5 ${styles.heroStatCard}`}
+      >
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50">
           Shift groups
         </p>
@@ -40,7 +45,9 @@ function HeroStats({ view }: { view: CrewRosterView }) {
         </p>
       </div>
 
-      <div className="rounded-[1.5rem] border border-white/10 bg-white/8 p-5">
+      <div
+        className={`rounded-[1.5rem] border border-white/10 bg-white/8 p-5 ${styles.heroStatCard}`}
+      >
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50">
           Open roles
         </p>
@@ -60,9 +67,11 @@ export default function CrewRosterPage() {
 
   return (
     <main className="mx-auto flex w-full max-w-[96rem] flex-1 flex-col gap-8 px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
-      <section className="overflow-hidden rounded-[2.3rem] border border-slate-200 bg-slate-950 text-white shadow-[0_36px_120px_rgba(15,23,42,0.2)]">
+      <section
+        className={`overflow-hidden rounded-[2.3rem] border border-slate-200 bg-slate-950 text-white shadow-[0_36px_120px_rgba(15,23,42,0.2)] ${styles.heroSurface}`}
+      >
         <div className="grid gap-8 px-6 py-8 sm:px-8 sm:py-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.85fr)] lg:px-10 lg:py-12">
-          <div className="space-y-6">
+          <div className={`space-y-6 ${styles.heroPanel}`}>
             <div className="flex flex-wrap items-center gap-3">
               <p className="rounded-full bg-[#f7b267] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-950">
                 {view.summary.eyebrow}
@@ -96,7 +105,9 @@ export default function CrewRosterPage() {
               </a>
             </div>
 
-            <div className="rounded-[1.5rem] border border-white/10 bg-white/6 px-5 py-4">
+            <div
+              className={`rounded-[1.5rem] border border-white/10 bg-white/6 px-5 py-4 ${styles.heroStatCard}`}
+            >
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50">
                 Handoff window
               </p>

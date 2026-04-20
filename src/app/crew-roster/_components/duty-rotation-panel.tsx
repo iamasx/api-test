@@ -2,6 +2,7 @@ import type {
   DutyRotationEntry,
   DutyRotationPriority,
 } from "../_data/crew-roster-data";
+import styles from "../crew-roster.module.css";
 
 const priorityClasses = {
   Primary: "border-sky-200 bg-sky-50 text-sky-950",
@@ -19,7 +20,7 @@ export function DutyRotationPanel({
   return (
     <section
       aria-labelledby="duty-rotation-title"
-      className="rounded-[2rem] border border-slate-200 bg-slate-950 p-6 text-white shadow-[0_30px_90px_rgba(15,23,42,0.2)] sm:p-7"
+      className={`rounded-[2rem] border border-slate-200 bg-slate-950 p-6 text-white shadow-[0_30px_90px_rgba(15,23,42,0.2)] sm:p-7 ${styles.rotationShell}`}
     >
       <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <div className="space-y-4">
@@ -46,7 +47,9 @@ export function DutyRotationPanel({
           </div>
 
           {spotlight ? (
-            <article className="rounded-[1.6rem] border border-white/10 bg-white/8 p-5">
+            <article
+              className={`rounded-[1.6rem] border border-white/10 bg-white/8 p-5 ${styles.rotationSpotlight}`}
+            >
               <div className="flex flex-wrap items-center gap-3">
                 <span
                   className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${priorityClasses[spotlight.priority]}`}
@@ -78,7 +81,7 @@ export function DutyRotationPanel({
           {entries.map((entry) => (
             <article
               key={entry.id}
-              className="rounded-[1.35rem] border border-white/10 bg-white/6 px-4 py-4"
+              className={`rounded-[1.35rem] border border-white/10 bg-white/6 px-4 py-4 ${styles.rotationItem}`}
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>

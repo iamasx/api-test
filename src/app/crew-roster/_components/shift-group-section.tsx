@@ -1,4 +1,5 @@
 import type { CrewRosterView } from "../_data/crew-roster-data";
+import styles from "../crew-roster.module.css";
 import { CrewTeamCard } from "./crew-team-card";
 
 type ShiftGroupSectionProps = {
@@ -9,7 +10,8 @@ export function ShiftGroupSection({ shiftGroup }: ShiftGroupSectionProps) {
   return (
     <section
       aria-labelledby={`${shiftGroup.id}-title`}
-      className="rounded-[2rem] border border-slate-200 bg-white/90 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.06)] sm:p-7"
+      className={`rounded-[2rem] border border-slate-200 bg-white/90 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.06)] sm:p-7 ${styles.shiftSection}`}
+      data-shift={shiftGroup.id}
     >
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
         <div className="space-y-3">
@@ -36,7 +38,9 @@ export function ShiftGroupSection({ shiftGroup }: ShiftGroupSectionProps) {
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[22rem]">
-          <div className="rounded-[1.25rem] border border-slate-200 bg-slate-50 px-4 py-4">
+          <div
+            className={`rounded-[1.25rem] border border-slate-200 bg-slate-50 px-4 py-4 ${styles.shiftMetricCard}`}
+          >
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
               Shift staffing
             </p>
@@ -48,7 +52,9 @@ export function ShiftGroupSection({ shiftGroup }: ShiftGroupSectionProps) {
             </p>
           </div>
 
-          <div className="rounded-[1.25rem] border border-slate-200 bg-slate-50 px-4 py-4">
+          <div
+            className={`rounded-[1.25rem] border border-slate-200 bg-slate-50 px-4 py-4 ${styles.shiftMetricCard}`}
+          >
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
               Handoff lead
             </p>

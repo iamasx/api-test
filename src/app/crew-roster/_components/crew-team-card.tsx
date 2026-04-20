@@ -3,6 +3,7 @@ import {
   type CrewTeam,
   type CrewCoverageTone,
 } from "../_data/crew-roster-data";
+import styles from "../crew-roster.module.css";
 
 const toneClasses = {
   stable: "border-slate-200 bg-white",
@@ -29,7 +30,7 @@ export function CrewTeamCard({ team }: { team: CrewTeam }) {
   return (
     <article
       aria-labelledby={`${team.id}-title`}
-      className={`rounded-[1.6rem] border p-5 shadow-[0_20px_50px_rgba(15,23,42,0.06)] ${toneClasses[tone]}`}
+      className={`rounded-[1.6rem] border p-5 shadow-[0_20px_50px_rgba(15,23,42,0.06)] ${styles.teamCard} ${toneClasses[tone]}`}
       data-tone={tone}
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -55,7 +56,9 @@ export function CrewTeamCard({ team }: { team: CrewTeam }) {
           </div>
         </div>
 
-        <div className="rounded-[1.15rem] border border-slate-200 bg-white/80 px-4 py-3 text-right shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+        <div
+          className={`rounded-[1.15rem] border border-slate-200 bg-white/80 px-4 py-3 text-right shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] ${styles.teamStatCard}`}
+        >
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
             Staffing
           </p>
@@ -70,7 +73,9 @@ export function CrewTeamCard({ team }: { team: CrewTeam }) {
 
       <p className="mt-4 text-sm leading-7 text-slate-700">{team.objective}</p>
 
-      <div className="mt-5 rounded-[1.35rem] border border-dashed border-slate-200 bg-white/75 px-4 py-4">
+      <div
+        className={`mt-5 rounded-[1.35rem] border border-dashed border-slate-200 bg-white/75 px-4 py-4 ${styles.staffingNote}`}
+      >
         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
           Staffing note
         </p>
@@ -81,7 +86,7 @@ export function CrewTeamCard({ team }: { team: CrewTeam }) {
         {team.roleSlots.map((slot) => (
           <div
             key={slot.id}
-            className="rounded-[1.25rem] border border-slate-200 bg-white/85 px-4 py-4"
+            className={`rounded-[1.25rem] border border-slate-200 bg-white/85 px-4 py-4 ${styles.roleSlot}`}
           >
             <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               {slot.title}
