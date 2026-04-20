@@ -1,0 +1,197 @@
+.shell {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 14% 12%, rgba(34, 211, 238, 0.14), transparent 22%),
+    radial-gradient(circle at 86% 16%, rgba(56, 189, 248, 0.18), transparent 24%),
+    radial-gradient(circle at 52% 100%, rgba(245, 158, 11, 0.18), transparent 28%),
+    linear-gradient(180deg, #08111f 0%, #0e1c34 44%, #030712 100%);
+}
+
+.shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(125deg, rgba(255, 255, 255, 0.03), transparent 45%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(148, 163, 184, 0.06) 0,
+      rgba(148, 163, 184, 0.06) 1px,
+      transparent 1px,
+      transparent 72px
+    );
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95), transparent 96%);
+}
+
+.heroPanel {
+  position: relative;
+  background:
+    linear-gradient(140deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.58)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(15, 23, 42, 0.12));
+  box-shadow: 0 38px 120px rgba(2, 6, 23, 0.42);
+}
+
+.heroPanel::after {
+  content: "";
+  position: absolute;
+  right: -5rem;
+  top: -4rem;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.22), transparent 66%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.surfacePanel {
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.76), rgba(8, 15, 30, 0.92));
+  box-shadow: 0 30px 90px rgba(2, 6, 23, 0.24);
+}
+
+.statCard {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(15, 23, 42, 0.28));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.signalCard {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(15, 23, 42, 0.34));
+}
+
+.signalOnTime {
+  border-color: rgba(52, 211, 153, 0.24);
+  box-shadow: inset 0 1px 0 rgba(52, 211, 153, 0.08);
+}
+
+.signalDelayed {
+  border-color: rgba(251, 191, 36, 0.24);
+  box-shadow: inset 0 1px 0 rgba(251, 191, 36, 0.08);
+}
+
+.signalBlocked {
+  border-color: rgba(251, 113, 133, 0.3);
+  box-shadow: inset 0 1px 0 rgba(251, 113, 133, 0.1);
+}
+
+.constraintCard {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(15, 23, 42, 0.32));
+}
+
+.constraintClear {
+  border-color: rgba(34, 211, 238, 0.22);
+}
+
+.constraintWatch {
+  border-color: rgba(251, 191, 36, 0.22);
+}
+
+.constraintCritical {
+  border-color: rgba(251, 113, 133, 0.28);
+}
+
+.segmentCard {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.82), rgba(6, 11, 24, 0.94));
+  box-shadow: 0 26px 70px rgba(2, 6, 23, 0.26);
+}
+
+.segmentCard::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.25rem;
+  bottom: 1.25rem;
+  width: 0.35rem;
+  border-radius: 9999px;
+  opacity: 0.95;
+}
+
+.segmentOnTime {
+  border-color: rgba(52, 211, 153, 0.2);
+}
+
+.segmentOnTime::before {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.95), rgba(6, 182, 212, 0.85));
+  box-shadow: 0 0 24px rgba(52, 211, 153, 0.35);
+}
+
+.segmentDelayed {
+  border-color: rgba(251, 191, 36, 0.22);
+}
+
+.segmentDelayed::before {
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.98), rgba(249, 115, 22, 0.88));
+  box-shadow: 0 0 24px rgba(251, 191, 36, 0.35);
+}
+
+.segmentBlocked {
+  border-color: rgba(251, 113, 133, 0.28);
+}
+
+.segmentBlocked::before {
+  background: linear-gradient(180deg, rgba(244, 63, 94, 0.98), rgba(190, 24, 93, 0.88));
+  box-shadow: 0 0 24px rgba(251, 113, 133, 0.35);
+}
+
+.statusBadge {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.sidebarPanel {
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.82), rgba(10, 17, 31, 0.95));
+  box-shadow: 0 30px 100px rgba(2, 6, 23, 0.28);
+}
+
+.stickyRail {
+  position: sticky;
+  top: 2rem;
+}
+
+.decisionCard {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(15, 23, 42, 0.28));
+}
+
+.decisionReady {
+  border-color: rgba(34, 211, 238, 0.22);
+}
+
+.decisionReview {
+  border-color: rgba(251, 191, 36, 0.24);
+}
+
+.decisionHold {
+  border-color: rgba(251, 113, 133, 0.3);
+}
+
+.floatingInfo {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(15, 23, 42, 0.26));
+}
+
+@media (max-width: 1279px) {
+  .stickyRail {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .heroPanel,
+  .surfacePanel,
+  .sidebarPanel,
+  .segmentCard,
+  .statCard {
+    border-radius: 1.5rem;
+  }
+
+  .segmentCard::before {
+    top: 1rem;
+    bottom: 1rem;
+  }
+}
