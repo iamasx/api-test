@@ -7,8 +7,10 @@ type ProcedureFilterBarProps = {
   activeCategoryId: string;
   searchValue: string;
   resultCount: number;
+  canReset: boolean;
   onCategoryChange: (categoryId: string) => void;
   onSearchChange: (value: string) => void;
+  onReset: () => void;
 };
 
 export function ProcedureFilterBar({
@@ -16,8 +18,10 @@ export function ProcedureFilterBar({
   activeCategoryId,
   searchValue,
   resultCount,
+  canReset,
   onCategoryChange,
   onSearchChange,
+  onReset,
 }: ProcedureFilterBarProps) {
   function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
     onSearchChange(event.target.value);
@@ -39,8 +43,19 @@ export function ProcedureFilterBar({
           </p>
         </div>
 
-        <div className="rounded-[1.4rem] border border-teal-200 bg-teal-50 px-4 py-3 text-sm font-medium text-teal-900">
-          {resultCount} procedure{resultCount === 1 ? "" : "s"} visible
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="rounded-[1.4rem] border border-teal-200 bg-teal-50 px-4 py-3 text-sm font-medium text-teal-900">
+            {resultCount} procedure{resultCount === 1 ? "" : "s"} visible
+          </div>
+          {canReset ? (
+            <button
+              type="button"
+              onClick={onReset}
+              className="rounded-[1.2rem] border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
+            >
+              Reset filters
+            </button>
+          ) : null}
         </div>
       </div>
 

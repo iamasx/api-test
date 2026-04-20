@@ -74,6 +74,7 @@ export function FieldGuideShell({
     (count, procedure) => count + procedure.references.length,
     0,
   );
+  const canReset = activeCategoryId !== "all" || searchValue.length > 0;
 
   function handleCategoryChange(categoryId: string) {
     startTransition(() => {
@@ -84,6 +85,13 @@ export function FieldGuideShell({
   function handleSearchChange(value: string) {
     startTransition(() => {
       setSearchValue(value);
+    });
+  }
+
+  function handleResetFilters() {
+    startTransition(() => {
+      setActiveCategoryId("all");
+      setSearchValue("");
     });
   }
 
@@ -160,8 +168,10 @@ export function FieldGuideShell({
           activeCategoryId={activeCategoryId}
           searchValue={searchValue}
           resultCount={visibleProcedures.length}
+          canReset={canReset}
           onCategoryChange={handleCategoryChange}
           onSearchChange={handleSearchChange}
+          onReset={handleResetFilters}
         />
 
         <div className="grid gap-8 xl:grid-cols-[minmax(0,1.45fr)_420px]">
@@ -212,6 +222,15 @@ export function FieldGuideShell({
                   Try a broader search term or switch back to all procedures to
                   restore the full guide list.
                 </p>
+                {canReset ? (
+                  <button
+                    type="button"
+                    onClick={handleResetFilters}
+                    className="mt-6 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                  >
+                    Show all procedures
+                  </button>
+                ) : null}
               </div>
             )}
           </section>
