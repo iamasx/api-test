@@ -1,3 +1,39 @@
+.pageShell {
+  min-height: 100vh;
+}
+
+.heroPanel,
+.heroAside,
+.highlightChip,
+.notesPanel,
+.noteCard,
+.handoffPanel {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.highlightLift,
+.highlightWatch,
+.highlightSteady {
+}
+
+.heroPanel {
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.heroAside {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.highlightChip {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.notesPanel,
+.noteCard,
+.handoffPanel {
+  background: rgba(255, 255, 255, 0.78);
+}
+
 .metricTile,
 .trendPanel,
 .anomalyPanel,
