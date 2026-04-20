@@ -1,4 +1,5 @@
 import type { ServiceMapInspectorView } from "../_data/service-map-data";
+import styles from "../service-map.module.css";
 
 type InspectorPanelProps = {
   view: ServiceMapInspectorView;
@@ -22,7 +23,7 @@ export function InspectorPanel({ view }: InspectorPanelProps) {
   return (
     <aside
       aria-label="Selected service inspector"
-      className="rounded-[2rem] border border-slate-200/80 bg-[rgba(9,19,37,0.96)] p-6 text-white shadow-[0_28px_100px_-48px_rgba(15,23,42,1)]"
+      className={`${styles.inspectorPanel} rounded-[2rem] border border-slate-200/80 bg-[rgba(9,19,37,0.96)] p-6 text-white shadow-[0_28px_100px_-48px_rgba(15,23,42,1)]`}
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
@@ -43,14 +44,18 @@ export function InspectorPanel({ view }: InspectorPanelProps) {
       <p className="mt-4 text-sm leading-7 text-slate-300">{view.service.summary}</p>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
-        <div className="rounded-[1.4rem] border border-white/10 bg-white/6 px-4 py-4">
+        <div
+          className={`${styles.inspectorBlock} rounded-[1.4rem] border border-white/10 bg-white/6 px-4 py-4`}
+        >
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
             Runtime
           </p>
           <p className="mt-2 text-base font-semibold text-white">{view.service.runtime}</p>
           <p className="mt-2 text-sm text-slate-300">{view.service.endpoint}</p>
         </div>
-        <div className="rounded-[1.4rem] border border-white/10 bg-white/6 px-4 py-4">
+        <div
+          className={`${styles.inspectorBlock} rounded-[1.4rem] border border-white/10 bg-white/6 px-4 py-4`}
+        >
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
             Ownership
           </p>
@@ -60,14 +65,18 @@ export function InspectorPanel({ view }: InspectorPanelProps) {
       </div>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
-        <div className="rounded-[1.4rem] border border-white/10 bg-white/6 px-4 py-4">
+        <div
+          className={`${styles.inspectorBlock} rounded-[1.4rem] border border-white/10 bg-white/6 px-4 py-4`}
+        >
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
             Cluster
           </p>
           <p className="mt-2 text-base font-semibold text-white">{view.cluster.name}</p>
           <p className="mt-2 text-sm leading-6 text-slate-300">{view.cluster.focusArea}</p>
         </div>
-        <div className="rounded-[1.4rem] border border-white/10 bg-white/6 px-4 py-4">
+        <div
+          className={`${styles.inspectorBlock} rounded-[1.4rem] border border-white/10 bg-white/6 px-4 py-4`}
+        >
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
             Signals
           </p>
@@ -88,7 +97,7 @@ export function InspectorPanel({ view }: InspectorPanelProps) {
             view.upstreamHighlights.map((highlight) => (
               <div
                 key={highlight.id}
-                className="rounded-[1.25rem] border border-white/10 bg-white/5 px-4 py-4"
+                className={`${styles.inspectorBlock} rounded-[1.25rem] border border-white/10 bg-white/5 px-4 py-4`}
               >
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <p className="text-sm font-semibold text-white">
@@ -137,7 +146,7 @@ export function InspectorPanel({ view }: InspectorPanelProps) {
             view.downstreamServices.map((service) => (
               <div
                 key={service.id}
-                className="rounded-[1.25rem] border border-white/10 bg-white/5 px-4 py-4"
+                className={`${styles.inspectorBlock} rounded-[1.25rem] border border-white/10 bg-white/5 px-4 py-4`}
               >
                 <p className="text-sm font-semibold text-white">{service.name}</p>
                 <p className="mt-2 text-sm leading-6 text-slate-300">{service.summary}</p>

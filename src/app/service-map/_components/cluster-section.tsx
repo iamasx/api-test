@@ -1,4 +1,5 @@
 import type { ServiceMapClusterView } from "../_data/service-map-data";
+import styles from "../service-map.module.css";
 
 type ClusterSectionProps = {
   cluster: ServiceMapClusterView;
@@ -21,7 +22,7 @@ export function ClusterSection({
   return (
     <section
       aria-labelledby={`${cluster.id}-heading`}
-      className="rounded-[2rem] border border-slate-200/80 bg-white/80 p-6 shadow-[0_24px_80px_-42px_rgba(15,23,42,0.45)]"
+      className={`${styles.clusterPanel} rounded-[2rem] border border-slate-200/80 bg-white/80 p-6 shadow-[0_24px_80px_-42px_rgba(15,23,42,0.45)]`}
     >
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-3xl">
@@ -103,11 +104,13 @@ export function ClusterSection({
               key={node.id}
               type="button"
               onClick={() => onSelectService(node.id)}
+              data-health={node.health}
+              data-selected={selected}
               className={`rounded-[1.6rem] border px-5 py-5 text-left transition ${
                 selected
                   ? "border-slate-950 bg-slate-950 text-white shadow-[0_24px_70px_-38px_rgba(15,23,42,0.92)]"
                   : "border-slate-200 bg-white text-slate-950 hover:-translate-y-0.5 hover:border-slate-300"
-              }`}
+              } ${styles.serviceCard}`}
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
@@ -132,25 +135,33 @@ export function ClusterSection({
               <p className="mt-4 text-sm leading-7 text-current/74">{node.summary}</p>
 
               <dl className="mt-5 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl border border-current/10 bg-current/5 px-4 py-3">
+                <div
+                  className={`${styles.serviceMetricCard} rounded-2xl border border-current/10 bg-current/5 px-4 py-3`}
+                >
                   <dt className="text-[11px] font-semibold uppercase tracking-[0.2em] text-current/56">
                     Traffic
                   </dt>
                   <dd className="mt-2 text-base font-semibold">{node.requestRate}</dd>
                 </div>
-                <div className="rounded-2xl border border-current/10 bg-current/5 px-4 py-3">
+                <div
+                  className={`${styles.serviceMetricCard} rounded-2xl border border-current/10 bg-current/5 px-4 py-3`}
+                >
                   <dt className="text-[11px] font-semibold uppercase tracking-[0.2em] text-current/56">
                     P95 latency
                   </dt>
                   <dd className="mt-2 text-base font-semibold">{node.p95Latency}</dd>
                 </div>
-                <div className="rounded-2xl border border-current/10 bg-current/5 px-4 py-3">
+                <div
+                  className={`${styles.serviceMetricCard} rounded-2xl border border-current/10 bg-current/5 px-4 py-3`}
+                >
                   <dt className="text-[11px] font-semibold uppercase tracking-[0.2em] text-current/56">
                     Error rate
                   </dt>
                   <dd className="mt-2 text-base font-semibold">{node.errorRate}</dd>
                 </div>
-                <div className="rounded-2xl border border-current/10 bg-current/5 px-4 py-3">
+                <div
+                  className={`${styles.serviceMetricCard} rounded-2xl border border-current/10 bg-current/5 px-4 py-3`}
+                >
                   <dt className="text-[11px] font-semibold uppercase tracking-[0.2em] text-current/56">
                     Saturation
                   </dt>

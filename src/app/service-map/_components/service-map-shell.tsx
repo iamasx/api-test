@@ -9,6 +9,7 @@ import {
   getServiceMapInspectorView,
   getServiceMapSummary,
 } from "../_data/service-map-data";
+import styles from "../service-map.module.css";
 import { ClusterSection } from "./cluster-section";
 import { DependencyHighlight } from "./dependency-highlight";
 import { InspectorPanel } from "./inspector-panel";
@@ -32,8 +33,12 @@ export function ServiceMapShell() {
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-6 py-8 sm:px-10 lg:px-12 lg:py-12">
-      <section className="overflow-hidden rounded-[2.4rem] border border-slate-200/80 bg-[linear-gradient(135deg,rgba(7,20,39,0.98),rgba(10,43,63,0.95)_52%,rgba(14,84,92,0.92))] px-6 py-8 text-white shadow-[0_30px_110px_-52px_rgba(15,23,42,0.96)] sm:px-8 lg:px-10">
+    <main
+      className={`${styles.shell} mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-6 py-8 sm:px-10 lg:px-12 lg:py-12`}
+    >
+      <section
+        className={`${styles.heroPanel} overflow-hidden rounded-[2.4rem] border border-slate-200/80 bg-[linear-gradient(135deg,rgba(7,20,39,0.98),rgba(10,43,63,0.95)_52%,rgba(14,84,92,0.92))] px-6 py-8 text-white shadow-[0_30px_110px_-52px_rgba(15,23,42,0.96)] sm:px-8 lg:px-10`}
+      >
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.9fr)]">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.32em] text-cyan-300">
@@ -60,7 +65,9 @@ export function ServiceMapShell() {
             </div>
           </div>
 
-          <aside className="rounded-[1.8rem] border border-white/12 bg-white/8 p-5 backdrop-blur">
+          <aside
+            className={`${styles.summaryPanel} rounded-[1.8rem] border border-white/12 bg-white/8 p-5`}
+          >
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/85">
               Highest risk node
             </p>
@@ -71,7 +78,9 @@ export function ServiceMapShell() {
               {summary.highestRiskNode.note}
             </p>
             <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-              <div className="rounded-[1.25rem] border border-white/12 bg-slate-950/35 px-4 py-3">
+              <div
+                className={`${styles.summaryMetricCard} rounded-[1.25rem] border border-white/12 bg-slate-950/35 px-4 py-3`}
+              >
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300">
                   Severe highlights
                 </p>
@@ -79,7 +88,9 @@ export function ServiceMapShell() {
                   {summary.severeHighlights}
                 </p>
               </div>
-              <div className="rounded-[1.25rem] border border-white/12 bg-slate-950/35 px-4 py-3">
+              <div
+                className={`${styles.summaryMetricCard} rounded-[1.25rem] border border-white/12 bg-slate-950/35 px-4 py-3`}
+              >
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300">
                   Current signal
                 </p>
@@ -115,7 +126,7 @@ export function ServiceMapShell() {
 
         <div
           aria-label="Dependency highlights"
-          className="grid gap-4 xl:grid-cols-3"
+          className={`${styles.highlightGrid} grid gap-4 xl:grid-cols-3`}
           role="list"
         >
           {dependencyHighlights.map((highlight) => (
@@ -160,7 +171,7 @@ export function ServiceMapShell() {
           ))}
         </section>
 
-        <div className="xl:sticky xl:top-8 xl:self-start">
+        <div className={`${styles.stickyInspector} xl:sticky xl:top-8 xl:self-start`}>
           <InspectorPanel view={inspectorView} />
         </div>
       </div>

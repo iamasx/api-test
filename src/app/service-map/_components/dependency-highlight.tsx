@@ -1,4 +1,5 @@
 import type { DependencyHighlight as DependencyHighlightItem } from "../_data/service-map-data";
+import styles from "../service-map.module.css";
 
 type DependencyHighlightProps = {
   highlight: DependencyHighlightItem;
@@ -14,7 +15,8 @@ const highlightToneClasses = {
 export function DependencyHighlight({ highlight }: DependencyHighlightProps) {
   return (
     <article
-      className={`rounded-[1.6rem] border px-5 py-5 shadow-[0_18px_60px_-44px_rgba(15,23,42,0.5)] ${highlightToneClasses[highlight.status]}`}
+      data-risk={highlight.status}
+      className={`${styles.highlightCard} rounded-[1.6rem] border px-5 py-5 shadow-[0_18px_60px_-44px_rgba(15,23,42,0.5)] ${highlightToneClasses[highlight.status]}`}
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>

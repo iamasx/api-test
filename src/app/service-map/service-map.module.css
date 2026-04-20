@@ -1,0 +1,196 @@
+.shell {
+  position: relative;
+  isolation: isolate;
+}
+
+.shell::before {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  content: "";
+  background:
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.18), transparent 24%),
+    radial-gradient(circle at top right, rgba(251, 191, 36, 0.14), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.shell::after {
+  position: absolute;
+  inset: 7rem 0 auto;
+  z-index: -1;
+  height: 24rem;
+  content: "";
+  background:
+    linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.48), transparent);
+  pointer-events: none;
+}
+
+.heroPanel {
+  position: relative;
+}
+
+.heroPanel::before {
+  position: absolute;
+  inset: 1rem;
+  content: "";
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.75rem;
+  pointer-events: none;
+}
+
+.heroPanel::after {
+  position: absolute;
+  top: -4rem;
+  right: -3rem;
+  width: 18rem;
+  height: 18rem;
+  content: "";
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.3), transparent 64%);
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.summaryPanel {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 24px 80px -48px rgba(8, 15, 31, 0.8);
+}
+
+.summaryMetricCard {
+  backdrop-filter: blur(16px);
+}
+
+.highlightGrid {
+  align-items: stretch;
+}
+
+.highlightCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.highlightCard::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.45rem;
+  content: "";
+  background: rgba(15, 23, 42, 0.12);
+}
+
+.highlightCard[data-risk="stable"]::before {
+  background: linear-gradient(180deg, #34d399, #10b981);
+}
+
+.highlightCard[data-risk="watch"]::before {
+  background: linear-gradient(180deg, #38bdf8, #0ea5e9);
+}
+
+.highlightCard[data-risk="elevated"]::before {
+  background: linear-gradient(180deg, #f59e0b, #d97706);
+}
+
+.highlightCard[data-risk="severe"]::before {
+  background: linear-gradient(180deg, #fb7185, #e11d48);
+}
+
+.clusterPanel {
+  position: relative;
+  overflow: hidden;
+}
+
+.clusterPanel::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    radial-gradient(circle at top right, rgba(148, 163, 184, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(248, 250, 252, 0.7));
+  pointer-events: none;
+}
+
+.serviceCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.serviceCard::before {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 0.28rem;
+  content: "";
+  background: rgba(148, 163, 184, 0.4);
+}
+
+.serviceCard[data-health="healthy"]::before {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.serviceCard[data-health="observing"]::before {
+  background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+}
+
+.serviceCard[data-health="degraded"]::before {
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+}
+
+.serviceCard[data-health="critical"]::before {
+  background: linear-gradient(90deg, #fb7185, #ef4444);
+}
+
+.serviceCard[data-selected="true"] {
+  transform: translateY(-2px);
+}
+
+.serviceCard[data-selected="true"]::before {
+  height: 0.35rem;
+}
+
+.serviceMetricCard {
+  backdrop-filter: blur(6px);
+}
+
+.stickyInspector {
+  min-width: 0;
+}
+
+.inspectorPanel {
+  position: relative;
+  overflow: hidden;
+}
+
+.inspectorPanel::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.14), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.12), transparent 30%);
+  pointer-events: none;
+}
+
+.inspectorBlock {
+  position: relative;
+  backdrop-filter: blur(12px);
+}
+
+@media (max-width: 1279px) {
+  .stickyInspector {
+    position: static;
+  }
+}
+
+@media (max-width: 767px) {
+  .heroPanel::after {
+    width: 12rem;
+    height: 12rem;
+  }
+
+  .shell::after {
+    background-size: 20px 20px;
+  }
+}
