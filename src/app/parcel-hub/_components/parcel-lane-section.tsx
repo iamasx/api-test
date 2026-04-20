@@ -1,4 +1,5 @@
 import type { ParcelHubLaneView } from "../_data/parcel-hub-data";
+import styles from "../parcel-hub.module.css";
 import { ParcelSummaryCard } from "./parcel-summary-card";
 
 type ParcelLaneSectionProps = {
@@ -17,7 +18,8 @@ export function ParcelLaneSection({ lane }: ParcelLaneSectionProps) {
   return (
     <section
       aria-labelledby={headingId}
-      className="rounded-[2rem] border border-slate-200 bg-white/92 p-6 shadow-[0_20px_80px_rgba(15,23,42,0.08)]"
+      className={`rounded-[2rem] border border-slate-200 bg-white/92 p-6 shadow-[0_20px_80px_rgba(15,23,42,0.08)] ${styles.laneSection}`}
+      data-health={lane.health}
       role="region"
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -42,7 +44,9 @@ export function ParcelLaneSection({ lane }: ParcelLaneSectionProps) {
           <p className="mt-3 text-sm leading-7 text-slate-700">{lane.summary}</p>
         </div>
 
-        <div className="min-w-56 rounded-[1.5rem] border border-slate-200 bg-slate-50 px-4 py-4">
+        <div
+          className={`min-w-56 rounded-[1.5rem] border border-slate-200 bg-slate-50 px-4 py-4 ${styles.laneAsideCard}`}
+        >
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
             Coordinator
           </p>
@@ -86,6 +90,21 @@ export function ParcelLaneSection({ lane }: ParcelLaneSectionProps) {
           <p className="mt-2 text-sm font-semibold text-slate-950">
             {lane.exceptionCount} summaries
           </p>
+        </div>
+      </div>
+
+      <div
+        className={`mt-5 rounded-[1.5rem] border border-slate-200 px-4 py-4 ${styles.capacityPanel}`}
+      >
+        <div className="flex items-center justify-between gap-4 text-sm font-medium text-slate-600">
+          <span>Lane fill</span>
+          <span>{lane.capacityPercent}% utilized</span>
+        </div>
+        <div className={`mt-3 h-2.5 ${styles.capacityTrack}`}>
+          <div
+            className={styles.capacityBar}
+            style={{ width: `${lane.capacityPercent}%` }}
+          />
         </div>
       </div>
 

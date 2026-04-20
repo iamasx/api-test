@@ -1,4 +1,5 @@
 import type { ParcelHubExceptionView } from "../_data/parcel-hub-data";
+import styles from "../parcel-hub.module.css";
 
 type ExceptionDetailPanelProps = {
   exception: ParcelHubExceptionView;
@@ -18,7 +19,8 @@ export function ExceptionDetailPanel({
   return (
     <aside
       aria-labelledby={titleId}
-      className="rounded-[2rem] border border-slate-200 bg-slate-950 p-6 text-white shadow-[0_24px_90px_rgba(15,23,42,0.22)]"
+      className={`rounded-[2rem] border border-slate-200 bg-slate-950 p-6 text-white shadow-[0_24px_90px_rgba(15,23,42,0.22)] ${styles.exceptionPanel}`}
+      data-severity={exception.severity}
       role="region"
     >
       <div className="flex items-start justify-between gap-4">
@@ -43,7 +45,9 @@ export function ExceptionDetailPanel({
       <p className="mt-4 text-sm leading-7 text-white/76">{exception.summary}</p>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
-        <div className="rounded-[1.5rem] border border-white/10 bg-white/6 px-4 py-4">
+        <div
+          className={`rounded-[1.5rem] border border-white/10 bg-white/6 px-4 py-4 ${styles.detailSection}`}
+        >
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/55">
             Lane and code
           </p>
@@ -52,7 +56,9 @@ export function ExceptionDetailPanel({
           </p>
           <p className="mt-1 text-sm text-white/66">{exception.code}</p>
         </div>
-        <div className="rounded-[1.5rem] border border-white/10 bg-white/6 px-4 py-4">
+        <div
+          className={`rounded-[1.5rem] border border-white/10 bg-white/6 px-4 py-4 ${styles.detailSection}`}
+        >
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/55">
             Owner and update
           </p>
@@ -63,7 +69,9 @@ export function ExceptionDetailPanel({
         </div>
       </div>
 
-      <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-white/6 px-4 py-4">
+      <div
+        className={`mt-6 rounded-[1.5rem] border border-white/10 bg-white/6 px-4 py-4 ${styles.detailSection}`}
+      >
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/55">
           Customer impact
         </p>
@@ -78,7 +86,9 @@ export function ExceptionDetailPanel({
         </p>
       </div>
 
-      <div className="mt-6 rounded-[1.5rem] border border-cyan-400/25 bg-[linear-gradient(135deg,rgba(34,211,238,0.18),rgba(15,23,42,0.7))] px-4 py-4">
+      <div
+        className={`mt-6 rounded-[1.5rem] border border-cyan-400/25 bg-[linear-gradient(135deg,rgba(34,211,238,0.18),rgba(15,23,42,0.7))] px-4 py-4 ${styles.detailCallout}`}
+      >
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-200/80">
           Recommended action
         </p>
@@ -94,7 +104,9 @@ export function ExceptionDetailPanel({
         <ul aria-label="Affected parcels" className="mt-4 space-y-3">
           {exception.parcels.map((parcel) => (
             <li key={parcel.id}>
-              <article className="rounded-[1.25rem] border border-white/10 bg-white/6 px-4 py-4">
+              <article
+                className={`rounded-[1.25rem] border border-white/10 bg-white/6 px-4 py-4 ${styles.affectedParcelCard}`}
+              >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <h3 className="text-lg font-semibold tracking-tight text-white">
@@ -126,7 +138,7 @@ export function ExceptionDetailPanel({
           {exception.checkpointNotes.map((note) => (
             <li
               key={note}
-              className="rounded-[1.25rem] border border-white/10 bg-white/6 px-4 py-4 text-sm leading-7 text-white/76"
+              className={`rounded-[1.25rem] border border-white/10 bg-white/6 px-4 py-4 text-sm leading-7 text-white/76 ${styles.noteCard}`}
             >
               {note}
             </li>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import styles from "../parcel-hub.module.css";
 import type { ParcelHubView } from "../_data/parcel-hub-data";
 import { ExceptionDetailPanel } from "./exception-detail-panel";
 import { ParcelLaneSection } from "./parcel-lane-section";
@@ -10,9 +11,13 @@ type ParcelHubShellProps = {
 
 export function ParcelHubShell({ view }: ParcelHubShellProps) {
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.12),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(251,146,60,0.12),transparent_28%),linear-gradient(180deg,#f8fafc_0%,#eef4f7_48%,#f8fafc_100%)] text-slate-950">
+    <div
+      className={`min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.12),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(251,146,60,0.12),transparent_28%),linear-gradient(180deg,#f8fafc_0%,#eef4f7_48%,#f8fafc_100%)] text-slate-950 ${styles.pageShell}`}
+    >
       <main className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-5 py-8 sm:px-8 lg:px-10 lg:py-10">
-        <section className="overflow-hidden rounded-[2.5rem] border border-slate-200/80 bg-slate-950 px-6 py-8 text-white shadow-[0_32px_110px_-42px_rgba(15,23,42,0.92)] sm:px-8 lg:px-10">
+        <section
+          className={`overflow-hidden rounded-[2.5rem] border border-slate-200/80 bg-slate-950 px-6 py-8 text-white shadow-[0_32px_110px_-42px_rgba(15,23,42,0.92)] sm:px-8 lg:px-10 ${styles.heroPanel}`}
+        >
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300">
               Parcel Hub
@@ -63,7 +68,7 @@ export function ParcelHubShell({ view }: ParcelHubShellProps) {
               {view.metrics.map((metric) => (
                 <div
                   key={metric.id}
-                  className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5"
+                  className={`rounded-[1.5rem] border border-white/10 bg-white/6 p-5 ${styles.metricCard}`}
                   role="listitem"
                 >
                   <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/55">
@@ -103,7 +108,10 @@ export function ParcelHubShell({ view }: ParcelHubShellProps) {
           <ul aria-label="Exception summaries" className="grid gap-4 lg:grid-cols-3">
             {view.exceptions.map((exception) => (
               <li key={exception.id}>
-                <article className="rounded-[1.75rem] border border-slate-200 bg-white/88 p-5 shadow-[0_18px_60px_rgba(15,23,42,0.07)]">
+                <article
+                  className={`rounded-[1.75rem] border border-slate-200 bg-white/88 p-5 shadow-[0_18px_60px_rgba(15,23,42,0.07)] ${styles.summaryCard}`}
+                  data-severity={exception.severity}
+                >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="max-w-72">
                       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
