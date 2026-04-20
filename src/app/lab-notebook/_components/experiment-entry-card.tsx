@@ -8,9 +8,9 @@ const statusClasses: Record<ExperimentEntry["status"], string> = {
 
 export function ExperimentEntryCard({ entry }: { entry: ExperimentEntry }) {
   return (
-    <article className="rounded-[1.7rem] border border-stone-900/10 bg-[rgba(255,251,247,0.92)] p-6 shadow-[0_18px_60px_rgba(68,42,22,0.08)]">
+    <article className="rounded-[1.7rem] border border-stone-900/10 bg-[rgba(255,251,247,0.94)] p-6 shadow-[0_18px_60px_rgba(68,42,22,0.08)] backdrop-blur-sm">
       <div className="flex flex-col gap-5">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-3">
               <span className="rounded-full border border-stone-900/10 bg-stone-900/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-stone-700">
@@ -33,7 +33,7 @@ export function ExperimentEntryCard({ entry }: { entry: ExperimentEntry }) {
             </div>
           </div>
 
-          <dl className="grid gap-3 rounded-[1.4rem] border border-stone-900/8 bg-stone-100/80 p-4 text-sm text-stone-700 sm:grid-cols-2 lg:min-w-[19rem] lg:grid-cols-1">
+          <dl className="grid gap-3 rounded-[1.4rem] border border-stone-900/8 bg-stone-100/80 p-4 text-sm text-stone-700 sm:grid-cols-2 xl:min-w-[19rem] xl:grid-cols-1">
             <div>
               <dt className="text-[11px] font-semibold uppercase tracking-[0.2em] text-stone-500">
                 Lead
@@ -61,16 +61,20 @@ export function ExperimentEntryCard({ entry }: { entry: ExperimentEntry }) {
           </dl>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(13rem,0.9fr)]">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(14rem,0.8fr)]">
           <div className="rounded-[1.35rem] border border-stone-900/8 bg-stone-50/85 p-4">
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-stone-500">
               Current read
             </p>
-            <p className="mt-3 text-base leading-7 text-stone-700">{entry.signal}</p>
-            <p className="mt-3 text-sm leading-6 text-stone-600">{entry.summary}</p>
+            <p className="mt-3 text-base leading-7 text-stone-700 sm:text-[1.02rem]">
+              {entry.signal}
+            </p>
+            <p className="mt-3 text-sm leading-6 text-stone-600 sm:text-[0.96rem]">
+              {entry.summary}
+            </p>
           </div>
 
-          <div className="grid gap-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
             <div className="rounded-[1.35rem] border border-stone-900/8 bg-white/70 p-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-stone-500">
                 Risk level

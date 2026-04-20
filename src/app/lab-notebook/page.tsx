@@ -36,8 +36,13 @@ export default function LabNotebookPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,#f6efe5_0%,#efe4d6_48%,#e7d8c7_100%)] px-6 py-12 text-stone-950 sm:px-10 lg:px-14">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
+    <main className="relative min-h-screen overflow-hidden bg-[linear-gradient(180deg,#f6efe5_0%,#efe4d6_48%,#e7d8c7_100%)] px-6 py-12 text-stone-950 sm:px-10 lg:px-14">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.16),transparent_36%),radial-gradient(circle_at_top_right,rgba(120,113,108,0.18),transparent_32%)]"
+      />
+
+      <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-8">
         <header className="overflow-hidden rounded-[2rem] border border-stone-900/10 bg-[rgba(255,250,244,0.84)] p-8 shadow-[0_20px_80px_rgba(68,42,22,0.12)] backdrop-blur sm:p-10">
           <div className="grid gap-8 xl:grid-cols-[minmax(0,1.35fr)_minmax(19rem,0.8fr)]">
             <div className="space-y-6">
@@ -181,7 +186,7 @@ export default function LabNotebookPage() {
             </div>
           </section>
 
-          <aside className="space-y-5">
+          <aside className="space-y-5 xl:sticky xl:top-8 xl:self-start">
             <section className="rounded-[1.75rem] border border-stone-900/10 bg-white/72 p-6 shadow-[0_16px_60px_rgba(68,42,22,0.08)]">
               <div className="space-y-4">
                 <div className="space-y-2">
@@ -270,7 +275,7 @@ export default function LabNotebookPage() {
             </p>
           </div>
 
-          <div className="grid gap-5 xl:grid-cols-2">
+          <div className="grid gap-5 2xl:grid-cols-2">
             {observationPanels.map((panel) => (
               <ObservationPanel key={panel.id} panel={panel} />
             ))}
