@@ -17,7 +17,7 @@ export function SeverityFilter({
   onChange,
 }: SeverityFilterProps) {
   return (
-    <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5 backdrop-blur">
+    <section className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5 shadow-xl shadow-black/10 backdrop-blur">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-xs font-medium uppercase tracking-[0.24em] text-slate-400">
@@ -46,9 +46,9 @@ export function SeverityFilter({
                 key={option}
                 aria-pressed={isActive}
                 className={cn(
-                  "inline-flex items-center gap-3 rounded-full border px-4 py-2 text-sm font-medium transition hover:border-cyan-300/40 hover:text-white",
+                  "inline-flex items-center gap-3 rounded-full border px-4 py-2 text-sm font-medium transition hover:-translate-y-0.5 hover:border-cyan-300/40 hover:text-white",
                   isActive
-                    ? "border-cyan-300/50 bg-cyan-300/15 text-white"
+                    ? "border-cyan-300/50 bg-cyan-300/15 text-white shadow-lg shadow-cyan-950/20"
                     : isAllOption
                       ? "border-white/10 bg-white/5 text-slate-200"
                       : getSeverityBadgeClasses(option)

@@ -33,7 +33,7 @@ export function IncidentDetailPanel({
   }
 
   return (
-    <section className="rounded-[2rem] border border-white/10 bg-slate-950/85 p-6 shadow-2xl shadow-black/20">
+    <section className="rounded-[2rem] border border-white/10 bg-linear-to-br from-slate-900 via-slate-950 to-black p-6 shadow-2xl shadow-black/20 xl:sticky xl:top-6">
       <header>
         <p className="text-sm font-medium uppercase tracking-[0.24em] text-cyan-300">
           Incident detail
@@ -65,6 +65,23 @@ export function IncidentDetailPanel({
               {incident.status}
             </span>
           </div>
+        </div>
+
+        <div className="mt-5 flex flex-wrap gap-2">
+          <span className="rounded-full border border-white/10 bg-black/15 px-3 py-1 text-xs text-slate-200">
+            {incident.service}
+          </span>
+          <span className="rounded-full border border-white/10 bg-black/15 px-3 py-1 text-xs text-slate-200">
+            {incident.region}
+          </span>
+          {incident.tags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-white/10 bg-black/15 px-3 py-1 text-[0.7rem] uppercase tracking-[0.18em] text-slate-400"
+            >
+              {tag}
+            </span>
+          ))}
         </div>
 
         <div className="mt-6 grid gap-3 md:grid-cols-3">
@@ -105,7 +122,7 @@ export function IncidentDetailPanel({
           {incident.metrics.map((metric) => (
             <article
               key={metric.label}
-              className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4"
+              className="rounded-[1.5rem] border border-white/10 bg-linear-to-br from-white/[0.06] via-white/[0.03] to-slate-950/80 p-4"
             >
               <p className="text-xs font-medium uppercase tracking-[0.24em] text-slate-500">
                 {metric.label}
@@ -131,7 +148,7 @@ export function IncidentDetailPanel({
 
         <ol
           aria-label={`${incident.title} response timeline`}
-          className="mt-6 space-y-4"
+          className="mt-6 space-y-4 rounded-[1.5rem] border border-white/10 bg-black/15 p-4"
         >
           {incident.timeline.map((entry, index) => (
             <TimelineEntryItem

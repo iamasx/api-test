@@ -24,8 +24,8 @@ export function IncidentListItem({
       className={cn(
         "w-full rounded-[1.75rem] border p-5 text-left transition",
         selected
-          ? "border-cyan-300/45 bg-slate-900 shadow-lg shadow-cyan-950/20"
-          : "border-white/10 bg-slate-950/70 hover:border-white/20 hover:bg-slate-900/80"
+          ? "border-cyan-300/45 bg-linear-to-br from-cyan-400/12 via-slate-900 to-slate-950 shadow-lg shadow-cyan-950/20"
+          : "border-white/10 bg-slate-950/70 hover:-translate-y-0.5 hover:border-white/20 hover:bg-slate-900/80"
       )}
       onClick={() => onSelect(incident.id)}
       type="button"
@@ -66,6 +66,17 @@ export function IncidentListItem({
         <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">
           {getIncidentDurationLabel(incident)}
         </span>
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        {incident.tags.slice(0, 2).map((tag) => (
+          <span
+            key={tag}
+            className="rounded-full border border-white/10 bg-black/15 px-3 py-1 text-[0.7rem] uppercase tracking-[0.18em] text-slate-400"
+          >
+            {tag}
+          </span>
+        ))}
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-4 text-xs text-slate-400">

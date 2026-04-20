@@ -13,7 +13,7 @@ export function TimelineEntryItem({
   return (
     <li className="relative pl-8">
       {!isLast ? (
-        <span className="absolute left-[0.72rem] top-6 h-[calc(100%-0.25rem)] w-px bg-white/10" />
+        <span className="absolute left-[0.72rem] top-6 h-[calc(100%-0.25rem)] w-px bg-linear-to-b from-white/20 to-white/5" />
       ) : null}
 
       <span
@@ -23,7 +23,7 @@ export function TimelineEntryItem({
         )}
       />
 
-      <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+      <article className="rounded-[1.5rem] border border-white/10 bg-linear-to-br from-white/[0.05] via-white/[0.03] to-slate-950/80 p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-3">
             <span

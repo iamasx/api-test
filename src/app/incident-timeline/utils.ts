@@ -111,13 +111,13 @@ export function getTimelineStageClasses(stage: TimelineStage) {
 export function getSummaryToneClasses(tone: SummaryTone) {
   switch (tone) {
     case "critical":
-      return "border-rose-400/25 bg-rose-500/10";
+      return "border-rose-400/25 bg-linear-to-br from-rose-500/16 via-rose-500/6 to-slate-950/80";
     case "warning":
-      return "border-amber-400/25 bg-amber-400/10";
+      return "border-amber-400/25 bg-linear-to-br from-amber-400/16 via-amber-400/6 to-slate-950/80";
     case "calm":
-      return "border-emerald-400/25 bg-emerald-400/10";
+      return "border-emerald-400/25 bg-linear-to-br from-emerald-400/16 via-emerald-400/6 to-slate-950/80";
     case "neutral":
-      return "border-white/10 bg-white/5";
+      return "border-white/10 bg-linear-to-br from-white/8 via-white/3 to-slate-950/80";
   }
 }
 
