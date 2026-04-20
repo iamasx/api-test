@@ -136,6 +136,7 @@ export function SignalStreamCard({
       }`}
     >
       <Link
+        aria-label={isActive ? `Inspect ${signal.name} selected` : `Inspect ${signal.name}`}
         aria-current={isActive ? "page" : undefined}
         className="block focus:outline-none"
         href={href}

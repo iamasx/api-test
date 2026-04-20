@@ -20,7 +20,10 @@ export function SignalInspector({
   anomalies,
 }: SignalInspectorProps) {
   return (
-    <aside className="overflow-hidden rounded-[2rem] border border-slate-900/80 bg-slate-950 shadow-[0_28px_100px_rgba(15,23,42,0.22)]">
+    <aside
+      aria-label="Signal inspector"
+      className="overflow-hidden rounded-[2rem] border border-slate-900/80 bg-slate-950 shadow-[0_28px_100px_rgba(15,23,42,0.22)]"
+    >
       <div className="space-y-6 px-6 py-6 sm:px-7 sm:py-7">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-3">
@@ -112,8 +115,8 @@ export function SignalInspector({
                 Active anomaly stack
               </h3>
               <p className="mt-2 text-sm leading-6 text-slate-300">
-                The inspector keeps the current signal's anomaly context adjacent
-                to the detailed operating notes.
+                The inspector keeps anomaly context for the current signal
+                adjacent to the detailed operating notes.
               </p>
             </div>
             <div className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-200">
