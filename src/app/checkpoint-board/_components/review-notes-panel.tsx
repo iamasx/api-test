@@ -2,6 +2,7 @@ import type {
   ReviewCadenceItem,
   ReviewNote,
 } from "../_data/checkpoint-board-data";
+import styles from "../checkpoint-board.module.css";
 
 type ReviewNotesPanelProps = {
   cadence: ReviewCadenceItem[];
@@ -9,16 +10,22 @@ type ReviewNotesPanelProps = {
 };
 
 const toneBadgeClasses = {
-  steady: "border-emerald-200 bg-emerald-50 text-emerald-800",
-  watch: "border-amber-200 bg-amber-50 text-amber-800",
-  risk: "border-rose-200 bg-rose-50 text-rose-800",
+  steady: styles.badgeToneSteady,
+  watch: styles.badgeToneWatch,
+  risk: styles.badgeToneRisk,
+};
+
+const toneCardClasses = {
+  steady: styles.noteToneSteady,
+  watch: styles.noteToneWatch,
+  risk: styles.noteToneRisk,
 };
 
 export function ReviewNotesPanel({ cadence, notes }: ReviewNotesPanelProps) {
   return (
     <aside
       aria-labelledby="recent-review-notes"
-      className="rounded-[1.85rem] border border-slate-200 bg-white/92 p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)] sm:p-7"
+      className={`${styles.surfaceCard} ${styles.notePanel} p-6 sm:p-7`}
     >
       <div className="space-y-6">
         <div className="space-y-3">
@@ -37,11 +44,11 @@ export function ReviewNotesPanel({ cadence, notes }: ReviewNotesPanelProps) {
           </p>
         </div>
 
-        <div aria-label="Review cadence" className="grid gap-3" role="list">
+        <div aria-label="Review cadence" className={styles.cadenceGrid} role="list">
           {cadence.map((item) => (
             <article
               key={item.id}
-              className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4"
+              className={styles.cadenceCard}
               role="listitem"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
@@ -60,11 +67,11 @@ export function ReviewNotesPanel({ cadence, notes }: ReviewNotesPanelProps) {
             <p className="text-sm text-slate-600">{notes.length} total</p>
           </div>
 
-          <div aria-label="Review notes" className="grid gap-4" role="list">
+          <div aria-label="Review notes" className={styles.noteList} role="list">
             {notes.map((note) => (
               <article
                 key={note.id}
-                className="rounded-[1.4rem] border border-slate-200 bg-white px-4 py-4"
+                className={`${styles.noteCard} ${toneCardClasses[note.tone]}`}
                 role="listitem"
               >
                 <div className="flex items-start justify-between gap-4">
@@ -78,7 +85,7 @@ export function ReviewNotesPanel({ cadence, notes }: ReviewNotesPanelProps) {
                   </div>
 
                   <span
-                    className={`inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${toneBadgeClasses[note.tone]}`}
+                    className={`${styles.badge} ${toneBadgeClasses[note.tone]}`}
                   >
                     {note.outcome}
                   </span>
@@ -87,7 +94,7 @@ export function ReviewNotesPanel({ cadence, notes }: ReviewNotesPanelProps) {
                 <p className="mt-4 text-sm font-medium text-slate-800">{note.loggedAt}</p>
                 <p className="mt-3 text-sm leading-6 text-slate-600">{note.summary}</p>
 
-                <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
+                <div className={`mt-4 ${styles.nextStepCard}`}>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                     Next step
                   </p>

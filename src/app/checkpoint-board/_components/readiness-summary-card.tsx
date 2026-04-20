@@ -1,19 +1,20 @@
 import type { ReadinessSummary } from "../_data/checkpoint-board-data";
+import styles from "../checkpoint-board.module.css";
 
 type ReadinessSummaryCardProps = {
   summary: ReadinessSummary;
 };
 
 const toneClassNames = {
-  steady: "border-emerald-200 bg-emerald-50/70",
-  watch: "border-amber-200 bg-amber-50/80",
-  risk: "border-rose-200 bg-rose-50/80",
+  steady: styles.summaryToneSteady,
+  watch: styles.summaryToneWatch,
+  risk: styles.summaryToneRisk,
 };
 
 export function ReadinessSummaryCard({ summary }: ReadinessSummaryCardProps) {
   return (
     <article
-      className={`rounded-[1.5rem] border px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)] ${toneClassNames[summary.tone]}`}
+      className={`${styles.summaryCard} ${toneClassNames[summary.tone]}`}
       role="listitem"
     >
       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">

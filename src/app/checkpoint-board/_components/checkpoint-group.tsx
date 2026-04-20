@@ -1,4 +1,5 @@
 import type { CheckpointGroup } from "../_data/checkpoint-board-data";
+import styles from "../checkpoint-board.module.css";
 import { MilestoneCard } from "./milestone-card";
 
 type CheckpointGroupProps = {
@@ -9,7 +10,7 @@ export function CheckpointGroupSection({ group }: CheckpointGroupProps) {
   return (
     <article
       aria-labelledby={`${group.id}-heading`}
-      className="rounded-[1.85rem] border border-slate-200 bg-white/90 p-6 shadow-[0_24px_70px_rgba(15,23,42,0.07)] sm:p-7"
+      className={`${styles.groupCard} sm:p-7`}
       role="listitem"
     >
       <div className="flex flex-col gap-5">
@@ -31,14 +32,14 @@ export function CheckpointGroupSection({ group }: CheckpointGroupProps) {
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+          <div className={`${styles.infoGrid} sm:grid-cols-2`}>
+            <div className={styles.infoCard}>
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                 Lead
               </p>
               <p className="mt-2 text-sm font-medium text-slate-900">{group.lead}</p>
             </div>
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+            <div className={styles.infoCard}>
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                 Review window
               </p>
@@ -53,12 +54,12 @@ export function CheckpointGroupSection({ group }: CheckpointGroupProps) {
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
             Focus areas
           </p>
-          <ul
-            aria-label={`${group.title} focus areas`}
-            className="mt-3 grid gap-3 text-sm leading-6 text-slate-600 md:grid-cols-3"
-          >
+          <ul aria-label={`${group.title} focus areas`} className={styles.focusGrid}>
             {group.focusAreas.map((focusArea) => (
-              <li key={focusArea} className="rounded-2xl border border-slate-200 px-4 py-4">
+              <li
+                key={focusArea}
+                className={`${styles.focusCard} text-sm leading-6 text-slate-600`}
+              >
                 {focusArea}
               </li>
             ))}
@@ -69,11 +70,7 @@ export function CheckpointGroupSection({ group }: CheckpointGroupProps) {
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
             Milestones
           </p>
-          <div
-            aria-label={`${group.title} milestones`}
-            className="mt-4 grid gap-4"
-            role="list"
-          >
+          <div aria-label={`${group.title} milestones`} className={styles.milestoneList} role="list">
             {group.milestones.map((milestone) => (
               <MilestoneCard key={milestone.id} milestone={milestone} />
             ))}
