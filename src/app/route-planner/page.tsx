@@ -4,6 +4,7 @@ import Link from "next/link";
 import { RouteDecisionSidebar } from "./_components/route-decision-sidebar";
 import { SegmentGroup } from "./_components/segment-group";
 import { SummaryBanners } from "./_components/summary-banners";
+import styles from "./route-planner.module.css";
 import {
   routeConstraints,
   routeDecisionQueue,
@@ -21,9 +22,11 @@ export const metadata: Metadata = {
 
 export default function RoutePlannerPage() {
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,#0f172a_0%,#172554_42%,#020617_100%)] px-6 py-12 text-slate-50 sm:px-10 lg:px-16">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-        <header className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/8 p-8 shadow-2xl shadow-slate-950/45 backdrop-blur sm:p-10">
+    <main className={`${styles.shell} px-6 py-12 text-slate-50 sm:px-10 lg:px-16`}>
+      <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-8">
+        <header
+          className={`${styles.heroPanel} overflow-hidden rounded-[2rem] border border-white/10 p-8 backdrop-blur sm:p-10`}
+        >
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl space-y-4">
               <span className="inline-flex w-fit rounded-full border border-cyan-300/35 bg-cyan-300/12 px-4 py-1 text-sm font-medium uppercase tracking-[0.2em] text-cyan-100">
@@ -38,7 +41,9 @@ export default function RoutePlannerPage() {
             </div>
 
             <div className="flex flex-col gap-3 sm:items-end">
-              <div className="rounded-[1.4rem] border border-white/10 bg-white/5 px-4 py-4 text-sm text-slate-200">
+              <div
+                className={`${styles.floatingInfo} rounded-[1.4rem] border border-white/10 px-4 py-4 text-sm text-slate-200`}
+              >
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
                   Active route
                 </p>

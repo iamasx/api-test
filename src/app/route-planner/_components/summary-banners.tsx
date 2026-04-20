@@ -3,6 +3,7 @@ import type {
   RoutePlannerStat,
   TimingSignal,
 } from "../_data/route-planner-data";
+import styles from "../route-planner.module.css";
 
 const timingToneLabels: Record<TimingSignal["tone"], string> = {
   "on-time": "On time",
@@ -16,6 +17,12 @@ const timingToneStyles: Record<TimingSignal["tone"], string> = {
   blocked: "border-rose-300/20 bg-rose-300/10 text-rose-50",
 };
 
+const timingSurfaceStyles: Record<TimingSignal["tone"], string> = {
+  "on-time": styles.signalOnTime,
+  delayed: styles.signalDelayed,
+  blocked: styles.signalBlocked,
+};
+
 const constraintToneLabels: Record<RouteConstraint["tone"], string> = {
   clear: "Clear",
   watch: "Watch",
@@ -26,6 +33,12 @@ const constraintToneStyles: Record<RouteConstraint["tone"], string> = {
   clear: "border-cyan-300/20 bg-cyan-300/10 text-cyan-50",
   watch: "border-amber-300/20 bg-amber-300/10 text-amber-50",
   critical: "border-rose-300/20 bg-rose-300/10 text-rose-50",
+};
+
+const constraintSurfaceStyles: Record<RouteConstraint["tone"], string> = {
+  clear: styles.constraintClear,
+  watch: styles.constraintWatch,
+  critical: styles.constraintCritical,
 };
 
 type SummaryBannersProps = {
@@ -45,7 +58,7 @@ export function SummaryBanners({
         {stats.map((stat) => (
           <article
             key={stat.label}
-            className="rounded-[1.5rem] border border-white/10 bg-slate-950/55 px-5 py-5"
+            className={`${styles.statCard} rounded-[1.5rem] border border-white/10 px-5 py-5`}
           >
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
               {stat.label}
@@ -59,7 +72,9 @@ export function SummaryBanners({
       </div>
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1.2fr)_minmax(280px,0.8fr)]">
-        <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/60 p-5">
+        <div
+          className={`${styles.surfacePanel} rounded-[1.75rem] border border-white/10 p-5`}
+        >
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
@@ -79,7 +94,7 @@ export function SummaryBanners({
             {timingSignals.map((signal) => (
               <article
                 key={signal.id}
-                className="rounded-[1.35rem] border border-white/8 bg-white/5 px-4 py-4"
+                className={`${styles.signalCard} ${timingSurfaceStyles[signal.tone]} rounded-[1.35rem] border px-4 py-4`}
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
@@ -89,7 +104,7 @@ export function SummaryBanners({
                     </p>
                   </div>
                   <span
-                    className={`inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${timingToneStyles[signal.tone]}`}
+                    className={`${styles.statusBadge} inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${timingToneStyles[signal.tone]}`}
                   >
                     {timingToneLabels[signal.tone]}
                   </span>
@@ -102,7 +117,9 @@ export function SummaryBanners({
           </div>
         </div>
 
-        <aside className="rounded-[1.75rem] border border-white/10 bg-slate-950/65 p-5">
+        <aside
+          className={`${styles.surfacePanel} rounded-[1.75rem] border border-white/10 p-5`}
+        >
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
             Constraint summary
           </p>
@@ -113,7 +130,7 @@ export function SummaryBanners({
             {constraints.map((constraint) => (
               <article
                 key={constraint.id}
-                className="rounded-[1.35rem] border border-white/8 bg-white/5 px-4 py-4"
+                className={`${styles.constraintCard} ${constraintSurfaceStyles[constraint.tone]} rounded-[1.35rem] border px-4 py-4`}
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="space-y-1">
@@ -123,7 +140,7 @@ export function SummaryBanners({
                     <p className="text-sm text-slate-300">{constraint.owner}</p>
                   </div>
                   <span
-                    className={`inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${constraintToneStyles[constraint.tone]}`}
+                    className={`${styles.statusBadge} inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${constraintToneStyles[constraint.tone]}`}
                   >
                     {constraintToneLabels[constraint.tone]}
                   </span>

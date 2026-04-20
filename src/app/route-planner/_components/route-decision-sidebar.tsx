@@ -3,6 +3,7 @@ import type {
   RouteDecision,
   TimingSignal,
 } from "../_data/route-planner-data";
+import styles from "../route-planner.module.css";
 
 const decisionStateLabels: Record<RouteDecision["state"], string> = {
   ready: "Ready",
@@ -14,6 +15,12 @@ const decisionStateStyles: Record<RouteDecision["state"], string> = {
   ready: "border-cyan-300/20 bg-cyan-300/10 text-cyan-50",
   review: "border-amber-300/20 bg-amber-300/10 text-amber-50",
   hold: "border-rose-300/20 bg-rose-300/10 text-rose-50",
+};
+
+const decisionSurfaceStyles: Record<RouteDecision["state"], string> = {
+  ready: styles.decisionReady,
+  review: styles.decisionReview,
+  hold: styles.decisionHold,
 };
 
 type RouteDecisionSidebarProps = {
@@ -37,7 +44,7 @@ export function RouteDecisionSidebar({
   return (
     <aside
       aria-label="Route decision sidebar"
-      className="rounded-[1.9rem] border border-white/10 bg-slate-950/65 p-6"
+      className={`${styles.sidebarPanel} ${styles.stickyRail} rounded-[1.9rem] border border-white/10 p-6`}
     >
       <div className="space-y-5">
         <div>
@@ -76,7 +83,7 @@ export function RouteDecisionSidebar({
           {decisions.map((decision) => (
             <article
               key={decision.id}
-              className="rounded-[1.4rem] border border-white/8 bg-white/5 px-4 py-4"
+              className={`${styles.decisionCard} ${decisionSurfaceStyles[decision.state]} rounded-[1.4rem] border px-4 py-4`}
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="space-y-1">
@@ -86,7 +93,7 @@ export function RouteDecisionSidebar({
                   <p className="text-sm text-slate-300">{decision.owner}</p>
                 </div>
                 <span
-                  className={`inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${decisionStateStyles[decision.state]}`}
+                  className={`${styles.statusBadge} inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${decisionStateStyles[decision.state]}`}
                 >
                   {decisionStateLabels[decision.state]}
                 </span>
