@@ -26,7 +26,11 @@ const escalationSeverityRank = {
   "sla-risk": 3,
 } as const;
 
-function getRequired<T extends { id: string }>(items: T[], id: string, label: string) {
+function getRequiredById<T extends { id: string }>(
+  items: T[],
+  id: string,
+  label: string,
+) {
   const match = items.find((item) => item.id === id);
 
   if (!match) {
@@ -39,21 +43,27 @@ function getRequired<T extends { id: string }>(items: T[], id: string, label: st
 export default function QueueMonitorPage() {
   const cardViews: QueueMonitorCardView[] = queueMonitorItems.map((item) => ({
     item,
-    queue: getRequired(queueMonitorQueues, item.queueId, "Queue"),
-    owner: getRequired(queueMonitorOwners, item.ownerId, "Queue owner"),
-    escalation: getRequired(
+    queue: getRequiredById(queueMonitorQueues, item.queueId, "Queue"),
+    owner: getRequiredById(queueMonitorOwners, item.ownerId, "Queue owner"),
+    escalation: getRequiredById(
       queueMonitorEscalationMarkers,
       item.escalationId,
       "Escalation marker",
     ),
-    column: getRequired(queueMonitorColumns, item.columnId, "Queue column"),
+    column: getRequiredById(queueMonitorColumns, item.columnId, "Queue column"),
   }));
 
   const totalItems = cardViews.length;
   const blockedItems = cardViews.filter((view) => view.item.blocked).length;
   const escalatedItems = cardViews.filter((view) => view.escalation.id !== "steady").length;
   const agingItems = cardViews.filter((view) => view.item.ageHours >= 8).length;
-  const focusedView = getRequired(cardViews, queueMonitorFocusedItemId, "Focused queue item");
+  const focusedView = cardViews.find(
+    (view) => view.item.id === queueMonitorFocusedItemId,
+  );
+
+  if (!focusedView) {
+    throw new Error(`Focused queue item not found for id: ${queueMonitorFocusedItemId}`);
+  }
   const columnViews = queueMonitorColumns.map((column) => ({
     column,
     items: cardViews.filter((view) => view.column.id === column.id),
