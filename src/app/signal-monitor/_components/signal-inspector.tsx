@@ -9,9 +9,9 @@ type SignalInspectorProps = {
 };
 
 const inspectorToneClasses: Record<SignalStream["status"], string> = {
-  tracking: "border-emerald-300/30 bg-emerald-400/14 text-emerald-50",
-  watch: "border-amber-300/30 bg-amber-400/14 text-amber-50",
-  degraded: "border-rose-300/30 bg-rose-400/14 text-rose-50",
+  tracking: "border-emerald-300/30 bg-emerald-400/15 text-emerald-50",
+  watch: "border-amber-300/30 bg-amber-400/15 text-amber-50",
+  degraded: "border-rose-300/30 bg-rose-400/15 text-rose-50",
   offline: "border-slate-300/30 bg-white/10 text-slate-100",
 };
 
@@ -87,7 +87,7 @@ export function SignalInspector({
                 {section.entries.map((entry) => (
                   <div
                     key={entry.label}
-                    className="flex flex-col gap-1 border-t border-white/8 pt-3 first:border-t-0 first:pt-0"
+                    className="flex flex-col gap-1 border-t border-white/[0.08] pt-3 first:border-t-0 first:pt-0"
                   >
                     <dt className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
                       {entry.label}
@@ -126,7 +126,7 @@ export function SignalInspector({
               anomalies.map((anomaly) => (
                 <article
                   key={anomaly.id}
-                  className="rounded-2xl border border-white/10 bg-white/6 px-4 py-4"
+                  className="rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-4"
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="space-y-2">
@@ -147,7 +147,7 @@ export function SignalInspector({
                 </article>
               ))
             ) : (
-              <div className="rounded-2xl border border-white/10 bg-white/6 px-4 py-4">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-4">
                 <p className="text-sm leading-6 text-slate-300">
                   No active anomalies are mapped to this stream in the current
                   mock window.

@@ -2,6 +2,7 @@ import { AnomalySummaryList } from "./anomaly-summary-list";
 import { SignalInspector } from "./signal-inspector";
 import { SignalStreamCard } from "./signal-stream-card";
 import type { SignalMonitorView } from "../_lib/signal-monitor";
+import styles from "../signal-monitor.module.css";
 
 type SignalMonitorShellProps = {
   view: SignalMonitorView;
@@ -15,9 +16,12 @@ const monitorHighlights = [
 
 export function SignalMonitorShell({ view }: SignalMonitorShellProps) {
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-6 py-8 sm:px-10 lg:px-12">
-      <section className="overflow-hidden rounded-[2rem] border border-slate-900/80 bg-slate-950 shadow-[0_30px_110px_rgba(15,23,42,0.24)]">
-        <div className="grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(300px,0.75fr)] lg:px-12 lg:py-10">
+    <main className={styles.shell}>
+      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-6 py-8 sm:px-10 lg:px-12">
+        <section
+          className={`${styles.heroPanel} overflow-hidden rounded-[2rem] border border-slate-900/80 shadow-[0_30px_110px_rgba(15,23,42,0.24)]`}
+        >
+          <div className="grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(300px,0.75fr)] lg:px-12 lg:py-10">
           <div className="space-y-6">
             <div className="space-y-3">
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300">
@@ -37,7 +41,7 @@ export function SignalMonitorShell({ view }: SignalMonitorShellProps) {
               {view.overviewStats.map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-[1.3rem] border border-white/10 bg-white/8 px-4 py-4"
+                  className={`${styles.overviewCard} rounded-[1.3rem] border border-white/10 px-4 py-4`}
                 >
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
                     {stat.label}
@@ -50,7 +54,9 @@ export function SignalMonitorShell({ view }: SignalMonitorShellProps) {
             </div>
           </div>
 
-          <aside className="rounded-[1.75rem] border border-white/10 bg-white/6 p-6">
+          <aside
+            className={`${styles.heroAside} rounded-[1.75rem] border border-white/10 p-6`}
+          >
             <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">
               Route posture
             </p>
@@ -61,91 +67,100 @@ export function SignalMonitorShell({ view }: SignalMonitorShellProps) {
               {monitorHighlights.map((item) => (
                 <li
                   key={item}
-                  className="rounded-2xl border border-white/10 bg-white/6 px-4 py-4 text-sm leading-6 text-slate-300"
+                  className="rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-4 text-sm leading-6 text-slate-300"
                 >
                   {item}
                 </li>
               ))}
             </ul>
           </aside>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {!view.selectionFound && view.requestedSignalId ? (
-        <div
-          role="status"
-          className="rounded-[1.6rem] border border-amber-300/70 bg-amber-50 px-5 py-4 text-sm font-medium text-amber-900"
-        >
-          The requested signal <code>{view.requestedSignalId}</code> was not
-          found. Showing the highest-priority stream instead.
-        </div>
-      ) : null}
+        {!view.selectionFound && view.requestedSignalId ? (
+          <div
+            role="status"
+            className={`${styles.statusBanner} rounded-[1.6rem] border border-amber-300/70 bg-amber-50 px-5 py-4 text-sm font-medium text-amber-900`}
+          >
+            The requested signal <code>{view.requestedSignalId}</code> was not
+            found. Showing the default inspector stream instead.
+          </div>
+        ) : null}
 
-      <div className="grid gap-8 2xl:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.75fr)]">
-        <div className="space-y-8">
-          <section aria-labelledby="signal-monitor-streams" className="space-y-5">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <div className="space-y-2">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
-                  Monitoring surface
-                </p>
-                <h2
-                  id="signal-monitor-streams"
-                  className="text-3xl font-semibold tracking-tight text-slate-950"
-                >
-                  Live signal cards
-                </h2>
-              </div>
-              <p className="max-w-2xl text-sm leading-6 text-slate-600">
-                Each card exposes stream posture, throughput, drift markers, and
-                the number of active anomalies tied to that feed.
-              </p>
-            </div>
-
-            <div
-              aria-label="Live signals"
-              className="grid gap-4 xl:grid-cols-2"
-              role="list"
+        <div className={styles.contentGrid}>
+          <div className="space-y-8">
+            <section
+              aria-labelledby="signal-monitor-streams"
+              className={`${styles.surfaceSection} space-y-5 px-6 py-6 sm:px-7 sm:py-7`}
             >
-              {view.signals.map((signal) => (
-                <div key={signal.id} role="listitem">
-                  <SignalStreamCard
-                    href={`/signal-monitor?signal=${signal.id}`}
-                    isActive={signal.id === view.selectedSignal.id}
-                    signal={signal}
-                  />
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+                    Monitoring surface
+                  </p>
+                  <h2
+                    id="signal-monitor-streams"
+                    className="text-3xl font-semibold tracking-tight text-slate-950"
+                  >
+                    Live signal cards
+                  </h2>
                 </div>
-              ))}
-            </div>
-          </section>
-
-          <section aria-labelledby="signal-monitor-anomalies" className="space-y-5">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <div className="space-y-2">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
-                  Intervention queue
+                <p className="max-w-2xl text-sm leading-6 text-slate-600">
+                  Each card exposes stream posture, throughput, drift markers,
+                  and the number of active anomalies tied to that feed.
                 </p>
-                <h2
-                  id="signal-monitor-anomalies"
-                  className="text-3xl font-semibold tracking-tight text-slate-950"
-                >
-                  Anomaly summary
-                </h2>
               </div>
-              <p className="max-w-2xl text-sm leading-6 text-slate-600">
-                Severity, owner, impact, and recommended actions stay visible so
-                the route can be reviewed without opening a second surface.
-              </p>
-            </div>
 
-            <AnomalySummaryList anomalies={view.anomalies} signals={view.signals} />
-          </section>
+              <div
+                aria-label="Live signals"
+                className={styles.streamGrid}
+                role="list"
+              >
+                {view.signals.map((signal) => (
+                  <div key={signal.id} role="listitem">
+                    <SignalStreamCard
+                      href={`/signal-monitor?signal=${signal.id}`}
+                      isActive={signal.id === view.selectedSignal.id}
+                      signal={signal}
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section
+              aria-labelledby="signal-monitor-anomalies"
+              className={`${styles.surfaceSection} space-y-5 px-6 py-6 sm:px-7 sm:py-7`}
+            >
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+                    Intervention queue
+                  </p>
+                  <h2
+                    id="signal-monitor-anomalies"
+                    className="text-3xl font-semibold tracking-tight text-slate-950"
+                  >
+                    Anomaly summary
+                  </h2>
+                </div>
+                <p className="max-w-2xl text-sm leading-6 text-slate-600">
+                  Severity, owner, impact, and recommended actions stay visible
+                  so the route can be reviewed without opening a second surface.
+                </p>
+              </div>
+
+              <AnomalySummaryList anomalies={view.anomalies} signals={view.signals} />
+            </section>
+          </div>
+
+          <div className={styles.inspectorRail}>
+            <SignalInspector
+              anomalies={view.selectedAnomalies}
+              signal={view.selectedSignal}
+            />
+          </div>
         </div>
-
-        <SignalInspector
-          anomalies={view.selectedAnomalies}
-          signal={view.selectedSignal}
-        />
       </div>
     </main>
   );
