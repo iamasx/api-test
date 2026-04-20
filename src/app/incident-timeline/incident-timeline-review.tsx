@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IncidentDetailPanel } from "./components/incident-detail-panel";
 import { IncidentListItem } from "./components/incident-list-item";
 import { IncidentSummaryCard } from "./components/incident-summary-card";
@@ -30,19 +30,6 @@ export function IncidentTimelineReview({
   );
 
   const filteredIncidents = filterIncidents(orderedIncidents, activeSeverity);
-
-  useEffect(() => {
-    if (filteredIncidents.length === 0) {
-      setSelectedIncidentId(null);
-      return;
-    }
-
-    if (
-      !filteredIncidents.some((incident) => incident.id === selectedIncidentId)
-    ) {
-      setSelectedIncidentId(filteredIncidents[0]?.id ?? null);
-    }
-  }, [filteredIncidents, selectedIncidentId]);
 
   const selectedIncident =
     filteredIncidents.find((incident) => incident.id === selectedIncidentId) ??
