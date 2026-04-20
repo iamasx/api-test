@@ -93,6 +93,36 @@ export const assetAvailabilityStateCopy: Record<
     "Asset is intentionally withheld from scheduling until repair, weather clearance, or replenishment closes out.",
 };
 
+export const assetAvailabilityStateStyles: Record<
+  AssetAvailabilityState,
+  {
+    badge: string;
+    dot: string;
+    selectedBadge: string;
+    emphasis: string;
+  }
+> = {
+  Available: {
+    badge: "border-emerald-200 bg-emerald-50 text-emerald-700",
+    dot: "bg-emerald-500",
+    selectedBadge:
+      "border-emerald-400/25 bg-emerald-400/14 text-emerald-50",
+    emphasis: "border-emerald-400/25 bg-emerald-400/12 text-emerald-50",
+  },
+  Reserved: {
+    badge: "border-amber-200 bg-amber-50 text-amber-700",
+    dot: "bg-amber-500",
+    selectedBadge: "border-amber-400/25 bg-amber-400/14 text-amber-50",
+    emphasis: "border-amber-400/25 bg-amber-400/12 text-amber-50",
+  },
+  Unavailable: {
+    badge: "border-rose-200 bg-rose-50 text-rose-700",
+    dot: "bg-rose-500",
+    selectedBadge: "border-rose-400/25 bg-rose-400/14 text-rose-50",
+    emphasis: "border-rose-400/25 bg-rose-400/12 text-rose-50",
+  },
+};
+
 export const assetCatalogAssets: CatalogAsset[] = [
   {
     id: "meridian-survey-drone",

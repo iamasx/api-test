@@ -33,9 +33,11 @@ export function AssetCatalogSection({
               {section.name}
             </h2>
           </div>
-          <p className="text-sm font-medium text-slate-600">
-            {section.items.length} assets • {section.totalReadyUnits} ready units
-          </p>
+          <div className="flex flex-wrap gap-2 text-sm font-medium text-slate-600">
+            <span>{section.items.length} assets</span>
+            <span>{section.totalReadyUnits} ready units</span>
+            <span>{section.constrainedItems} constrained</span>
+          </div>
         </div>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-700">
           {section.description}

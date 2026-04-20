@@ -1,4 +1,5 @@
 import {
+  assetAvailabilityStateStyles,
   getAssetCategoryById,
   type CatalogAsset,
 } from "@/data/asset-catalog";
@@ -11,6 +12,7 @@ type AssetCardProps = {
 
 export function AssetCard({ item, selected, onSelect }: AssetCardProps) {
   const category = getAssetCategoryById(item.categoryId);
+  const stateStyle = assetAvailabilityStateStyles[item.state];
 
   return (
     <button
@@ -35,11 +37,14 @@ export function AssetCard({ item, selected, onSelect }: AssetCardProps) {
         </div>
         <span
           className={`rounded-full border px-3 py-1 text-xs font-semibold ${
-            selected
-              ? "border-white/20 bg-white/10 text-white"
-              : "border-slate-300 bg-slate-100 text-slate-700"
+            selected ? stateStyle.selectedBadge : stateStyle.badge
           }`}
         >
+          <span
+            className={`mr-2 inline-flex h-2 w-2 rounded-full ${
+              selected ? "bg-current/90" : stateStyle.dot
+            }`}
+          />
           {item.state}
         </span>
       </div>
@@ -84,6 +89,42 @@ export function AssetCard({ item, selected, onSelect }: AssetCardProps) {
           </dd>
         </div>
       </dl>
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <div
+          className={`rounded-2xl border px-4 py-3 ${
+            selected ? "border-white/10 bg-white/8" : "border-black/5 bg-black/[0.03]"
+          }`}
+        >
+          <p
+            className={`text-xs font-semibold uppercase tracking-[0.18em] ${
+              selected ? "text-slate-300" : "text-slate-500"
+            }`}
+          >
+            Readiness
+          </p>
+          <p className="mt-2 text-sm font-medium">
+            {item.availability.readyUnits} ready units • reserve floor{" "}
+            {item.availability.reserveFloor}
+          </p>
+        </div>
+        <div
+          className={`rounded-2xl border px-4 py-3 ${
+            selected ? "border-white/10 bg-white/8" : "border-black/5 bg-black/[0.03]"
+          }`}
+        >
+          <p
+            className={`text-xs font-semibold uppercase tracking-[0.18em] ${
+              selected ? "text-slate-300" : "text-slate-500"
+            }`}
+          >
+            Assigned Lead
+          </p>
+          <p className="mt-2 text-sm font-medium">
+            {item.availability.assignedLead}
+          </p>
+        </div>
+      </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
         {item.tags.map((tag) => (
