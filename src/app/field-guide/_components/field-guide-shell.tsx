@@ -18,6 +18,21 @@ type FieldGuideShellProps = {
   procedures: FieldGuideProcedure[];
 };
 
+const shellHighlights = [
+  {
+    label: "Searchable Catalog",
+    detail: "Procedure cards stay grouped beside the working detail panel.",
+  },
+  {
+    label: "Checklist Ready",
+    detail: "Execution checklists remain paired with the active procedure.",
+  },
+  {
+    label: "Reference Detail",
+    detail: "Reference notes stay visible without leaving the route context.",
+  },
+] as const;
+
 function matchesProcedure(procedure: FieldGuideProcedure, query: string) {
   if (!query) {
     return true;
@@ -99,6 +114,7 @@ export function FieldGuideShell({
     <div className={`${styles.shell} text-slate-950`}>
       <main className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-5 py-8 sm:px-8 lg:px-10 lg:py-10">
         <section
+          aria-labelledby="field-guide-title"
           className={`${styles.heroPanel} rounded-[2.5rem] border border-slate-200/80 bg-slate-950 px-6 py-8 text-white shadow-[0_36px_110px_-48px_rgba(15,23,42,0.9)] sm:px-8 lg:px-10`}
         >
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(280px,0.95fr)]">
@@ -106,7 +122,10 @@ export function FieldGuideShell({
               <p className="text-xs font-semibold uppercase tracking-[0.32em] text-teal-300">
                 Field Guide
               </p>
-              <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl">
+              <h1
+                id="field-guide-title"
+                className="mt-4 max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl"
+              >
                 Search procedures, run the checklist, and keep reference detail
                 close to the active response.
               </h1>
@@ -161,6 +180,25 @@ export function FieldGuideShell({
               </div>
             </div>
           </div>
+        </section>
+
+        <section
+          aria-label="Field guide route highlights"
+          className="grid gap-4 md:grid-cols-3"
+        >
+          {shellHighlights.map((highlight) => (
+            <div
+              key={highlight.label}
+              className="rounded-[1.7rem] border border-slate-200/80 bg-white/82 px-5 py-5 shadow-[0_18px_70px_-48px_rgba(15,23,42,0.35)]"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+                {highlight.label}
+              </p>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                {highlight.detail}
+              </p>
+            </div>
+          ))}
         </section>
 
         <ProcedureFilterBar

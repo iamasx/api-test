@@ -9,7 +9,7 @@ import {
 export const metadata: Metadata = {
   title: "Field Guide",
   description:
-    "Searchable field procedures with checklist execution detail and reference notes.",
+    "Field guide route shell for searchable procedures, checklist execution detail, and reference notes.",
 };
 
 export default function FieldGuidePage() {
