@@ -1,14 +1,14 @@
 type GuideSearchProps = {
+  helperText: string;
+  resultSummary: string;
   query: string;
-  resultCount: number;
-  totalCount: number;
   onQueryChange: (value: string) => void;
 };
 
 export default function GuideSearch({
+  helperText,
   query,
-  resultCount,
-  totalCount,
+  resultSummary,
   onQueryChange,
 }: GuideSearchProps) {
   return (
@@ -29,12 +29,11 @@ export default function GuideSearch({
           value={query}
         />
         <p className="text-sm text-slate-600 lg:min-w-max">
-          Showing {resultCount} of {totalCount} mock procedures
+          {resultSummary}
         </p>
       </div>
       <p className="mt-3 text-sm leading-6 text-slate-500">
-        Search checks titles and summaries only, while team, difficulty, and
-        status filters stay entirely client-side.
+        {helperText}
       </p>
     </section>
   );

@@ -1,14 +1,20 @@
 type GuideFiltersProps = {
-  teams: readonly string[];
   difficulties: readonly string[];
+  playbookStatuses: readonly string[];
+  selectedPlaybookStatus: string;
+  selectedTag: string;
   statuses: readonly string[];
+  tags: readonly string[];
+  teams: readonly string[];
   selectedTeam: string;
   selectedDifficulty: string;
   selectedStatus: string;
   hasActiveFilters: boolean;
-  onTeamChange: (value: string) => void;
   onDifficultyChange: (value: string) => void;
+  onPlaybookStatusChange: (value: string) => void;
   onStatusChange: (value: string) => void;
+  onTagChange: (value: string) => void;
+  onTeamChange: (value: string) => void;
   onClear: () => void;
 };
 
@@ -50,14 +56,20 @@ function FilterSelect({
 export default function GuideFilters({
   teams,
   difficulties,
+  tags,
   statuses,
+  playbookStatuses,
   selectedTeam,
   selectedDifficulty,
   selectedStatus,
+  selectedTag,
+  selectedPlaybookStatus,
   hasActiveFilters,
   onTeamChange,
   onDifficultyChange,
   onStatusChange,
+  onTagChange,
+  onPlaybookStatusChange,
   onClear,
 }: GuideFiltersProps) {
   return (
@@ -80,7 +92,7 @@ export default function GuideFilters({
           Clear all
         </button>
       </div>
-      <div className="mt-5 grid gap-4 md:grid-cols-3">
+      <div className="mt-5 grid gap-4 xl:grid-cols-5">
         <FilterSelect
           id="team-filter"
           label="Teams"
@@ -101,6 +113,20 @@ export default function GuideFilters({
           onChange={onStatusChange}
           options={statuses}
           value={selectedStatus}
+        />
+        <FilterSelect
+          id="playbook-status-filter"
+          label="Playbook status"
+          onChange={onPlaybookStatusChange}
+          options={playbookStatuses}
+          value={selectedPlaybookStatus}
+        />
+        <FilterSelect
+          id="tag-filter"
+          label="Tags"
+          onChange={onTagChange}
+          options={tags}
+          value={selectedTag}
         />
       </div>
     </section>
