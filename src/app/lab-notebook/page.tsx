@@ -146,6 +146,7 @@ export default function LabNotebookPage() {
           <div
             aria-label="Notebook summaries"
             className="grid gap-4 md:grid-cols-3"
+            data-testid="lab-notebook-summary-grid"
             role="list"
           >
             {notebookSummaryMetrics.map((metric) => (
@@ -275,7 +276,10 @@ export default function LabNotebookPage() {
             </p>
           </div>
 
-          <div className="grid gap-5 2xl:grid-cols-2">
+          <div
+            className="grid gap-5 2xl:grid-cols-2"
+            data-testid="lab-notebook-observation-grid"
+          >
             {observationPanels.map((panel) => (
               <ObservationPanel key={panel.id} panel={panel} />
             ))}
