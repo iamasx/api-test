@@ -1,4 +1,5 @@
 import { ArchiveMetadataBadge } from "./archive-metadata-badge";
+import styles from "../archive-browser.module.css";
 import type { ArchiveSnapshot } from "../_lib/archive-data";
 
 type ArchiveDetailPanelProps = {
@@ -13,35 +14,26 @@ export function ArchiveDetailPanel({
   selectionFound,
 }: ArchiveDetailPanelProps) {
   return (
-    <aside>
+    <aside className={styles.detailColumn}>
       <section
         aria-label="Archive detail view"
-        className="space-y-5 rounded-[2rem] border border-slate-900 bg-slate-950 p-6 text-slate-100"
+        className={styles.detailPanel}
       >
         <div className="space-y-3">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-amber-200/80">
-            Detail view
-          </p>
-          <h2 className="text-3xl font-semibold tracking-tight">
-            {selectedSnapshot.title}
-          </h2>
-          <p className="text-sm leading-7 text-slate-300">
-            {selectedSnapshot.summary}
-          </p>
+          <p className={styles.eyebrow}>Detail view</p>
+          <h2 className={styles.sectionTitle}>{selectedSnapshot.title}</h2>
+          <p className={styles.detailText}>{selectedSnapshot.summary}</p>
         </div>
 
         {!selectionFound && requestedSnapshotId ? (
-          <p
-            role="status"
-            className="rounded-[1.25rem] border border-amber-300/40 bg-amber-300/10 px-4 py-3 text-sm leading-6 text-amber-100"
-          >
+          <p role="status" className={styles.detailNotice}>
             Snapshot ID <span className="font-semibold">{requestedSnapshotId}</span>{" "}
             was not found. Showing the latest archive instead.
           </p>
         ) : null}
 
-        <div className="space-y-4 rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
-          <div className="flex flex-wrap gap-2">
+        <div className={styles.detailMetaPanel}>
+          <div className={styles.metadataBadgeList}>
             {selectedSnapshot.metadataBadges.map((badge) => (
               <ArchiveMetadataBadge
                 key={`${selectedSnapshot.id}-${badge.label}-detail`}
@@ -50,67 +42,45 @@ export function ArchiveDetailPanel({
             ))}
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className={styles.detailMetaGrid}>
             <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
-                Label
-              </p>
-              <p className="mt-1 text-sm font-medium text-white">
-                {selectedSnapshot.label}
-              </p>
+              <p className={styles.detailMetaLabel}>Label</p>
+              <p className={styles.detailMetaValue}>{selectedSnapshot.label}</p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
-                Status
-              </p>
-              <p className="mt-1 text-sm font-medium text-white">
-                {selectedSnapshot.status}
-              </p>
+              <p className={styles.detailMetaLabel}>Status</p>
+              <p className={styles.detailMetaValue}>{selectedSnapshot.status}</p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
-                Source
-              </p>
-              <p className="mt-1 text-sm font-medium text-white">
-                {selectedSnapshot.source}
-              </p>
+              <p className={styles.detailMetaLabel}>Source</p>
+              <p className={styles.detailMetaValue}>{selectedSnapshot.source}</p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
-                Archive seal
-              </p>
-              <p className="mt-1 text-sm font-medium text-white">
+              <p className={styles.detailMetaLabel}>Archive seal</p>
+              <p className={styles.detailMetaValue}>
                 {selectedSnapshot.archivedLabel}
               </p>
             </div>
-            <div className="sm:col-span-2">
-              <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
-                Capture range
-              </p>
-              <p className="mt-1 text-sm font-medium text-white">
+            <div>
+              <p className={styles.detailMetaLabel}>Capture range</p>
+              <p className={styles.detailMetaValue}>
                 {selectedSnapshot.captureRange}
               </p>
             </div>
           </div>
         </div>
 
-        <section className="space-y-3 rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
-          <h3 className="text-xl font-semibold text-white">Archive timeline</h3>
-          <ul className="space-y-3">
+        <section className={styles.detailTimeline}>
+          <h3 className={styles.detailSectionTitle}>Archive timeline</h3>
+          <ul className={styles.timelineList}>
             {selectedSnapshot.timelineEntries.map((entry) => (
               <li
                 key={`${selectedSnapshot.id}-${entry.label}`}
-                className="rounded-[1rem] border border-white/10 bg-slate-900/80 p-4"
+                className={styles.timelineEntry}
               >
-                <p className="text-xs uppercase tracking-[0.18em] text-amber-200/80">
-                  {entry.label}
-                </p>
-                <p className="mt-2 text-sm font-medium text-white">
-                  {entry.timestamp}
-                </p>
-                <p className="mt-2 text-sm leading-6 text-slate-300">
-                  {entry.detail}
-                </p>
+                <p className={styles.timelineLabel}>{entry.label}</p>
+                <p className={styles.timelineStamp}>{entry.timestamp}</p>
+                <p className={styles.timelineDetail}>{entry.detail}</p>
               </li>
             ))}
           </ul>
@@ -120,29 +90,23 @@ export function ArchiveDetailPanel({
           {selectedSnapshot.detailSections.map((section) => (
             <section
               key={`${selectedSnapshot.id}-${section.title}`}
-              className="space-y-3 rounded-[1.5rem] border border-white/10 bg-white/5 p-4"
+              className={styles.detailSection}
             >
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-white">
-                  {section.title}
-                </h3>
-                <p className="text-sm leading-6 text-slate-300">
+              <div>
+                <h3 className={styles.detailSectionTitle}>{section.title}</h3>
+                <p className={styles.detailSectionDescription}>
                   {section.description}
                 </p>
               </div>
 
-              <dl className="grid gap-3 sm:grid-cols-3">
+              <dl className={styles.detailRows}>
                 {section.rows.map((row) => (
                   <div
                     key={`${selectedSnapshot.id}-${section.title}-${row.label}`}
-                    className="rounded-[1rem] border border-white/10 bg-slate-900/80 p-3"
+                    className={styles.timelineEntry}
                   >
-                    <dt className="text-xs uppercase tracking-[0.18em] text-slate-400">
-                      {row.label}
-                    </dt>
-                    <dd className="mt-2 text-sm font-medium leading-6 text-white">
-                      {row.value}
-                    </dd>
+                    <dt className={styles.detailRowLabel}>{row.label}</dt>
+                    <dd className={styles.detailRowValue}>{row.value}</dd>
                   </div>
                 ))}
               </dl>
@@ -150,13 +114,13 @@ export function ArchiveDetailPanel({
           ))}
         </div>
 
-        <section className="space-y-3 rounded-[1.5rem] border border-white/10 bg-white/5 p-4">
-          <h3 className="text-xl font-semibold text-white">Recovery notes</h3>
-          <ul className="space-y-3">
+        <section className={styles.detailNotes}>
+          <h3 className={styles.detailSectionTitle}>Recovery notes</h3>
+          <ul className={styles.detailNotesList}>
             {selectedSnapshot.recoveryNotes.map((note) => (
               <li
                 key={`${selectedSnapshot.id}-${note}`}
-                className="rounded-[1rem] border border-white/10 bg-slate-900/80 px-4 py-3 text-sm leading-6 text-slate-200"
+                className={styles.detailNote}
               >
                 {note}
               </li>

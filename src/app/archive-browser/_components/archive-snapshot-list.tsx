@@ -1,4 +1,5 @@
 import { ArchiveSnapshotCard } from "./archive-snapshot-card";
+import styles from "../archive-browser.module.css";
 import type { ArchiveSnapshot } from "../_lib/archive-data";
 
 type ArchiveSnapshotListProps = {
@@ -13,25 +14,23 @@ export function ArchiveSnapshotList({
   return (
     <section
       aria-labelledby="archive-snapshot-list-title"
-      className="space-y-4"
+      className={styles.listSection}
     >
       <div className="space-y-2">
-        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
-          Snapshot list
-        </p>
+        <p className={styles.eyebrow}>Snapshot list</p>
         <h2
           id="archive-snapshot-list-title"
-          className="text-3xl font-semibold tracking-tight text-slate-950"
+          className={styles.sectionTitle}
         >
           Archived entries
         </h2>
-        <p className="max-w-2xl text-sm leading-7 text-slate-600">
+        <p className={styles.sectionDescription}>
           Each snapshot card exposes preservation metadata, searchable tags, and
           a linked detail state.
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className={styles.snapshotStack}>
         {snapshots.map((snapshot) => (
           <ArchiveSnapshotCard
             key={snapshot.id}

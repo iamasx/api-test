@@ -1,5 +1,6 @@
 import { ArchiveDetailPanel } from "./archive-detail-panel";
 import { ArchiveSnapshotList } from "./archive-snapshot-list";
+import styles from "../archive-browser.module.css";
 import type { ArchiveBrowserSelection } from "../_lib/archive-browser";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
@@ -55,18 +56,16 @@ export function ArchiveBrowserShell({
   const overview = buildOverview(selection);
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-6 py-8 sm:px-10 lg:px-12">
-      <section className="rounded-[2rem] border border-slate-200/80 bg-[var(--surface)] p-6 shadow-[0_20px_80px_rgba(15,23,42,0.08)] sm:p-8">
-        <div className="grid gap-8 xl:grid-cols-[minmax(0,1.1fr)_minmax(300px,0.9fr)]">
+    <main className={styles.archiveBrowser}>
+      <section className={styles.heroPanel}>
+        <div className={styles.heroGrid}>
           <div className="space-y-4">
-            <p className="text-sm font-semibold uppercase tracking-[0.26em] text-amber-700">
-              Archive browser
-            </p>
+            <p className={styles.eyebrow}>Archive browser</p>
             <div className="space-y-3">
-              <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
+              <h1 className={styles.heroTitle}>
                 Inspect preserved snapshots with visible metadata and a detail-first review panel.
               </h1>
-              <p className="max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
+              <p className={styles.heroText}>
                 This route keeps archive browsing independent and testable:
                 server-rendered snapshot selection, explicit metadata badges,
                 and a detail surface that expands timeline and recovery notes.
@@ -76,29 +75,23 @@ export function ArchiveBrowserShell({
 
           <section
             aria-labelledby="archive-browser-overview-title"
-            className="rounded-[1.75rem] border border-slate-200 bg-white/80 p-5"
+            className={styles.overviewCard}
           >
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">
-              Route overview
-            </p>
+            <p className={styles.eyebrow}>Route overview</p>
             <h2
               id="archive-browser-overview-title"
-              className="mt-3 text-2xl font-semibold tracking-tight text-slate-950"
+              className={styles.overviewTitle}
             >
               Archive metrics at a glance
             </h2>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <div className={styles.overviewGrid}>
               {overview.map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-[1.2rem] border border-slate-200 bg-slate-50 p-4"
+                  className={styles.overviewMetric}
                 >
-                  <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
-                    {item.label}
-                  </p>
-                  <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
-                    {item.value}
-                  </p>
+                  <p className={styles.overviewMetricLabel}>{item.label}</p>
+                  <p className={styles.overviewMetricValue}>{item.value}</p>
                 </div>
               ))}
             </div>
@@ -106,7 +99,7 @@ export function ArchiveBrowserShell({
         </div>
       </section>
 
-      <div className="grid gap-8 xl:grid-cols-[minmax(0,1.05fr)_minmax(340px,0.95fr)]">
+      <div className={styles.contentGrid}>
         <ArchiveSnapshotList
           snapshots={selection.snapshots}
           selectedSnapshotId={selection.selectedSnapshot.id}
