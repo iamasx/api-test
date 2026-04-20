@@ -2,6 +2,7 @@ import type {
   AlertSeverity,
   ControlRoomAlertSection,
 } from "../_data/control-room-data";
+import styles from "../control-room.module.css";
 
 const severityClasses: Record<AlertSeverity, string> = {
   critical: "border-rose-200 bg-rose-50 text-rose-800",
@@ -15,13 +16,25 @@ const severityLabels: Record<AlertSeverity, string> = {
   watch: "Watch",
 };
 
+const sectionClasses: Record<string, string> = {
+  "immediate-action": styles.alertSectionImmediate,
+  "stabilization-queue": styles.alertSectionStabilization,
+  "observation-deck": styles.alertSectionObservation,
+};
+
+const itemClasses: Record<AlertSeverity, string> = {
+  critical: styles.alertCritical,
+  elevated: styles.alertElevated,
+  watch: styles.alertWatch,
+};
+
 export function AlertList({ sections }: { sections: ControlRoomAlertSection[] }) {
   return (
     <div className="space-y-4">
       {sections.map((section) => (
         <section
           key={section.id}
-          className="rounded-[1.75rem] border border-slate-200/80 bg-white/80 p-5 shadow-[0_18px_50px_rgba(15,23,42,0.07)] sm:p-6"
+          className={`${styles.surfaceCard} ${styles.alertSection} ${sectionClasses[section.id]} p-5 sm:p-6`}
         >
           <div className="space-y-3">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -42,7 +55,9 @@ export function AlertList({ sections }: { sections: ControlRoomAlertSection[] })
               <ul className="space-y-3" aria-label={section.title}>
                 {section.alerts.map((alert) => (
                   <li key={alert.id}>
-                    <article className="rounded-[1.5rem] border border-slate-200/90 bg-slate-50/80 p-4">
+                    <article
+                      className={`${styles.alertItem} ${itemClasses[alert.severity]} rounded-[1.5rem] border border-slate-200/90 bg-white/75 p-4`}
+                    >
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div className="space-y-3">
                           <div className="flex flex-wrap items-center gap-3">
@@ -103,7 +118,7 @@ export function AlertList({ sections }: { sections: ControlRoomAlertSection[] })
                 ))}
               </ul>
             ) : (
-              <div className="rounded-[1.5rem] border border-dashed border-slate-300 bg-slate-50/80 px-5 py-4">
+              <div className="rounded-[1.5rem] border border-dashed border-slate-300 bg-white/75 px-5 py-4">
                 <p className="text-sm font-medium text-slate-800">
                   No active alerts in this lane.
                 </p>

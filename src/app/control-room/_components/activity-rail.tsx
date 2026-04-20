@@ -2,11 +2,18 @@ import type {
   ActivityTone,
   OperatorActivityEntry,
 } from "../_data/control-room-data";
+import styles from "../control-room.module.css";
 
 const toneClasses: Record<ActivityTone, string> = {
   operator: "border-slate-200 bg-slate-100 text-slate-800",
   automation: "border-sky-200 bg-sky-50 text-sky-800",
   resolved: "border-emerald-200 bg-emerald-50 text-emerald-800",
+};
+
+const nodeClasses: Record<ActivityTone, string> = {
+  operator: styles.activityNodeOperator,
+  automation: styles.activityNodeAutomation,
+  resolved: styles.activityNodeResolved,
 };
 
 export function ActivityRail({
@@ -29,10 +36,13 @@ export function ActivityRail({
   }
 
   return (
-    <ol aria-label="Operator activity rail" className="space-y-4">
+    <ol aria-label="Operator activity rail" className={styles.activityRail}>
       {entries.map((entry) => (
-        <li key={entry.id}>
-          <article className="rounded-[1.75rem] border border-slate-200/80 bg-white/80 p-5 shadow-[0_16px_45px_rgba(15,23,42,0.07)]">
+        <li
+          key={entry.id}
+          className={`${styles.activityNode} ${nodeClasses[entry.tone]}`}
+        >
+          <article className={`${styles.surfaceCard} p-5`}>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <span
                 className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${toneClasses[entry.tone]}`}

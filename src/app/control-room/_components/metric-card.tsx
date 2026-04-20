@@ -2,6 +2,7 @@ import type {
   ControlRoomMetric,
   MetricStatus,
 } from "../_data/control-room-data";
+import styles from "../control-room.module.css";
 
 const statusBadgeClasses: Record<MetricStatus, string> = {
   stable: "border-emerald-200 bg-emerald-50 text-emerald-800",
@@ -10,16 +11,16 @@ const statusBadgeClasses: Record<MetricStatus, string> = {
 };
 
 const progressFillClasses: Record<MetricStatus, string> = {
-  stable: "bg-emerald-500",
-  attention: "bg-amber-500",
-  critical: "bg-rose-500",
+  stable: styles.metricFillStable,
+  attention: styles.metricFillAttention,
+  critical: styles.metricFillCritical,
 };
 
 export function MetricCard({ metric }: { metric: ControlRoomMetric }) {
   return (
     <article
       role="listitem"
-      className="flex h-full flex-col gap-5 rounded-[1.5rem] border border-slate-200/80 bg-white/80 p-5 shadow-[0_18px_50px_rgba(15,23,42,0.08)]"
+      className={`${styles.surfaceCard} ${styles.metricCard} flex h-full flex-col gap-5 p-5`}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-3">
@@ -45,9 +46,9 @@ export function MetricCard({ metric }: { metric: ControlRoomMetric }) {
           <span>{metric.focus}</span>
           <span>{metric.progress}%</span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-slate-200">
+        <div className={styles.metricRail}>
           <span
-            className={`block h-full rounded-full ${progressFillClasses[metric.status]}`}
+            className={`${styles.metricFill} ${progressFillClasses[metric.status]}`}
             style={{ width: `${metric.progress}%` }}
           />
         </div>

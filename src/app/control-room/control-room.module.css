@@ -1,0 +1,261 @@
+.shell {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.2), transparent 26%),
+    radial-gradient(circle at 82% 12%, rgba(250, 204, 21, 0.18), transparent 22%),
+    linear-gradient(180deg, #08111c 0%, #0c1826 46%, #111827 100%);
+}
+
+.shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-position: center;
+  background-size: 5rem 5rem;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.85), transparent 88%);
+  z-index: -2;
+}
+
+.shell::after {
+  content: "";
+  position: absolute;
+  right: -10rem;
+  bottom: -10rem;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.18), transparent 60%);
+  filter: blur(18px);
+  z-index: -1;
+}
+
+.inner {
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  width: 100%;
+  max-width: 88rem;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 3rem 1.5rem 4rem;
+}
+
+.surfaceCard {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: rgba(248, 250, 252, 0.88);
+  box-shadow:
+    0 24px 70px rgba(2, 8, 23, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(18px);
+  border-radius: 1.75rem;
+}
+
+.heroDeck {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(8, 14, 23, 0.96), rgba(11, 28, 44, 0.9) 58%, rgba(12, 74, 110, 0.76)),
+    radial-gradient(circle at top right, rgba(250, 204, 21, 0.22), transparent 36%);
+  color: #f8fafc;
+}
+
+.heroDeck::before {
+  content: "";
+  position: absolute;
+  inset: auto -6rem -8rem auto;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.22), transparent 60%);
+  filter: blur(16px);
+  z-index: 0;
+}
+
+.heroDeck > * {
+  position: relative;
+  z-index: 1;
+}
+
+.heroStat {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.briefingCard {
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.metricCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.metricCard::before {
+  content: "";
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.14), transparent 68%);
+  pointer-events: none;
+}
+
+.metricRail {
+  height: 0.7rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: rgba(148, 163, 184, 0.16);
+}
+
+.metricFill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.metricFillStable {
+  background: linear-gradient(90deg, #22c55e, #14b8a6);
+  box-shadow: 0 0 24px rgba(34, 197, 94, 0.2);
+}
+
+.metricFillAttention {
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+  box-shadow: 0 0 24px rgba(245, 158, 11, 0.18);
+}
+
+.metricFillCritical {
+  background: linear-gradient(90deg, #fb7185, #f97316);
+  box-shadow: 0 0 24px rgba(251, 113, 133, 0.18);
+}
+
+.alertSection {
+  position: relative;
+  overflow: hidden;
+}
+
+.alertSection::before {
+  content: "";
+  position: absolute;
+  left: 1.5rem;
+  right: 1.5rem;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.7), transparent);
+}
+
+.alertSectionImmediate {
+  background:
+    linear-gradient(180deg, rgba(255, 241, 242, 0.96), rgba(248, 250, 252, 0.9));
+}
+
+.alertSectionStabilization {
+  background:
+    linear-gradient(180deg, rgba(255, 251, 235, 0.96), rgba(248, 250, 252, 0.9));
+}
+
+.alertSectionObservation {
+  background:
+    linear-gradient(180deg, rgba(240, 249, 255, 0.96), rgba(248, 250, 252, 0.9));
+}
+
+.alertItem {
+  position: relative;
+  overflow: hidden;
+}
+
+.alertItem::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1rem;
+  bottom: 1rem;
+  width: 0.35rem;
+  border-radius: 9999px;
+}
+
+.alertCritical::before {
+  background: linear-gradient(180deg, #fb7185, #e11d48);
+}
+
+.alertElevated::before {
+  background: linear-gradient(180deg, #f59e0b, #f97316);
+}
+
+.alertWatch::before {
+  background: linear-gradient(180deg, #38bdf8, #06b6d4);
+}
+
+.activityRail {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+}
+
+.activityRail::before {
+  content: "";
+  position: absolute;
+  left: 0.55rem;
+  top: 0.75rem;
+  bottom: 0.75rem;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.28), rgba(250, 204, 21, 0.22));
+}
+
+.activityNode {
+  position: relative;
+  padding-left: 2.2rem;
+}
+
+.activityNode::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.25rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 9999px;
+  border: 4px solid #08111c;
+}
+
+.activityNodeOperator::before {
+  background: linear-gradient(135deg, #38bdf8, #22d3ee);
+}
+
+.activityNodeAutomation::before {
+  background: linear-gradient(135deg, #60a5fa, #818cf8);
+}
+
+.activityNodeResolved::before {
+  background: linear-gradient(135deg, #34d399, #14b8a6);
+}
+
+@media (max-width: 640px) {
+  .inner {
+    padding: 2rem 1rem 3rem;
+  }
+
+  .shell::after {
+    right: -8rem;
+    bottom: -8rem;
+    width: 20rem;
+    height: 20rem;
+  }
+
+  .activityNode {
+    padding-left: 1.9rem;
+  }
+}
