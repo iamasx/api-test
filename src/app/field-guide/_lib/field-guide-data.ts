@@ -686,6 +686,162 @@ export const fieldGuideProcedures: FieldGuideProcedure[] = [
   },
 ];
 
+  {
+    id: "dock-seal-audit",
+    title: "Dock Seal Integrity Audit",
+    code: "FG-610",
+    categoryId: "perimeter-safety",
+    priority: "Routine",
+    estimatedWindow: "11-15 min",
+    summary:
+      "Walk the dock seals and confirm compression, weather gasket health, and closure alignment before the next inbound wave.",
+    objective:
+      "Catch worn or misaligned seals early so cold-chain loads do not lose temperature during unloading.",
+    sceneType: "Dock face and trailer staging apron",
+    crew: "Dock lead and maintenance runner",
+    focusAreas: ["Perimeter control", "Temperature control"],
+    lastReviewed: "2026-04-20",
+    tags: ["Dock seal", "Integrity check", "Cold chain"],
+    triggerSignals: [
+      "Temperature variance reported inside an active dock door",
+      "Visible daylight or insect entry around a closed seal",
+      "Maintenance log shows the seal has not been checked in 30 days",
+    ],
+    tools: ["Seal gauge card", "Compression test strip", "Flashlight"],
+    steps: [
+      {
+        id: "seal-walk-exterior",
+        title: "Walk the exterior dock face and flag obvious damage",
+        detail:
+          "Look for torn foam, shifted header pads, and dragged side curtains before opening any active door.",
+        duration: "3 min",
+        owner: "Dock lead",
+      },
+      {
+        id: "seal-compression-test",
+        title: "Run a compression strip on each flagged seal",
+        detail:
+          "Press the test strip along the top and both sides to confirm uniform contact when the door is closed.",
+        duration: "4 min",
+        owner: "Maintenance runner",
+      },
+      {
+        id: "seal-log-findings",
+        title: "Log findings and tag seals that need replacement",
+        detail:
+          "Record which doors passed, which need adjustment, and which require a full seal swap before the next shift.",
+        duration: "3 min",
+        owner: "Dock lead",
+      },
+    ],
+    checklist: [
+      {
+        id: "seal-visual",
+        label: "Visual inspection complete on all active dock doors",
+        detail:
+          "Do not skip doors that are currently unoccupied — they may be assigned to the next wave.",
+        type: "Required",
+      },
+      {
+        id: "seal-strip",
+        label: "Compression strip shows uniform contact on flagged seals",
+        detail:
+          "Non-uniform contact means the header or side pad needs repositioning.",
+        type: "Verify on site",
+      },
+      {
+        id: "seal-tag",
+        label: "Failed seals are tagged and reported before the next inbound trailer",
+        detail:
+          "A tagged seal prevents accidental use while a replacement is staged.",
+        type: "Required",
+      },
+    ],
+    references: [
+      { id: "seal-ref-freq", label: "Audit frequency", value: "Every 30 days or after a reported temperature variance" },
+      { id: "seal-ref-pass", label: "Pass criteria", value: "Full compression contact with no daylight visible" },
+      { id: "seal-ref-escalate", label: "Escalate if", value: "More than two seals fail in the same wave" },
+    ],
+  },
+  {
+    id: "conveyor-jam-clear",
+    title: "Conveyor Jam Clearance",
+    code: "FG-715",
+    categoryId: "site-restart",
+    priority: "Elevated",
+    estimatedWindow: "8-12 min",
+    summary:
+      "Clear a jammed conveyor segment, verify belt alignment, and restart the line without sending a surge downstream.",
+    objective:
+      "Restore flow through the jammed segment quickly while keeping downstream sort stations from being overwhelmed on restart.",
+    sceneType: "Sort conveyor mezzanine and takeaway chutes",
+    crew: "Sort lead, conveyor tech, and chute observer",
+    focusAreas: ["Queue restart", "Crew safety"],
+    lastReviewed: "2026-04-21",
+    tags: ["Conveyor", "Jam clearance", "Sort restart"],
+    triggerSignals: [
+      "Photoeye fault triggers a segment stop on the mezzanine",
+      "Packages visibly stacked or wedged at a divert point",
+      "Downstream chute begins to back up within 60 seconds of a segment fault",
+    ],
+    tools: ["Belt alignment card", "Jam hook", "Segment restart key"],
+    steps: [
+      {
+        id: "jam-lockout",
+        title: "Confirm lockout and clear crew from the belt path",
+        detail:
+          "Verify the segment is locked out before anyone reaches into the jam zone.",
+        duration: "2 min",
+        owner: "Sort lead",
+      },
+      {
+        id: "jam-clear",
+        title: "Clear the jam and inspect the belt for damage",
+        detail:
+          "Remove the wedged package, check the divert flap, and look for belt scoring or misalignment.",
+        duration: "3 min",
+        owner: "Conveyor tech",
+      },
+      {
+        id: "jam-restart",
+        title: "Restart the segment at reduced speed and watch downstream",
+        detail:
+          "Bring the segment back at half speed for the first 30 seconds so the chute observer can confirm even flow.",
+        duration: "3 min",
+        owner: "Conveyor tech",
+      },
+    ],
+    checklist: [
+      {
+        id: "jam-lockout-check",
+        label: "Lockout is confirmed before anyone enters the belt path",
+        detail:
+          "Never reach into a conveyor segment without verified lockout.",
+        type: "Required",
+      },
+      {
+        id: "jam-belt-inspect",
+        label: "Belt alignment and divert flap are inspected after clearing",
+        detail:
+          "A cleared jam with a misaligned belt will re-jam within minutes.",
+        type: "Verify on site",
+      },
+      {
+        id: "jam-downstream",
+        label: "Downstream chute observer confirms even flow before full speed",
+        detail:
+          "Restart surges can cascade into a secondary jam at the next divert.",
+        type: "Recommended",
+      },
+    ],
+    references: [
+      { id: "jam-ref-speed", label: "Initial restart speed", value: "Half speed for at least 30 seconds" },
+      { id: "jam-ref-escalate", label: "Escalate if", value: "Belt scoring or misalignment is visible after clearing" },
+      { id: "jam-ref-log", label: "Log requirement", value: "Record jam location, cause, and segment downtime" },
+    ],
+  },
+];
+
 export const fieldGuidePriorityStyles: Record<
   ProcedurePriority,
   { badge: string; dot: string }
