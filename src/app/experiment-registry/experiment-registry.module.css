@@ -1,0 +1,36 @@
+.shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.08), transparent),
+    linear-gradient(to bottom, #f0f2f8, #eef0f5 40%, #f4f4f8);
+}
+
+.card {
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+}
+
+.statusActive {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border-color: #a7f3d0;
+}
+
+.statusPaused {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border-color: #fde68a;
+}
+
+.statusCompleted {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-color: #bae6fd;
+}
+
+.statusDraft {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-color: #e2e8f0;
+}
