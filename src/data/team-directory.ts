@@ -282,8 +282,6 @@ export const teamGroups: TeamGroup[] = [
       },
     ],
   },
-];
-
   {
     id: "data-insights",
     name: "Data Insights",
