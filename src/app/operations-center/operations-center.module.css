@@ -42,4 +42,23 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(12px);
   border-radius: 1.5rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.surfaceCard:hover {
+  box-shadow:
+    0 20px 56px rgba(15, 23, 42, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 640px) {
+  .shell::before {
+    inset: -15% -40% auto auto;
+    width: 22rem;
+    height: 22rem;
+  }
+
+  .surfaceCard {
+    border-radius: 1.25rem;
+  }
 }
