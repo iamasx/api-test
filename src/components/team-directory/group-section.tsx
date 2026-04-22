@@ -7,6 +7,12 @@ type GroupSectionProps = {
 
 export function GroupSection({ group }: GroupSectionProps) {
   const headingId = `${group.id}-heading`;
+  const availableCount = group.members.filter(
+    (m) => m.availability === "Available now",
+  ).length;
+  const headsDownCount = group.members.filter(
+    (m) => m.availability === "Heads down",
+  ).length;
 
   return (
     <section
@@ -44,6 +50,22 @@ export function GroupSection({ group }: GroupSectionProps) {
               <p className="mt-2 text-sm leading-6 text-slate-800">{group.rhythm}</p>
             </div>
           </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="rounded-full bg-slate-950 px-3 py-1 text-xs font-semibold text-white">
+            {group.members.length} members
+          </span>
+          {availableCount > 0 && (
+            <span className="rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-900">
+              {availableCount} available
+            </span>
+          )}
+          {headsDownCount > 0 && (
+            <span className="rounded-full border border-amber-200 bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">
+              {headsDownCount} heads down
+            </span>
+          )}
         </div>
 
         <div className="flex flex-wrap gap-2">
