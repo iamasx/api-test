@@ -21,7 +21,18 @@ export default function TeamDirectoryPage() {
   const roleHighlights = getRoleHighlights(teamGroups);
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
+    <main className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(255,201,113,0.12),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(99,102,241,0.1),transparent_28%)] px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_60%)]"
+      />
+      <div className="relative mx-auto w-full max-w-7xl">
+      <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-slate-500">
+        <Link href="/" className="transition-colors hover:text-slate-900">Home</Link>
+        <span aria-hidden>/</span>
+        <span className="font-medium text-slate-900">Team Directory</span>
+      </nav>
+
       <section className="rounded-[36px] bg-slate-950 p-8 text-white shadow-[0_40px_130px_rgba(15,23,42,0.32)] sm:p-10 lg:p-12">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <p className="text-xs font-semibold tracking-[0.28em] uppercase text-[#ffc971]">
@@ -79,6 +90,12 @@ export default function TeamDirectoryPage() {
               </p>
               <p className="mt-3 text-4xl font-semibold">{metrics.timezoneCount}</p>
             </div>
+            <div className="rounded-[24px] border border-white/10 bg-emerald-500/12 p-5">
+              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-emerald-200/70">
+                Available now
+              </p>
+              <p className="mt-3 text-4xl font-semibold text-emerald-300">{metrics.availableNow}</p>
+            </div>
           </div>
         </div>
       </section>
@@ -114,6 +131,7 @@ export default function TeamDirectoryPage() {
           ))}
         </div>
       </section>
+      </div>
     </main>
   );
 }
