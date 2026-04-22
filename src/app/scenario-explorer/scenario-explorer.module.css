@@ -43,3 +43,185 @@
   position: relative;
   z-index: 1;
 }
+
+.heroAside {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(26, 38, 54, 0.96)),
+    linear-gradient(135deg, rgba(99, 102, 241, 0.18), transparent 60%);
+  color: #f8fafc;
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.22);
+}
+
+.heroMetricCard {
+  border-radius: 1.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(15, 23, 42, 0.12));
+  padding: 1rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Scenario summary cards                                             */
+/* ------------------------------------------------------------------ */
+
+.scenarioGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.scenarioCard {
+  position: relative;
+  overflow: hidden;
+  min-height: 100%;
+  border-radius: 1.6rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  padding: 1.3rem;
+  box-shadow:
+    0 18px 44px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.scenarioCard::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.36rem;
+  border-radius: 999px;
+}
+
+.scenarioToneSteady {
+  background: linear-gradient(180deg, rgba(236, 253, 245, 0.92), rgba(255, 255, 255, 0.84));
+}
+
+.scenarioToneSteady::before {
+  background: #10b981;
+}
+
+.scenarioToneWatch {
+  background: linear-gradient(180deg, rgba(255, 247, 237, 0.96), rgba(255, 255, 255, 0.84));
+}
+
+.scenarioToneWatch::before {
+  background: #f59e0b;
+}
+
+.scenarioToneRisk {
+  background: linear-gradient(180deg, rgba(255, 241, 242, 0.96), rgba(255, 255, 255, 0.84));
+}
+
+.scenarioToneRisk::before {
+  background: #f43f5e;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Badges                                                             */
+/* ------------------------------------------------------------------ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  padding: 0.4rem 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badgeToneSteady {
+  border-color: rgba(16, 185, 129, 0.24);
+  background: rgba(236, 253, 245, 0.94);
+  color: #047857;
+}
+
+.badgeToneWatch {
+  border-color: rgba(245, 158, 11, 0.24);
+  background: rgba(255, 247, 237, 0.94);
+  color: #b45309;
+}
+
+.badgeToneRisk {
+  border-color: rgba(244, 63, 94, 0.22);
+  background: rgba(255, 241, 242, 0.94);
+  color: #be123c;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Comparison note cards                                              */
+/* ------------------------------------------------------------------ */
+
+.noteList {
+  display: grid;
+  gap: 1rem;
+}
+
+.noteCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.4rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(255, 255, 255, 0.88);
+  padding: 1rem;
+  box-shadow:
+    0 18px 46px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.noteCard::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.32rem;
+  border-radius: 999px;
+}
+
+.noteToneSteady::before {
+  background: #10b981;
+}
+
+.noteToneWatch::before {
+  background: #f59e0b;
+}
+
+.noteToneRisk::before {
+  background: #f43f5e;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Recommendation panel                                               */
+/* ------------------------------------------------------------------ */
+
+.recommendationPanel {
+  align-self: start;
+}
+
+.recCard {
+  border-radius: 1.15rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(248, 250, 252, 0.76);
+  padding: 0.95rem 1rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Responsive adjustments                                             */
+/* ------------------------------------------------------------------ */
+
+@media (min-width: 1280px) {
+  .recommendationPanel {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .surfaceCard,
+  .scenarioCard,
+  .noteCard,
+  .recCard {
+    border-radius: 1.3rem;
+  }
+}
