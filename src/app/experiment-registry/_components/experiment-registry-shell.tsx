@@ -3,10 +3,24 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import type { ExperimentView, RegistryView } from "../_lib/experiment-registry-data";
+import type { ExperimentStatus, ExperimentView, RegistryView } from "../_lib/experiment-registry-data";
 import { StatusBadge } from "./status-badge";
 import { ResultsSummaryPanel } from "./results-summary-panel";
 import styles from "../experiment-registry.module.css";
+
+const statusCardStyle: Record<ExperimentStatus, string> = {
+  active: styles.statusActive,
+  paused: styles.statusPaused,
+  completed: styles.statusCompleted,
+  draft: styles.statusDraft,
+};
+
+const statusDotColor: Record<ExperimentStatus, string> = {
+  active: "bg-emerald-500",
+  paused: "bg-amber-500",
+  completed: "bg-sky-500",
+  draft: "bg-slate-400",
+};
 
 export function ExperimentRegistryShell({ view }: { view: RegistryView }) {
   const [selectedId, setSelectedId] = useState<string>(
@@ -127,8 +141,8 @@ function ExperimentCard({
   return (
     <article
       role="listitem"
-      className={`${styles.card} cursor-pointer rounded-2xl border bg-white/90 p-5 shadow-sm backdrop-blur transition hover:shadow-md ${
-        isSelected ? "ring-2 ring-indigo-400" : "border-slate-200"
+      className={`${styles.card} ${statusCardStyle[experiment.status]} cursor-pointer rounded-2xl border p-5 shadow-sm backdrop-blur transition hover:shadow-md ${
+        isSelected ? "ring-2 ring-indigo-400" : ""
       }`}
       onClick={onSelect}
       onKeyDown={(e) => {
@@ -146,7 +160,10 @@ function ExperimentCard({
             {experiment.hypothesis}
           </p>
         </div>
-        <StatusBadge status={experiment.status} />
+        <div className="flex items-center gap-2">
+          <span className={`inline-block h-2.5 w-2.5 rounded-full ${statusDotColor[experiment.status]}`} />
+          <StatusBadge status={experiment.status} />
+        </div>
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-slate-500">
