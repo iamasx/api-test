@@ -1,0 +1,241 @@
+.shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(239, 68, 68, 0.12), transparent 26%),
+    radial-gradient(circle at top right, rgba(245, 158, 11, 0.1), transparent 22%),
+    linear-gradient(180deg, #f7f3ea 0%, #f2efe8 40%, #e8edf3 100%);
+}
+
+.surfaceCard {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.74));
+  box-shadow:
+    0 28px 90px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+}
+
+.heroPanel::before {
+  content: "";
+  position: absolute;
+  inset: auto -5rem -7rem auto;
+  height: 19rem;
+  width: 19rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(239, 68, 68, 0.18), transparent 70%);
+  z-index: 0;
+}
+
+.heroPanel::after {
+  content: "";
+  position: absolute;
+  inset: -6rem auto auto -4rem;
+  height: 15rem;
+  width: 15rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.14), transparent 72%);
+  z-index: 0;
+}
+
+.heroPanel > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Follow-up panel                                                    */
+/* ------------------------------------------------------------------ */
+
+.followUpPanel {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(26, 38, 54, 0.96)),
+    linear-gradient(135deg, rgba(239, 68, 68, 0.14), transparent 60%);
+  color: #f8fafc;
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.22);
+}
+
+.followUpCard {
+  border-radius: 1.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(15, 23, 42, 0.12));
+  padding: 1rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Summary counts                                                     */
+/* ------------------------------------------------------------------ */
+
+.summaryGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.summaryCard {
+  border-radius: 1.4rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  padding: 1.3rem;
+  box-shadow:
+    0 12px 36px rgba(15, 23, 42, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.summaryStatusUrgent {
+  background: linear-gradient(180deg, rgba(254, 226, 226, 0.92), rgba(255, 255, 255, 0.84));
+  color: #991b1b;
+}
+
+.summaryStatusPending {
+  background: linear-gradient(180deg, rgba(254, 243, 199, 0.92), rgba(255, 255, 255, 0.84));
+  color: #92400e;
+}
+
+.summaryStatusResolved {
+  background: linear-gradient(180deg, rgba(236, 253, 245, 0.92), rgba(255, 255, 255, 0.84));
+  color: #065f46;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Exception cards                                                    */
+/* ------------------------------------------------------------------ */
+
+.exceptionGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.exceptionCard {
+  position: relative;
+  overflow: hidden;
+  min-height: 100%;
+  border-radius: 1.6rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  padding: 1.3rem;
+  box-shadow:
+    0 18px 44px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.exceptionCard::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.36rem;
+  border-radius: 999px;
+}
+
+.cardStatusUrgent {
+  background: linear-gradient(180deg, rgba(254, 226, 226, 0.96), rgba(255, 255, 255, 0.84));
+}
+
+.cardStatusUrgent::before {
+  background: #ef4444;
+}
+
+.cardStatusPending {
+  background: linear-gradient(180deg, rgba(254, 243, 199, 0.96), rgba(255, 255, 255, 0.84));
+}
+
+.cardStatusPending::before {
+  background: #f59e0b;
+}
+
+.cardStatusResolved {
+  background: linear-gradient(180deg, rgba(236, 253, 245, 0.96), rgba(255, 255, 255, 0.84));
+}
+
+.cardStatusResolved::before {
+  background: #10b981;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Badges                                                             */
+/* ------------------------------------------------------------------ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  padding: 0.4rem 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badgeStatusUrgent {
+  border-color: rgba(239, 68, 68, 0.24);
+  background: rgba(254, 226, 226, 0.94);
+  color: #991b1b;
+}
+
+.badgeStatusPending {
+  border-color: rgba(245, 158, 11, 0.24);
+  background: rgba(254, 243, 199, 0.94);
+  color: #92400e;
+}
+
+.badgeStatusResolved {
+  border-color: rgba(16, 185, 129, 0.24);
+  background: rgba(236, 253, 245, 0.94);
+  color: #065f46;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Resolution hint box                                                */
+/* ------------------------------------------------------------------ */
+
+.hintBox {
+  margin-top: 0.75rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(248, 250, 252, 0.72);
+  padding: 0.75rem 0.85rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Tags                                                               */
+/* ------------------------------------------------------------------ */
+
+.tag {
+  display: inline-block;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(241, 245, 249, 0.8);
+  padding: 0.22rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Responsive adjustments                                             */
+/* ------------------------------------------------------------------ */
+
+@media (min-width: 1280px) {
+  .followUpPanel {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .surfaceCard,
+  .exceptionCard,
+  .summaryCard,
+  .followUpCard {
+    border-radius: 1.3rem;
+  }
+
+  .exceptionGrid,
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+}
