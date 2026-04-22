@@ -12,6 +12,7 @@ import {
   type ProcedurePriority,
 } from "../_lib/field-guide-data";
 import styles from "../field-guide.module.css";
+import { ChecklistPreviewSection } from "./checklist-preview-section";
 import { ProcedureCard } from "./procedure-card";
 import { ProcedureDetailPanel } from "./procedure-detail-panel";
 import { ProcedureFilterBar } from "./procedure-filter-bar";
@@ -322,6 +323,8 @@ export function FieldGuideShell({
             </p>
           </div>
         </section>
+
+        <ChecklistPreviewSection procedures={visibleProcedures} />
 
         <div className="grid gap-8 xl:grid-cols-[minmax(0,1.45fr)_420px]">
           <section
