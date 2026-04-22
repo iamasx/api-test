@@ -110,6 +110,42 @@ export default function TeamDirectoryPage() {
         />
       </div>
 
+      <section className="mt-10 rounded-[32px] border border-slate-200 bg-white/80 p-6 shadow-sm backdrop-blur sm:p-8">
+        <p className="text-xs font-semibold tracking-[0.24em] uppercase text-slate-500">
+          Directory at a glance
+        </p>
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">
+          Coverage across {metrics.totalGroups} groups and {metrics.timezoneCount} time zones
+        </h2>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {teamGroups.map((group) => {
+            const available = group.members.filter(
+              (m) => m.availability === "Available now",
+            ).length;
+            return (
+              <div
+                key={group.id}
+                className="rounded-[20px] border border-slate-200 bg-slate-50/80 p-4"
+              >
+                <p className="text-sm font-semibold text-slate-950">{group.name}</p>
+                <p className="mt-1 text-xs text-slate-500">{group.mission}</p>
+                <div className="mt-3 flex items-center gap-2">
+                  <span className="text-2xl font-semibold text-slate-950">
+                    {group.members.length}
+                  </span>
+                  <span className="text-sm text-slate-500">members</span>
+                  {available > 0 && (
+                    <span className="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">
+                      {available} free
+                    </span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
       <section id="directory-groups" className="mt-10">
         <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div>
