@@ -1,6 +1,7 @@
 export type SegmentStatus = "on-time" | "delayed" | "blocked";
 export type ConstraintTone = "clear" | "watch" | "critical";
 export type DecisionState = "ready" | "review" | "hold";
+export type NotePriority = "high" | "medium" | "low";
 
 export interface RoutePlannerStat {
   label: string;
@@ -58,6 +59,16 @@ export interface RouteDecision {
   owner: string;
   deadline: string;
   detail: string;
+}
+
+export interface RouteNote {
+  id: string;
+  title: string;
+  priority: NotePriority;
+  author: string;
+  timestamp: string;
+  body: string;
+  segmentId: string | null;
 }
 
 export const routePlannerOverview = {
@@ -289,3 +300,63 @@ export const routeDecisionQueue = [
     detail: "Only required if the route slips beyond the current crew-hours threshold.",
   },
 ] satisfies RouteDecision[];
+
+export const notePriorityStyles: Record<NotePriority, string> = {
+  high: "border-rose-300/20 bg-rose-300/10 text-rose-50",
+  medium: "border-amber-300/20 bg-amber-300/10 text-amber-50",
+  low: "border-slate-300/20 bg-slate-300/10 text-slate-200",
+};
+
+export const notePriorityLabels: Record<NotePriority, string> = {
+  high: "High",
+  medium: "Medium",
+  low: "Low",
+};
+
+export const routeNotes = [
+  {
+    id: "note-bridge-fallback",
+    title: "Bridge fallback timing is tighter than it looks",
+    priority: "high",
+    author: "A. Navarro",
+    timestamp: "08:42 MDT",
+    body: "The south bypass adds 78 minutes but the dock priority penalty makes it closer to 95 minutes of real impact. If we trigger the bypass, notify destination ops immediately so they can hold door 14A.",
+    segmentId: "seg-04",
+  },
+  {
+    id: "note-crew-hours-buffer",
+    title: "Crew-hours buffer depends on Ellensburg staging",
+    priority: "medium",
+    author: "Dispatch lead",
+    timestamp: "08:15 MDT",
+    body: "The relief driver in Ellensburg is only available until the 15:00 transfer cutoff. If Silver Ridge slips past 12:40, we lose the option to swap without rebooking from Yakima at premium rates.",
+    segmentId: "seg-03",
+  },
+  {
+    id: "note-weather-update",
+    title: "Next weather sweep could change corridor status",
+    priority: "medium",
+    author: "Weather desk",
+    timestamp: "07:55 MDT",
+    body: "Snowfall intensity dropped in the last update, but the forecast model shows a secondary band arriving around 10:30 MDT. If it materialises, expect chain controls to tighten again on Silver Ridge.",
+    segmentId: null,
+  },
+  {
+    id: "note-dock-stacking",
+    title: "Two premium trailers already stacked at Tacoma",
+    priority: "high",
+    author: "Destination ops",
+    timestamp: "08:30 MDT",
+    body: "Gate 7 and gate 9 are already committed to inbound premium loads. If Route 48 slips past the first dock wave, the next available premium slot is 90 minutes later and requires a yard shunt.",
+    segmentId: "seg-05",
+  },
+  {
+    id: "note-seal-audit",
+    title: "Cold-load seal audit passed without exceptions",
+    priority: "low",
+    author: "Origin dispatch",
+    timestamp: "07:40 MDT",
+    body: "All three seal numbers matched the manifest. Temperature logger confirmed the compartment held below threshold during the overnight pre-cool cycle.",
+    segmentId: "seg-01",
+  },
+] satisfies RouteNote[];

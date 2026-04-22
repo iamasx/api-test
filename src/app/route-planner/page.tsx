@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { RouteDecisionSidebar } from "./_components/route-decision-sidebar";
+import { RouteNotesSidebar } from "./_components/route-notes-sidebar";
 import { SegmentGroup } from "./_components/segment-group";
 import { SummaryBanners } from "./_components/summary-banners";
 import styles from "./route-planner.module.css";
 import {
   routeConstraints,
   routeDecisionQueue,
+  routeNotes,
   routePlannerOverview,
   routePlannerStats,
   routeSegmentGroups,
@@ -98,11 +100,15 @@ export default function RoutePlannerPage() {
             ))}
           </div>
 
-          <RouteDecisionSidebar
-            decisions={routeDecisionQueue}
-            timingSignals={routeTimingSignals}
-            constraints={routeConstraints}
-          />
+          <div className="space-y-6 xl:sticky xl:top-8 xl:self-start">
+            <RouteDecisionSidebar
+              decisions={routeDecisionQueue}
+              timingSignals={routeTimingSignals}
+              constraints={routeConstraints}
+            />
+
+            <RouteNotesSidebar notes={routeNotes} />
+          </div>
         </section>
       </div>
     </main>

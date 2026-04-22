@@ -44,7 +44,7 @@ export function RouteDecisionSidebar({
   return (
     <aside
       aria-label="Route decision sidebar"
-      className={`${styles.sidebarPanel} ${styles.stickyRail} rounded-[1.9rem] border border-white/10 p-6`}
+      className={`${styles.sidebarPanel} rounded-[1.9rem] border border-white/10 p-6`}
     >
       <div className="space-y-5">
         <div>
