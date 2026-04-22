@@ -14,16 +14,16 @@ type ProfileCardProps = {
 
 export function ProfileCard({ member }: ProfileCardProps) {
   return (
-    <article className="flex h-full flex-col rounded-[24px] border border-slate-200 bg-white/90 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur">
+    <article className="group flex h-full flex-col rounded-[24px] border border-slate-200 bg-white/90 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur transition-shadow duration-200 hover:shadow-[0_28px_70px_rgba(15,23,42,0.14)]">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h3 className="text-xl font-semibold tracking-tight text-slate-950">
+        <div className="min-w-0 flex-1">
+          <h3 className="truncate text-xl font-semibold tracking-tight text-slate-950">
             {member.name}
           </h3>
-          <p className="mt-1 text-sm font-medium text-slate-700">{member.role}</p>
+          <p className="mt-1 truncate text-sm font-medium text-slate-700">{member.role}</p>
         </div>
         <span
-          className={`rounded-full border px-3 py-1 text-xs font-semibold tracking-[0.18em] uppercase ${availabilityStyles[member.availability]}`}
+          className={`shrink-0 rounded-full border px-3 py-1 text-xs font-semibold tracking-[0.18em] uppercase ${availabilityStyles[member.availability]}`}
         >
           {member.availability}
         </span>
@@ -61,7 +61,7 @@ export function ProfileCard({ member }: ProfileCardProps) {
           {member.skills.map((skill) => (
             <span
               key={skill}
-              className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700"
+              className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-700 transition-colors group-hover:border-slate-300"
             >
               {skill}
             </span>
@@ -69,7 +69,7 @@ export function ProfileCard({ member }: ProfileCardProps) {
         </div>
       </div>
 
-      <div className="mt-5">
+      <div className="mt-5 flex-1">
         <p className="text-xs font-semibold tracking-[0.18em] uppercase text-slate-500">
           Current focus
         </p>
