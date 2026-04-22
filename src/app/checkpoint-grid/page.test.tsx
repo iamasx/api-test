@@ -10,13 +10,19 @@ import {
 import CheckpointGridPage from "./page";
 
 describe("CheckpointGridPage", () => {
-  it("renders the route hero, progress summary heading, and review-note entry points", () => {
+  it("renders the route hero, all section headings, and navigation entry points", () => {
     render(<CheckpointGridPage />);
 
     expect(
       screen.getByRole("heading", {
         level: 1,
         name: /track milestone tiles, progress posture, and review notes without leaving one route\./i,
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: /status breakdown/i,
       }),
     ).toBeInTheDocument();
     expect(
@@ -45,7 +51,7 @@ describe("CheckpointGridPage", () => {
     ).toHaveAttribute("href", "#checkpoint-milestones");
   });
 
-  it("renders every milestone tile with status, owner, and next review content", () => {
+  it("renders every milestone tile with status, owner, priority, tags, and next review content", () => {
     render(<CheckpointGridPage />);
 
     const milestoneList = screen.getByRole("list", {
@@ -66,9 +72,38 @@ describe("CheckpointGridPage", () => {
       expect(tile).toHaveTextContent(milestone.owner);
       expect(tile).toHaveTextContent(milestone.window);
       expect(tile).toHaveTextContent(`${milestone.completion}% complete`);
+      expect(tile).toHaveTextContent(milestone.priority);
       expect(tile).toHaveTextContent(milestone.deliverables[0]);
       expect(tile).toHaveTextContent(milestone.dependencies[0]);
       expect(tile).toHaveTextContent(milestone.nextReview);
+
+      for (const tag of milestone.tags) {
+        expect(tile).toHaveTextContent(tag);
+      }
+    }
+  });
+
+  it("renders the status breakdown bar with legend items for each status", () => {
+    const view = getCheckpointGridView();
+
+    render(<CheckpointGridPage />);
+
+    const breakdownLegend = screen.getByRole("list", {
+      name: /status breakdown legend/i,
+    });
+
+    expect(within(breakdownLegend).getAllByRole("listitem")).toHaveLength(
+      view.statusBreakdown.length,
+    );
+
+    for (const item of view.statusBreakdown) {
+      const legendItem = within(breakdownLegend)
+        .getByText(item.status)
+        .closest('[role="listitem"]');
+
+      expect(legendItem).toBeInTheDocument();
+      expect(legendItem).toHaveTextContent(`${item.count}`);
+      expect(legendItem).toHaveTextContent(`(${item.percentage}%)`);
     }
   });
 
