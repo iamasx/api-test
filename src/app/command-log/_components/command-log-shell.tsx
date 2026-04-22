@@ -1,6 +1,7 @@
 import { CommandEventDetail } from "./command-event-detail";
 import { CommandEventList } from "./command-event-list";
 import { CommandTagSummary } from "./command-tag-summary";
+import { SeverityBreakdown } from "./severity-breakdown";
 import type { CommandLogView } from "../_lib/command-log";
 import styles from "../command-log.module.css";
 
@@ -62,6 +63,11 @@ export function CommandLogShell({ view }: CommandLogShellProps) {
           </div>
         </div>
       </section>
+
+      <SeverityBreakdown
+        events={view.events}
+        summaryMetrics={view.summaryMetrics}
+      />
 
       <CommandTagSummary
         groups={view.tagSummary}

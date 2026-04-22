@@ -74,18 +74,64 @@ describe("CommandLogShell", () => {
 
     expect(queueDepthGroup).toMatchObject({
       tag: "queue-depth",
-      eventCount: 3,
+      eventCount: 5,
     });
     expect(screen.getByRole("status")).toHaveTextContent(
       /missing-event.*not found/i,
     );
     expect(screen.getAllByText("#queue-depth").length).toBeGreaterThan(0);
-    expect(screen.getByText(/3 events/i)).toBeInTheDocument();
+    expect(screen.getByText(/5 events/i)).toBeInTheDocument();
 
     const detail = screen.getByRole("region", { name: /event detail/i });
 
     expect(
       within(detail).getByRole("heading", { name: commandLogEvents[0].title }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders the severity breakdown section with distribution buckets", () => {
+    const view = resolveCommandLogView();
+
+    render(<CommandLogShell view={view} />);
+
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: /event severity across the shift/i,
+      }),
+    ).toBeInTheDocument();
+
+    const severityBuckets = screen.getByRole("list", {
+      name: /severity buckets/i,
+    });
+    const bucketItems = within(severityBuckets).getAllByRole("listitem");
+
+    expect(bucketItems.length).toBeGreaterThanOrEqual(2);
+    expect(screen.getByText(/critical/i)).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /severity distribution bar/i })).toBeInTheDocument();
+  });
+
+  it("includes the newly added events in the chronological list", () => {
+    const view = resolveCommandLogView();
+
+    render(<CommandLogShell view={view} />);
+
+    expect(screen.getByText(/canary deploy verified for notification pipeline/i)).toBeInTheDocument();
+    expect(screen.getByText(/rate-limit override applied for migration batch/i)).toBeInTheDocument();
+    expect(screen.getByText(/incident retrospective scheduled for queue drift/i)).toBeInTheDocument();
+    expect(screen.getByText(/automated health check restored after dns propagation/i)).toBeInTheDocument();
+  });
+
+  it("renders correct event count in the tag summary heading", () => {
+    const view = resolveCommandLogView();
+
+    render(<CommandLogShell view={view} />);
+
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: new RegExp(`repeated patterns across ${view.events.length} events`, "i"),
+      }),
     ).toBeInTheDocument();
   });
 });

@@ -243,4 +243,108 @@ export const commandLogEvents: CommandLogEvent[] = [
     nextAction:
       "Compare post-cap latency against the previous incident baseline and decide whether to keep the cap through peak hours.",
   },
+  {
+    id: "evt-0545",
+    occurredAt: "2026-04-20T05:45:00Z",
+    occurredLabel: "Apr 20, 2026 · 05:45 UTC",
+    title: "Canary deploy verified for notification pipeline",
+    summary:
+      "The canary instance for the notification pipeline v3.8.1 passed all smoke tests and was promoted to stable.",
+    detail:
+      "Delivery latency held at p99 = 78 ms through the soak window. No dead-letter queue growth was observed across any region during the verification period.",
+    command: "promote canary notification-pipeline@3.8.1 --region all",
+    actor: "Kenji Tanaka",
+    team: "Messaging Infrastructure",
+    severity: "Low",
+    category: "Deploy",
+    status: "Completed",
+    environment: "Production / global",
+    tags: ["deploy-window", "notification-pipeline", "canary-check"],
+    relatedServices: ["Notification Pipeline", "Dead Letter Queue"],
+    notes: [
+      "Soak duration was extended from 10 to 15 minutes due to overnight traffic lull.",
+      "Zero alert triggers across all three monitored dashboards.",
+      "Previous deploy of this service required a rollback; this release confirms the fix.",
+    ],
+    nextAction:
+      "Archive the canary comparison report and update the deploy playbook with extended soak guidance.",
+  },
+  {
+    id: "evt-0510",
+    occurredAt: "2026-04-20T05:10:00Z",
+    occurredLabel: "Apr 20, 2026 · 05:10 UTC",
+    title: "Rate-limit override applied for migration batch",
+    summary:
+      "A temporary rate-limit override was applied to allow the data migration batch to complete before the maintenance window closes.",
+    detail:
+      "The override raised the write-per-second ceiling from 500 to 2,000 for the migration user principal, scoped to the analytics database cluster only.",
+    command: "override rate-limit analytics-db --principal migration-svc --wps 2000 --ttl 90m",
+    actor: "Sofia Lindqvist",
+    team: "Data Platform",
+    severity: "High",
+    category: "Mitigation",
+    status: "Watching",
+    environment: "Production / eu-west-1",
+    tags: ["queue-depth", "rate-limit", "migration-window"],
+    relatedServices: ["Analytics DB", "Migration Service"],
+    notes: [
+      "Override is time-boxed and will auto-revert after 90 minutes.",
+      "Replica lag stayed under 200 ms during the first burst.",
+      "Alerting thresholds for the analytics cluster were temporarily adjusted to avoid false positives.",
+    ],
+    nextAction:
+      "Verify that the migration completed within the TTL window and confirm the override auto-reverted.",
+  },
+  {
+    id: "evt-0438",
+    occurredAt: "2026-04-20T04:38:00Z",
+    occurredLabel: "Apr 20, 2026 · 04:38 UTC",
+    title: "Incident retrospective scheduled for queue drift",
+    summary:
+      "A retrospective meeting was scheduled to review the queue drift incident that occurred during the morning deploy window.",
+    detail:
+      "The facilitator captured the initial timeline, identified three contributing factors, and pre-populated the shared document with telemetry snapshots from the event window.",
+    command: "schedule retro queue-drift-20260420 --date 2026-04-22 --attendees command,runtime,payments",
+    actor: "Mara Chen",
+    team: "Command",
+    severity: "Low",
+    category: "Investigation",
+    status: "Completed",
+    environment: "Internal",
+    tags: ["retrospective", "queue-depth", "process"],
+    relatedServices: ["Workflow Engine", "Payments Core"],
+    notes: [
+      "Three teams have confirmed attendance for the retrospective.",
+      "Preliminary timeline covers a 47-minute window from first alert to resolution.",
+      "Action items from the previous retro were marked complete before scheduling this one.",
+    ],
+    nextAction:
+      "Distribute the pre-read document at least 24 hours before the scheduled session.",
+  },
+  {
+    id: "evt-0355",
+    occurredAt: "2026-04-20T03:55:00Z",
+    occurredLabel: "Apr 20, 2026 · 03:55 UTC",
+    title: "Automated health check restored after DNS propagation",
+    summary:
+      "Health check probes resumed returning healthy after a DNS change propagated to all edge locations.",
+    detail:
+      "The synthetic monitor had been reporting degraded status for 22 minutes while the new CNAME record propagated through the CDN layer. All probes now confirm the expected origin.",
+    command: "acknowledge health-check cdn-edge --resolved --propagation-complete",
+    actor: "Jonas Weber",
+    team: "Regional Operations",
+    severity: "Moderate",
+    category: "Automation",
+    status: "Completed",
+    environment: "Production / global",
+    tags: ["automation", "dns-propagation", "health-check"],
+    relatedServices: ["CDN Edge", "Synthetic Monitor"],
+    notes: [
+      "Propagation took 22 minutes, within the expected 30-minute SLA.",
+      "No customer-visible impact was detected during the propagation window.",
+      "The previous CNAME was preserved as a fallback record for 48 hours.",
+    ],
+    nextAction:
+      "Remove the fallback CNAME record after the 48-hour observation period passes cleanly.",
+  },
 ];
