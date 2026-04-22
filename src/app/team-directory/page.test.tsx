@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import TeamDirectoryPage from "./page";
-import { teamGroups } from "@/data/team-directory";
+import { teamGroups, getDirectoryMetrics, getRoleHighlights } from "@/data/team-directory";
 
 describe("TeamDirectoryPage", () => {
   it("renders the route hero and spotlight content", () => {
@@ -55,5 +55,66 @@ describe("TeamDirectoryPage", () => {
         /open for two architecture reviews and one launch-readiness check this week/i,
       ).length,
     ).toBeGreaterThan(0);
+  });
+
+  it("renders the breadcrumb navigation", () => {
+    render(<TeamDirectoryPage />);
+
+    const breadcrumb = screen.getByRole("navigation", { name: /breadcrumb/i });
+    expect(breadcrumb).toBeInTheDocument();
+    expect(breadcrumb).toHaveTextContent("Home");
+    expect(breadcrumb).toHaveTextContent("Team Directory");
+  });
+
+  it("renders the data insights group and its members", () => {
+    render(<TeamDirectoryPage />);
+
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: "Data Insights",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 3, name: "Felix Braun" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 3, name: "Camila Santos" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 3, name: "Liam Park" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders the directory-at-a-glance summary section", () => {
+    render(<TeamDirectoryPage />);
+
+    const metrics = getDirectoryMetrics(teamGroups);
+    expect(
+      screen.getByText(
+        `Coverage across ${metrics.totalGroups} groups and ${metrics.timezoneCount} time zones`,
+      ),
+    ).toBeInTheDocument();
+
+    for (const group of teamGroups) {
+      expect(screen.getAllByText(group.name).length).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it("renders the available-now metric card in the hero", () => {
+    render(<TeamDirectoryPage />);
+
+    const metrics = getDirectoryMetrics(teamGroups);
+    expect(screen.getAllByText(String(metrics.availableNow)).length).toBeGreaterThan(0);
+  });
+
+  it("displays role highlights with correct counts", () => {
+    render(<TeamDirectoryPage />);
+
+    const highlights = getRoleHighlights(teamGroups);
+    for (const highlight of highlights) {
+      expect(screen.getByText(highlight.label)).toBeInTheDocument();
+      expect(screen.getByText(highlight.description)).toBeInTheDocument();
+    }
   });
 });
