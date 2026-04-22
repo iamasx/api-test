@@ -5,6 +5,7 @@ import {
   type FieldGuideProcedure,
   type ProcedureChecklistItem,
 } from "../_lib/field-guide-data";
+import styles from "../field-guide.module.css";
 
 type ChecklistPreviewSectionProps = {
   procedures: FieldGuideProcedure[];
@@ -60,7 +61,7 @@ export function ChecklistPreviewSection({
   return (
     <section
       aria-label="Checklist preview"
-      className="rounded-[2rem] border border-slate-200/80 bg-white/82 p-6 shadow-[0_18px_70px_-42px_rgba(15,23,42,0.45)]"
+      className={`${styles.checklistPreview} rounded-[2rem] border border-slate-200/80 bg-white/82 p-6 shadow-[0_18px_70px_-42px_rgba(15,23,42,0.45)]`}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
