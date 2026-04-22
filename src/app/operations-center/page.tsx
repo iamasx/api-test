@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
 
+import { ActivityList } from "./_components/activity-list";
+import { AlertStrip } from "./_components/alert-strip";
+import { KpiTile } from "./_components/kpi-tile";
+import {
+  activeAlerts,
+  kpiMetrics,
+  recentActivity,
+} from "./_data/dashboard-data";
 import styles from "./operations-center.module.css";
 
 export const metadata: Metadata = {
@@ -25,32 +33,48 @@ export default function OperationsCenterPage() {
           </p>
         </header>
 
-        <section aria-labelledby="kpi-heading">
+        <section aria-labelledby="kpi-heading" className="space-y-4">
           <h2
             id="kpi-heading"
             className="text-2xl font-semibold tracking-tight text-slate-950"
           >
             KPI snapshot
           </h2>
+          <div
+            role="list"
+            aria-label="KPI metrics"
+            className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
+          >
+            {kpiMetrics.map((metric) => (
+              <KpiTile key={metric.id} metric={metric} />
+            ))}
+          </div>
         </section>
 
-        <section aria-labelledby="alerts-heading">
-          <h2
-            id="alerts-heading"
-            className="text-2xl font-semibold tracking-tight text-slate-950"
-          >
-            Active alerts
-          </h2>
-        </section>
+        <div
+          className="grid gap-8 xl:grid-cols-[1.4fr_1fr]"
+          data-testid="operations-center-panels"
+        >
+          <section aria-labelledby="alerts-heading" className="space-y-4">
+            <h2
+              id="alerts-heading"
+              className="text-2xl font-semibold tracking-tight text-slate-950"
+            >
+              Active alerts
+            </h2>
+            <AlertStrip alerts={activeAlerts} />
+          </section>
 
-        <section aria-labelledby="activity-heading">
-          <h2
-            id="activity-heading"
-            className="text-2xl font-semibold tracking-tight text-slate-950"
-          >
-            Recent activity
-          </h2>
-        </section>
+          <section aria-labelledby="activity-heading" className="space-y-4">
+            <h2
+              id="activity-heading"
+              className="text-2xl font-semibold tracking-tight text-slate-950"
+            >
+              Recent activity
+            </h2>
+            <ActivityList items={recentActivity} />
+          </section>
+        </div>
       </div>
     </main>
   );
