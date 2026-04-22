@@ -69,3 +69,44 @@
     radial-gradient(circle at top, rgba(20, 184, 166, 0.08), transparent 42%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.85));
 }
+
+.checklistPreview {
+  position: relative;
+  isolation: isolate;
+}
+
+.checklistPreview::before {
+  content: "";
+  position: absolute;
+  inset: -6% auto auto -8%;
+  width: 14rem;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.12), transparent 65%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.checklistPreview::after {
+  content: "";
+  position: absolute;
+  inset: auto -6% -8% auto;
+  width: 10rem;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.1), transparent 60%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.checklistPreview > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .checklistPreview::before,
+  .checklistPreview::after {
+    display: none;
+  }
+}

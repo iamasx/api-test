@@ -78,6 +78,66 @@ describe("FieldGuidePage", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders the checklist preview section with grouped check types", () => {
+    render(<FieldGuidePage />);
+
+    const previewSection = screen.getByLabelText(/checklist preview/i);
+
+    expect(
+      within(previewSection).getByText(/action checks across all procedures/i),
+    ).toBeInTheDocument();
+
+    expect(
+      within(previewSection).getByText(/required/i),
+    ).toBeInTheDocument();
+    expect(
+      within(previewSection).getByText(/verify on site/i),
+    ).toBeInTheDocument();
+    expect(
+      within(previewSection).getByText(/recommended/i),
+    ).toBeInTheDocument();
+
+    expect(
+      within(previewSection).getByText(/total checks/i),
+    ).toBeInTheDocument();
+  });
+
+  it("renders the new mock procedures in the catalog", () => {
+    render(<FieldGuidePage />);
+
+    expect(
+      screen.getByRole("button", { name: /dock seal integrity audit/i }),
+    ).toHaveTextContent("FG-610");
+    expect(
+      screen.getByRole("button", { name: /conveyor jam clearance/i }),
+    ).toHaveTextContent("FG-715");
+  });
+
+  it("updates checklist preview when filtering by category", async () => {
+    const user = userEvent.setup();
+
+    render(<FieldGuidePage />);
+    const categoryNavigation = screen.getByRole("navigation", {
+      name: /field guide categories/i,
+    });
+
+    await user.click(
+      within(categoryNavigation).getByRole("button", {
+        name: /power recovery/i,
+      }),
+    );
+
+    const previewSection = screen.getByLabelText(/checklist preview/i);
+
+    expect(
+      within(previewSection).queryByText(/dock seal integrity audit/i),
+    ).not.toBeInTheDocument();
+
+    expect(
+      within(previewSection).getByText(/FG-201/),
+    ).toBeInTheDocument();
+  });
+
   it("supports search-driven narrowing and empty-state feedback", async () => {
     const user = userEvent.setup();
 
