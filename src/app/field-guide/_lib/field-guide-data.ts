@@ -684,8 +684,6 @@ export const fieldGuideProcedures: FieldGuideProcedure[] = [
       { id: "warm-ref-escalate", label: "Escalate if", value: "Sensor wobble persists after the first controlled burst" },
     ],
   },
-];
-
   {
     id: "dock-seal-audit",
     title: "Dock Seal Integrity Audit",
