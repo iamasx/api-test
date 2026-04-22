@@ -284,6 +284,90 @@ export const teamGroups: TeamGroup[] = [
   },
 ];
 
+  {
+    id: "data-insights",
+    name: "Data Insights",
+    summary:
+      "Turns raw usage data, pipeline health metrics, and experiment results into actionable recommendations for product and engineering.",
+    mission: "Analytics, experimentation, and data infrastructure",
+    coverage: "Berlin, São Paulo, and Melbourne with async handoffs anchored to shared dashboards.",
+    rhythm: "Weekly metrics review on Wednesday and a bi-weekly experiment readout with product leads.",
+    roleHighlights: [
+      "Analytics engineering ownership of key pipelines",
+      "Experimentation design and statistical rigor",
+      "Data platform reliability across ingestion and serving layers",
+    ],
+    members: [
+      {
+        id: "felix-braun",
+        name: "Felix Braun",
+        role: "Analytics Engineer",
+        location: "Berlin, Germany",
+        timezone: "UTC+2",
+        availability: "Available now",
+        capacityNote: "Open for pipeline reviews and dashboard pairing sessions this week.",
+        bio: "Builds and maintains the core analytics pipelines that product teams use for daily decision-making.",
+        skills: [
+          "SQL modeling",
+          "Pipeline orchestration",
+          "Dashboard design",
+          "Data quality",
+        ],
+        focus: [
+          "Migrating legacy event streams to the new schema registry",
+          "Reducing pipeline latency for real-time activation dashboards",
+        ],
+        roleHighlight:
+          "Owns the data quality framework that gates every customer-facing metric report.",
+      },
+      {
+        id: "camila-santos",
+        name: "Camila Santos",
+        role: "Data Scientist",
+        location: "São Paulo, Brazil",
+        timezone: "UTC-3",
+        availability: "Heads down",
+        capacityNote: "Deep in experiment analysis until Friday; available for async questions.",
+        bio: "Designs experiments and builds statistical models that help product teams understand what moves the needle.",
+        skills: [
+          "Experimentation",
+          "Statistical modeling",
+          "Causal inference",
+          "Python analytics",
+        ],
+        focus: [
+          "Analyzing results from the onboarding flow A/B test",
+          "Building a reusable sample-size calculator for the team",
+        ],
+        roleHighlight:
+          "Provides the statistical sign-off that product teams need before shipping experiment winners.",
+      },
+      {
+        id: "liam-park",
+        name: "Liam Park",
+        role: "Data Platform Engineer",
+        location: "Melbourne, Australia",
+        timezone: "UTC+10",
+        availability: "On-call later",
+        capacityNote: "On platform on-call rotation starting tomorrow morning AEST.",
+        bio: "Keeps the data infrastructure reliable, fast, and cost-efficient so analysts and scientists can focus on insights.",
+        skills: [
+          "Data infrastructure",
+          "Stream processing",
+          "Cost optimization",
+          "Observability",
+        ],
+        focus: [
+          "Scaling the event ingestion layer for a traffic surge next month",
+          "Automating cost anomaly detection across warehouse compute",
+        ],
+        roleHighlight:
+          "The go-to person when a pipeline breaks at 3 AM — keeps the data flowing so dashboards stay green.",
+      },
+    ],
+  },
+];
+
 export const featuredProfileId = "mara-chen";
 
 export const allTeamMembers = teamGroups.flatMap((group) => group.members);
