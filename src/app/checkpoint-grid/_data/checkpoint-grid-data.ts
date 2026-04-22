@@ -6,6 +6,8 @@ export type CheckpointHeroMetric = {
   detail: string;
 };
 
+export type CheckpointPriority = "High" | "Medium" | "Low";
+
 export type CheckpointMilestone = {
   id: string;
   phase: string;
@@ -15,11 +17,15 @@ export type CheckpointMilestone = {
   status: "Complete" | "In Progress" | "Blocked";
   tone: CheckpointTone;
   completion: number;
+  priority: CheckpointPriority;
+  tags: string[];
   summary: string;
   deliverables: string[];
   dependencies: string[];
   nextReview: string;
 };
+
+export type CheckpointTrend = "up" | "down" | "flat";
 
 export type CheckpointProgressSummary = {
   id: string;
@@ -27,6 +33,15 @@ export type CheckpointProgressSummary = {
   value: string;
   detail: string;
   support: string;
+  tone: CheckpointTone;
+  trend: CheckpointTrend;
+};
+
+export type StatusBreakdownItem = {
+  id: string;
+  status: "Complete" | "In Progress" | "Blocked";
+  count: number;
+  percentage: number;
   tone: CheckpointTone;
 };
 
@@ -75,6 +90,8 @@ export const checkpointMilestones: CheckpointMilestone[] = [
     status: "Complete",
     tone: "steady",
     completion: 100,
+    priority: "High",
+    tags: ["planning", "scope"],
     summary:
       "Issue boundaries, mock-data assumptions, and the dedicated route shell are approved so implementation can move without borrowing from other workstreams.",
     deliverables: [
@@ -97,6 +114,8 @@ export const checkpointMilestones: CheckpointMilestone[] = [
     status: "In Progress",
     tone: "watch",
     completion: 78,
+    priority: "High",
+    tags: ["ui", "components"],
     summary:
       "Milestone cards are in active assembly, with phase labels, completion signals, and planning detail grouped into consistent tiles.",
     deliverables: [
@@ -119,6 +138,8 @@ export const checkpointMilestones: CheckpointMilestone[] = [
     status: "In Progress",
     tone: "watch",
     completion: 64,
+    priority: "Medium",
+    tags: ["delivery", "metrics"],
     summary:
       "Summary cards are mapping the overall board posture so reviewers can scan coverage, completion, open decisions, and test intent before reading the full grid.",
     deliverables: [
@@ -141,6 +162,8 @@ export const checkpointMilestones: CheckpointMilestone[] = [
     status: "Blocked",
     tone: "risk",
     completion: 46,
+    priority: "Medium",
+    tags: ["qa", "review"],
     summary:
       "The review stream is currently blocked behind the tile and summary layout, but the data model is ready to expose note outcomes, timestamps, and next actions.",
     deliverables: [
@@ -163,6 +186,8 @@ export const checkpointMilestones: CheckpointMilestone[] = [
     status: "Blocked",
     tone: "steady",
     completion: 32,
+    priority: "Low",
+    tags: ["testing", "handoff"],
     summary:
       "Verification is blocked until the route content settles, then it closes the loop with route tests, a build pass, and focused handoff notes for reviewers.",
     deliverables: [
@@ -175,6 +200,30 @@ export const checkpointMilestones: CheckpointMilestone[] = [
       "Keep the PR focused on the new route and route-local data.",
     ],
     nextReview: "Complete verification immediately after the route markup settles.",
+  },
+  {
+    id: "responsive-polish",
+    phase: "Checkpoint 06",
+    title: "Responsive polish and visual state consistency across breakpoints",
+    owner: "Avery Holt / UI Systems",
+    window: "Apr 21",
+    status: "Blocked",
+    tone: "watch",
+    completion: 18,
+    priority: "Medium",
+    tags: ["ui", "responsive"],
+    summary:
+      "Final visual pass to confirm that milestone tiles, summary cards, and note panels maintain their intended hierarchy on narrow screens and high-density layouts.",
+    deliverables: [
+      "Audit every component for consistent border-radius and spacing under 768px.",
+      "Verify that tone-based accent bars remain visible when tiles stack vertically.",
+      "Confirm the review-notes panel scrolls gracefully when content exceeds the viewport.",
+    ],
+    dependencies: [
+      "All tile content and summary values must be finalized before the responsive audit.",
+      "Coordinate with QA to run a device matrix check before merge.",
+    ],
+    nextReview: "Schedule a final cross-browser review after content and tests are locked.",
   },
 ];
 
@@ -231,6 +280,19 @@ export const reviewNotes: ReviewNote[] = [
     action:
       "Expose the next step under each note and keep unresolved outcomes visually distinct from approved ones.",
   },
+  {
+    id: "rn-05",
+    title: "Validate tag and priority metadata renders correctly on tiles",
+    reviewer: "Eli Booker",
+    role: "Engineering",
+    loggedAt: "Apr 20, 11:30",
+    outcome: "Watching",
+    tone: "watch",
+    summary:
+      "The newly added priority badges and tag pills need a visual consistency check to make sure they don't crowd the tile header on smaller viewports.",
+    action:
+      "Run a layout check on the milestone tiles at 320px and 768px breakpoints before marking the responsive checkpoint complete.",
+  },
 ];
 
 export const checkpointCadence: CheckpointCadenceItem[] = [
@@ -274,12 +336,13 @@ export function getCheckpointGridView() {
     (note) => note.outcome !== "Approved",
   ).length;
   const averageCompletion = getAverageCompletion(checkpointMilestones);
+  const totalMilestones = checkpointMilestones.length;
 
   const heroMetrics: CheckpointHeroMetric[] = [
     {
       label: "Average completion",
       value: `${averageCompletion}%`,
-      detail: "Across all five checkpoint tiles in the planning sequence.",
+      detail: `Across all ${totalMilestones} checkpoint tiles in the planning sequence.`,
     },
     {
       label: "Milestones in flight",
@@ -302,6 +365,7 @@ export function getCheckpointGridView() {
         "The board spans kickoff, tile assembly, summary framing, review notes, and final verification.",
       support: `${completedMilestones} complete, ${activeMilestones} in progress, ${blockedMilestones} blocked.`,
       tone: "steady",
+      trend: "up",
     },
     {
       id: "progress",
@@ -311,6 +375,7 @@ export function getCheckpointGridView() {
         "Completion reflects the average progress across all checkpoint tiles rather than a single optimistic status.",
       support: "Active work is concentrated in the tile system and progress summary sections.",
       tone: "watch",
+      trend: "up",
     },
     {
       id: "reviews",
@@ -320,6 +385,7 @@ export function getCheckpointGridView() {
         "Unapproved notes still need follow-through before the route is clean for review handoff.",
       support: "Spacing, metric clarity, and actionable QA notes remain the current follow-up areas.",
       tone: unresolvedReviewNotes > 2 ? "risk" : "watch",
+      trend: unresolvedReviewNotes > 2 ? "down" : "flat",
     },
     {
       id: "verification",
@@ -329,6 +395,31 @@ export function getCheckpointGridView() {
         "The final checkpoint is reserved for route-level assertions and a build pass once content settles.",
       support: "Coverage targets the hero, summary cards, milestone tiles, and recent review-note content.",
       tone: "steady",
+      trend: "flat",
+    },
+  ];
+
+  const statusBreakdown: StatusBreakdownItem[] = [
+    {
+      id: "status-complete",
+      status: "Complete",
+      count: completedMilestones,
+      percentage: Math.round((completedMilestones / totalMilestones) * 100),
+      tone: "steady",
+    },
+    {
+      id: "status-in-progress",
+      status: "In Progress",
+      count: activeMilestones,
+      percentage: Math.round((activeMilestones / totalMilestones) * 100),
+      tone: "watch",
+    },
+    {
+      id: "status-blocked",
+      status: "Blocked",
+      count: blockedMilestones,
+      percentage: Math.round((blockedMilestones / totalMilestones) * 100),
+      tone: "risk",
     },
   ];
 
@@ -336,6 +427,7 @@ export function getCheckpointGridView() {
     summary: checkpointGridSummary,
     heroMetrics,
     progressSummaries,
+    statusBreakdown,
     milestones: checkpointMilestones,
     reviewNotes,
     cadence: checkpointCadence,
