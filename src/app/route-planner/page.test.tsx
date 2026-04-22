@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import {
   routeConstraints,
   routeDecisionQueue,
+  routeNotes,
   routePlannerOverview,
   routePlannerStats,
   routeSegmentGroups,
@@ -120,6 +121,46 @@ describe("RoutePlannerPage", () => {
       expect(within(sidebar).getByText(decision.title)).toBeInTheDocument();
       expect(within(sidebar).getByText(decision.owner)).toBeInTheDocument();
       expect(within(sidebar).getByText(decision.deadline)).toBeInTheDocument();
+    }
+  });
+
+  it("renders the route notes sidebar with all notes and summary counts", () => {
+    render(<RoutePlannerPage />);
+
+    const notesSidebar = screen.getByLabelText(/route notes/i);
+
+    expect(
+      within(notesSidebar).getByRole("heading", { name: /route notes/i }),
+    ).toBeInTheDocument();
+
+    const notesList = within(notesSidebar).getByRole("list", {
+      name: /route notes list/i,
+    });
+    expect(within(notesList).getAllByRole("listitem")).toHaveLength(
+      routeNotes.length,
+    );
+
+    const highCount = routeNotes.filter(
+      (note) => note.priority === "high",
+    ).length;
+    const totalCountCard = within(notesSidebar)
+      .getByText("Total notes")
+      .closest("div");
+    const highCountCard = within(notesSidebar)
+      .getByText("High priority")
+      .closest("div");
+
+    expect(
+      within(totalCountCard as HTMLElement).getByText(String(routeNotes.length)),
+    ).toBeInTheDocument();
+    expect(
+      within(highCountCard as HTMLElement).getByText(String(highCount)),
+    ).toBeInTheDocument();
+
+    for (const note of routeNotes) {
+      expect(within(notesSidebar).getByText(note.title)).toBeInTheDocument();
+      expect(within(notesSidebar).getByText(note.author)).toBeInTheDocument();
+      expect(within(notesSidebar).getByText(note.timestamp)).toBeInTheDocument();
     }
   });
 });
