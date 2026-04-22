@@ -373,3 +373,119 @@ export const dispatchAssignments: DispatchAssignment[] = [
     lastUpdated: "Updated 9 minutes ago by Kira Holt",
   },
 ];
+
+/* ── Tone styling maps ── */
+
+export const bucketToneStyles: Record<
+  DispatchBucketTone,
+  { border: string; bg: string; text: string; badge: string }
+> = {
+  critical: {
+    border: "border-rose-200",
+    bg: "bg-rose-50",
+    text: "text-rose-800",
+    badge: "border-rose-200 bg-rose-50 text-rose-800",
+  },
+  priority: {
+    border: "border-amber-200",
+    bg: "bg-amber-50",
+    text: "text-amber-800",
+    badge: "border-amber-200 bg-amber-50 text-amber-800",
+  },
+  steady: {
+    border: "border-emerald-200",
+    bg: "bg-emerald-50",
+    text: "text-emerald-800",
+    badge: "border-emerald-200 bg-emerald-50 text-emerald-800",
+  },
+  monitor: {
+    border: "border-slate-200",
+    bg: "bg-slate-100",
+    text: "text-slate-700",
+    badge: "border-slate-200 bg-slate-100 text-slate-700",
+  },
+};
+
+export const priorityStyles: Record<DispatchAssignmentPriority, string> = {
+  Critical: "border-rose-200 bg-rose-50 text-rose-800",
+  High: "border-amber-200 bg-amber-50 text-amber-800",
+  Planned: "border-slate-200 bg-slate-100 text-slate-700",
+};
+
+/* ── Derived views ── */
+
+export type DispatchBucketView = DispatchBucket & {
+  assignments: DispatchAssignmentView[];
+  pendingCount: number;
+};
+
+export type DispatchAssignmentView = DispatchAssignment & {
+  owner: DispatchOwner;
+  queue: DispatchQueue;
+  bucket: DispatchBucket;
+};
+
+export type DispatchMetrics = {
+  totalAssignments: number;
+  criticalCount: number;
+  dueSoonCount: number;
+  ownerCount: number;
+};
+
+export function getDispatchMetrics(
+  assignments: DispatchAssignment[],
+  queues: DispatchQueue[],
+  owners: DispatchOwner[],
+): DispatchMetrics {
+  return {
+    totalAssignments: assignments.length,
+    criticalCount: assignments.filter((a) => a.priority === "Critical").length,
+    dueSoonCount: queues.reduce((sum, q) => sum + q.dueSoon, 0),
+    ownerCount: owners.length,
+  };
+}
+
+export function getDispatchAssignmentView(
+  assignment: DispatchAssignment,
+  owners: DispatchOwner[],
+  queues: DispatchQueue[],
+  buckets: DispatchBucket[],
+): DispatchAssignmentView | null {
+  const owner = owners.find((o) => o.id === assignment.ownerId);
+  const queue = queues.find((q) => q.id === assignment.queueId);
+  const bucket = buckets.find((b) => b.id === assignment.bucketId);
+
+  if (!owner || !queue || !bucket) return null;
+
+  return { ...assignment, owner, queue, bucket };
+}
+
+export function getDispatchBucketViews(
+  buckets: DispatchBucket[],
+  assignments: DispatchAssignment[],
+  owners: DispatchOwner[],
+  queues: DispatchQueue[],
+): DispatchBucketView[] {
+  const priorityOrder: Record<DispatchAssignmentPriority, number> = {
+    Critical: 0,
+    High: 1,
+    Planned: 2,
+  };
+
+  return buckets.map((bucket) => {
+    const bucketAssignments = assignments
+      .filter((a) => a.bucketId === bucket.id)
+      .map((a) => getDispatchAssignmentView(a, owners, queues, buckets))
+      .filter((a): a is DispatchAssignmentView => a !== null)
+      .sort(
+        (left, right) =>
+          priorityOrder[left.priority] - priorityOrder[right.priority],
+      );
+
+    return {
+      ...bucket,
+      assignments: bucketAssignments,
+      pendingCount: bucketAssignments.length,
+    };
+  });
+}
