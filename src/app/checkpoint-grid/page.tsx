@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MilestoneTile } from "./_components/milestone-tile";
 import { ProgressSummaryCard } from "./_components/progress-summary-card";
 import { ReviewNotesPanel } from "./_components/review-notes-panel";
+import { StatusBreakdownBar } from "./_components/status-breakdown-bar";
 import { getCheckpointGridView } from "./_data/checkpoint-grid-data";
 import styles from "./checkpoint-grid.module.css";
 
@@ -88,6 +89,28 @@ export default function CheckpointGridPage() {
               </div>
             </aside>
           </div>
+        </section>
+
+        <section aria-labelledby="checkpoint-status-breakdown" className="space-y-5">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+                At a glance
+              </p>
+              <h2
+                id="checkpoint-status-breakdown"
+                className="text-3xl font-semibold tracking-tight text-slate-950"
+              >
+                Status breakdown
+              </h2>
+            </div>
+            <p className="max-w-3xl text-sm leading-7 text-slate-600">
+              A visual distribution of milestone statuses across the planning
+              board so you can spot bottlenecks before reading the full grid.
+            </p>
+          </div>
+
+          <StatusBreakdownBar items={view.statusBreakdown} />
         </section>
 
         <section aria-labelledby="checkpoint-progress-summaries" className="space-y-5">
