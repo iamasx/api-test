@@ -31,6 +31,13 @@
   --accent-violet: #7c3aed;
   --accent-violet-light: #ede9fe;
   --accent-violet-text: #5b21b6;
+
+  /* Status-board tokens */
+  --status-accent: #b45309;
+  --status-accent-light: rgba(180, 83, 9, 0.08);
+  --status-operational: #059669;
+  --status-degraded: #d97706;
+  --status-outage: #dc2626;
 }
 
 @theme inline {
@@ -291,4 +298,33 @@ a {
 
 .queue-parcel-link:hover::after {
   transform: translateX(2px);
+}
+
+/* ── Status-board shared styles ──────────────────────────── */
+
+.status-board .section-card {
+  border-radius: var(--section-radius);
+  padding: var(--section-padding-y) var(--section-padding-x);
+}
+
+.status-summary-card {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.status-summary-card:hover {
+  border-color: var(--status-accent);
+  box-shadow: 0 4px 16px rgba(180, 83, 9, 0.10);
+}
+
+.status-service-card {
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.status-service-card:hover {
+  border-color: rgba(148, 163, 184, 0.5);
+  background-color: rgba(255, 255, 255, 0.9);
 }
