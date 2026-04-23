@@ -46,6 +46,13 @@ const commandLogHighlights = [
   "Activity summary showing category, team, and status breakdowns",
 ];
 
+const queueParcelHighlights = [
+  "Real-time queue depth across five operational lanes with throughput rates",
+  "Regional parcel hub cards with SLA compliance and in-transit volume",
+  "Cross-linked parcels connecting queue lanes to their assigned hub",
+  "Inter-hub transfer table tracking volume and priority between regions",
+];
+
 const teamDirectoryHighlights = [
   "Cross-functional directory with grouped profiles and availability states",
   "Spotlight panel featuring role highlights and shared skill breakdowns",
@@ -424,6 +431,65 @@ export default function Home() {
             </p>
             <ul className="mt-5 space-y-4">
               {commandLogHighlights.map((item) => (
+                <li
+                  key={item}
+                  className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="route-entry-link overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.06)]">
+        <div className="grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.9fr)] lg:px-12 lg:py-10">
+          <div className="space-y-5">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-amber-700">
+              Issue 197 / Queue &amp; Parcel Integration
+            </p>
+            <div className="space-y-3">
+              <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+                Monitor queue lanes and parcel hub volumes from linked
+                operational surfaces.
+              </h2>
+              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                The queue monitor and parcel hub routes share cross-linked data
+                so operators can trace items from inbound queues through regional
+                hubs to final dispatch without switching dashboards.
+              </p>
+            </div>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/queue-monitor"
+                className="inline-flex items-center justify-center rounded-full bg-amber-700 px-6 py-3 text-sm font-semibold text-amber-50 transition hover:bg-amber-800"
+              >
+                Open queue monitor
+              </Link>
+              <Link
+                href="/parcel-hub"
+                className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
+              >
+                Open parcel hub
+              </Link>
+              <a
+                href="https://github.com/iamasx/api-test/issues/197"
+                className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Review issue scope
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface-strong)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
+              Integration highlights
+            </p>
+            <ul className="mt-5 space-y-4">
+              {queueParcelHighlights.map((item) => (
                 <li
                   key={item}
                   className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
