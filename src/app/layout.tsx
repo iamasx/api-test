@@ -32,6 +32,7 @@ const navLinks = [
   { href: "/experiment-registry", label: "Experiments" },
   { href: "/queue-monitor", label: "Queue Monitor" },
   { href: "/parcel-hub", label: "Parcel Hub" },
+  { href: "/status-board", label: "Status Board" },
 ] as const;
 
 export default function RootLayout({
@@ -62,7 +63,7 @@ export default function RootLayout({
         {children}
         <footer className="mt-auto border-t border-[var(--line)] py-6 text-center">
           <p className="section-label text-slate-500">
-            Archive Signals &middot; Team Directory &middot; Built for conflict testing
+            Archive Signals &middot; Team Directory &middot; Status Board &middot; Built for conflict testing
           </p>
         </footer>
       </body>
