@@ -120,6 +120,48 @@ export const experiments: Experiment[] = [
       { metric: "Cart abandonment", baseline: 68, current: 61, unit: "%" },
     ],
   },
+  {
+    id: "exp-007",
+    title: "Dark Mode Engagement Lift",
+    hypothesis:
+      "Offering a system-aware dark mode will increase average session duration by 12%.",
+    status: "active",
+    ownerId: "owner-1",
+    startDate: "2026-04-05",
+    endDate: null,
+    tags: ["engagement", "ui"],
+    results: [
+      { metric: "Avg session duration", baseline: 4.6, current: 5.1, unit: "min" },
+      { metric: "Theme toggle rate", baseline: 0, current: 38, unit: "%" },
+    ],
+  },
+  {
+    id: "exp-008",
+    title: "Batched Write Pipeline",
+    hypothesis:
+      "Batching database writes in 50ms windows will reduce write latency p99 by 35%.",
+    status: "completed",
+    ownerId: "owner-4",
+    startDate: "2026-02-20",
+    endDate: "2026-03-28",
+    tags: ["infrastructure", "database"],
+    results: [
+      { metric: "Write latency p99", baseline: 420, current: 265, unit: "ms" },
+      { metric: "Throughput", baseline: 1200, current: 1850, unit: "ops/s" },
+    ],
+  },
+  {
+    id: "exp-009",
+    title: "Contextual Help Tooltips",
+    hypothesis:
+      "Adding contextual help tooltips to complex form fields will reduce support tickets by 20%.",
+    status: "draft",
+    ownerId: "owner-3",
+    startDate: "2026-04-20",
+    endDate: null,
+    tags: ["ux", "support"],
+    results: [],
+  },
 ];
 
 export type ExperimentView = Experiment & {
