@@ -25,6 +25,20 @@ const routePlannerLinks = [
   { label: "Express replenishment lane", segmentId: "seg-005", eta: "14:00" },
 ];
 
+const bayStockSummary = [
+  { label: "Total SKUs tracked", value: "1,146", change: "+24 this week" },
+  { label: "Low-stock alerts", value: "70", change: "+12 since yesterday" },
+  { label: "Restock orders pending", value: "8", change: "3 dispatched" },
+  { label: "Avg restock lead time", value: "4.2 days", change: "-0.5 days" },
+];
+
+const recentRestockActivity = [
+  { id: "RST-4401", bay: "Bay-North", items: 42, status: "dispatched", time: "07:30" },
+  { id: "RST-4402", bay: "Bay-Central", items: 18, status: "pending", time: "09:15" },
+  { id: "RST-4403", bay: "Bay-South", items: 67, status: "delivered", time: "06:00" },
+  { id: "RST-4404", bay: "Bay-Central", items: 31, status: "dispatched", time: "08:45" },
+];
+
 export default function InventoryBayPage() {
   const metrics = getInventoryBayMetrics(
     inventoryBayItems,
@@ -53,6 +67,63 @@ export default function InventoryBayPage() {
         recommendations={recommendations}
         sections={sections}
       />
+
+      <section className="mx-auto w-full max-w-6xl px-6 sm:px-10 lg:px-16">
+        <div className="rounded-[2rem] border border-slate-700/40 bg-slate-900/70 p-8 backdrop-blur">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-400">
+            Stock summary
+          </p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            Bay-wide inventory metrics
+          </h2>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {bayStockSummary.map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-2xl border border-white/10 bg-white/5 px-5 py-5"
+              >
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  {stat.label}
+                </p>
+                <p className="mt-2 text-2xl font-bold text-white">{stat.value}</p>
+                <p className="mt-1 text-sm text-amber-300">{stat.change}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
+              Recent restock activity
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {recentRestockActivity.map((order) => (
+                <div
+                  key={order.id}
+                  className="rounded-xl border border-white/8 bg-white/4 px-4 py-4"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-white">{order.id}</p>
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                        order.status === "delivered"
+                          ? "bg-emerald-400/15 text-emerald-300"
+                          : order.status === "dispatched"
+                            ? "bg-cyan-400/15 text-cyan-300"
+                            : "bg-amber-400/15 text-amber-300"
+                      }`}
+                    >
+                      {order.status}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-slate-400">
+                    {order.bay} &middot; {order.items} items &middot; {order.time}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="integration-panel mx-auto w-full max-w-6xl px-6 pb-12 sm:px-10 lg:px-16">
         <div className="rounded-[2rem] border border-emerald-400/20 bg-emerald-950/60 p-8 backdrop-blur">
