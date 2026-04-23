@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { teamGroups, getDirectoryMetrics } from "@/data/team-directory";
 
 const launchChecks = [
   "Five mock archive snapshots with visible preservation metadata",
@@ -45,9 +46,17 @@ const commandLogHighlights = [
   "Activity summary showing category, team, and status breakdowns",
 ];
 
+const teamDirectoryHighlights = [
+  "Cross-functional directory with grouped profiles and availability states",
+  "Spotlight panel featuring role highlights and shared skill breakdowns",
+  "Coverage across multiple time zones with capacity notes per member",
+];
+
 export default function Home() {
+  const metrics = getDirectoryMetrics(teamGroups);
+
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-6 py-12 sm:px-10 lg:px-12">
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-[var(--section-gap)] px-6 py-12 sm:px-10 lg:px-12">
       <section className="overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.08)]">
         <div className="grid gap-10 px-6 py-10 sm:px-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)] lg:px-12 lg:py-14">
           <div className="space-y-6">
@@ -418,6 +427,73 @@ export default function Home() {
                 <li
                   key={item}
                   className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-card overflow-hidden border border-[var(--line)] bg-[var(--accent-violet-light)] shadow-[0_20px_90px_rgba(15,23,42,0.06)]">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.9fr)]">
+          <div className="space-y-5">
+            <p className="section-label text-[var(--accent-violet-text)]">
+              Issue 187 / Team Directory
+            </p>
+            <div className="space-y-3">
+              <h2 className="heading-tight max-w-2xl text-3xl text-slate-950 sm:text-4xl">
+                Explore the cross-functional team directory with profiles, availability, and role highlights.
+              </h2>
+              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                The team directory collects grouped profiles, individual availability states,
+                skill inventories, and a featured spotlight into a single browseable route for
+                coordination across launch, reliability, and field support teams.
+              </p>
+            </div>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/team-directory"
+                className="inline-flex items-center justify-center rounded-full bg-[var(--accent-violet)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--accent-violet-text)]"
+              >
+                Open team directory
+              </Link>
+              <a
+                href="https://github.com/iamasx/api-test/issues/187"
+                className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Review issue scope
+              </a>
+            </div>
+
+            <div className="mt-2 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-[var(--card-radius)] bg-[var(--accent-violet)] px-4 py-3 text-white">
+                <p className="section-label text-white/60">Groups</p>
+                <p className="mt-1 text-2xl font-semibold">{metrics.totalGroups}</p>
+              </div>
+              <div className="rounded-[var(--card-radius)] bg-[var(--accent-violet)] px-4 py-3 text-white">
+                <p className="section-label text-white/60">Profiles</p>
+                <p className="mt-1 text-2xl font-semibold">{metrics.totalMembers}</p>
+              </div>
+              <div className="rounded-[var(--card-radius)] bg-[var(--accent-violet)] px-4 py-3 text-white">
+                <p className="section-label text-white/60">Time zones</p>
+                <p className="mt-1 text-2xl font-semibold">{metrics.timezoneCount}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-[var(--card-radius-lg)] border border-[var(--accent-violet)]/20 bg-white/75 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+            <p className="section-label text-slate-500">
+              Directory staging
+            </p>
+            <ul className="mt-5 space-y-4">
+              {teamDirectoryHighlights.map((item) => (
+                <li
+                  key={item}
+                  className="rounded-2xl border border-[var(--accent-violet)]/15 bg-[var(--accent-violet-light)] px-4 py-4 text-sm leading-6 text-slate-600"
                 >
                   {item}
                 </li>

@@ -23,6 +23,8 @@ export const metadata: Metadata = {
 };
 
 const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/team-directory", label: "Team Directory" },
   { href: "/archive-browser", label: "Archive" },
   { href: "/research-notebook", label: "Notebook" },
   { href: "/field-guide", label: "Field Guide" },
@@ -56,6 +58,11 @@ export default function RootLayout({
           </ul>
         </nav>
         {children}
+        <footer className="mt-auto border-t border-[var(--line)] py-6 text-center">
+          <p className="section-label text-slate-500">
+            Archive Signals &middot; Team Directory &middot; Built for conflict testing
+          </p>
+        </footer>
       </body>
     </html>
   );
