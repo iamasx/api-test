@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 
 import type { ExperimentStatus, ExperimentView, RegistryView } from "../_lib/experiment-registry-data";
 import { StatusBadge } from "./status-badge";
 import { ResultsSummaryPanel } from "./results-summary-panel";
+import { ExperimentFilterBar } from "./experiment-filter-bar";
+import { ExperimentTimeline } from "./experiment-timeline";
 import styles from "../experiment-registry.module.css";
 
 const statusCardStyle: Record<ExperimentStatus, string> = {
@@ -26,6 +28,26 @@ export function ExperimentRegistryShell({ view }: { view: RegistryView }) {
   const [selectedId, setSelectedId] = useState<string>(
     view.experiments[0]?.id ?? "",
   );
+  const [statusFilter, setStatusFilter] = useState<ExperimentStatus | "all">("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredExperiments = useMemo(() => {
+    let result = view.experiments;
+    if (statusFilter !== "all") {
+      result = result.filter((e) => e.status === statusFilter);
+    }
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (e) =>
+          e.title.toLowerCase().includes(q) ||
+          e.hypothesis.toLowerCase().includes(q) ||
+          e.tags.some((t) => t.toLowerCase().includes(q)) ||
+          e.owner.name.toLowerCase().includes(q),
+      );
+    }
+    return result;
+  }, [view.experiments, statusFilter, searchQuery]);
 
   const selected = view.experiments.find((e) => e.id === selectedId) ?? view.experiments[0];
 
@@ -65,6 +87,14 @@ export function ExperimentRegistryShell({ view }: { view: RegistryView }) {
           </div>
         </section>
 
+        {/* Filter bar */}
+        <ExperimentFilterBar
+          active={statusFilter}
+          onFilter={setStatusFilter}
+          query={searchQuery}
+          onSearch={setSearchQuery}
+        />
+
         {/* Registry + Results panel */}
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(20rem,0.8fr)]">
           {/* Experiment list */}
@@ -77,24 +107,42 @@ export function ExperimentRegistryShell({ view }: { view: RegistryView }) {
                 id="experiment-list-heading"
                 className="text-3xl font-semibold tracking-tight text-slate-950"
               >
-                All experiments
+                {statusFilter === "all"
+                  ? "All experiments"
+                  : `${statusFilter.charAt(0).toUpperCase()}${statusFilter.slice(1)} experiments`}
+                <span className="ml-2 text-lg font-normal text-slate-400">
+                  ({filteredExperiments.length})
+                </span>
               </h2>
             </div>
 
-            <div aria-label="Experiment entries" className="flex flex-col gap-4" role="list">
-              {view.experiments.map((exp) => (
-                <ExperimentCard
-                  key={exp.id}
-                  experiment={exp}
-                  isSelected={exp.id === selected?.id}
-                  onSelect={() => setSelectedId(exp.id)}
-                />
-              ))}
-            </div>
+            {filteredExperiments.length === 0 ? (
+              <p className="rounded-2xl border border-dashed border-slate-200 px-6 py-10 text-center text-sm text-slate-400">
+                No experiments match your filters.
+              </p>
+            ) : (
+              <div aria-label="Experiment entries" className="flex flex-col gap-4" role="list">
+                {filteredExperiments.map((exp) => (
+                  <ExperimentCard
+                    key={exp.id}
+                    experiment={exp}
+                    isSelected={exp.id === selected?.id}
+                    onSelect={() => setSelectedId(exp.id)}
+                  />
+                ))}
+              </div>
+            )}
           </section>
 
-          {/* Results summary panel */}
-          {selected && <ResultsSummaryPanel experiment={selected} />}
+          {/* Results summary + timeline panel */}
+          {selected && (
+            <div className="space-y-6">
+              <ResultsSummaryPanel experiment={selected} />
+              <div className="rounded-[2rem] border border-slate-200 bg-white/92 p-6 shadow-sm backdrop-blur sm:p-8">
+                <ExperimentTimeline experiment={selected} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </main>

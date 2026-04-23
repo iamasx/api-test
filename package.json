@@ -2,6 +2,7 @@
   "name": "api-test",
   "version": "0.1.0",
   "private": true,
+  "description": "Archive Signals – experiment registry, field guides, and operational dashboards",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
