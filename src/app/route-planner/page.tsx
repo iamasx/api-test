@@ -55,12 +55,20 @@ export default function RoutePlannerPage() {
                 </p>
               </div>
 
-              <Link
-                href="/"
-                className="inline-flex items-center justify-center rounded-full border border-white/15 bg-slate-950/40 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:border-cyan-300/45 hover:bg-slate-900"
-              >
-                Back to route index
-              </Link>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Link
+                  href="/inventory-bay"
+                  className="inline-flex items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-900/30 px-5 py-3 text-sm font-semibold text-emerald-100 transition hover:border-emerald-300/50 hover:bg-emerald-800/40"
+                >
+                  View inventory bay
+                </Link>
+                <Link
+                  href="/"
+                  className="inline-flex items-center justify-center rounded-full border border-white/15 bg-slate-950/40 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:border-cyan-300/45 hover:bg-slate-900"
+                >
+                  Back to route index
+                </Link>
+              </div>
             </div>
           </div>
         </header>
