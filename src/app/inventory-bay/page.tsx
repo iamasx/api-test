@@ -14,9 +14,9 @@ import {
 } from "./_data/inventory-bay-data";
 
 export const metadata: Metadata = {
-  title: "Inventory Bay",
+  title: "Inventory Bay — Route Integration",
   description:
-    "Mock inventory bay route with stock bands, category sections, and a restock recommendation panel.",
+    "Mock inventory bay route with stock bands, category sections, a restock recommendation panel, and cross-linked delivery route segments.",
 };
 
 const routePlannerLinks = [

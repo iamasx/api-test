@@ -15,9 +15,9 @@ import {
 } from "./_data/route-planner-data";
 
 export const metadata: Metadata = {
-  title: "Route Planner",
+  title: "Route Planner — Inventory Integration",
   description:
-    "Standalone route for reviewing route segments, timing constraints, and route-level planning decisions.",
+    "Route segments, timing constraints, and planning decisions with integrated inventory bay supply snapshots.",
 };
 
 const inventorySupplySummary = [
