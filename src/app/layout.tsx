@@ -64,7 +64,7 @@ export default function RootLayout({
         {children}
         <footer className="mt-auto border-t border-[var(--line)] py-6 text-center">
           <p className="section-label text-slate-500">
-            Archive Signals &middot; Team Directory &middot; Status Board &middot; Built for conflict testing
+            Archive Signals &middot; Telemetry &middot; Team Directory &middot; Status Board &middot; Built for conflict testing
           </p>
         </footer>
       </body>
