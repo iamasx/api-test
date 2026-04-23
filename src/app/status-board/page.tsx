@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { HealthSummary } from "./_components/health-summary";
 import { ServiceCard } from "./_components/service-card";
 import { UptimeBar } from "./_components/uptime-bar";
 import { getStatusBoardView } from "./_data/status-board-data";
@@ -63,6 +64,9 @@ export default function StatusBoardPage() {
             </div>
           </div>
         </section>
+
+        {/* Health summary banner */}
+        <HealthSummary summary={summary} />
 
         {/* Service grid */}
         <section>
