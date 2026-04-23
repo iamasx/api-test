@@ -6,6 +6,9 @@
   --surface: rgba(255, 251, 240, 0.86);
   --surface-strong: #fffaf2;
   --line: rgba(148, 163, 184, 0.3);
+  --nav-height: 3.5rem;
+  --ops-accent: #0e7490;
+  --ops-accent-light: rgba(14, 116, 144, 0.08);
 }
 
 @theme inline {
@@ -41,4 +44,82 @@ a {
 ::selection {
   background: rgba(251, 191, 36, 0.3);
   color: var(--foreground);
+}
+
+/* ── Shared app chrome ─────────────────────────────────────── */
+
+.app-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+  padding-inline: 1.5rem;
+  background: rgba(255, 251, 240, 0.82);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.app-nav__brand {
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+
+.app-nav__links {
+  display: flex;
+  gap: 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-nav__link {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(15, 23, 42, 0.6);
+  transition: color 0.15s;
+}
+
+.app-nav__link:hover {
+  color: var(--foreground);
+}
+
+.app-nav__link--active {
+  color: var(--ops-accent);
+  font-weight: 600;
+}
+
+/* ── Operations-center accent utilities ───────────────────── */
+
+.ops-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(14, 116, 144, 0.25);
+  background: var(--ops-accent-light);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ops-accent);
+}
+
+.ops-badge::before {
+  content: "";
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: var(--ops-accent);
+  animation: ops-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ops-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
 }
