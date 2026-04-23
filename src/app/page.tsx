@@ -512,7 +512,7 @@ export default function Home() {
         <div className="grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.9fr)] lg:px-12 lg:py-10">
           <div className="space-y-5">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-amber-800">
-              Issue 196 / Status Board
+              Issue 198 / Status Board
             </p>
             <div className="space-y-3">
               <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
@@ -533,7 +533,7 @@ export default function Home() {
                 Open status board
               </Link>
               <a
-                href="https://github.com/iamasx/api-test/issues/196"
+                href="https://github.com/iamasx/api-test/issues/198"
                 className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
                 target="_blank"
                 rel="noreferrer"
