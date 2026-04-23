@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import {
   handoffEntries,
+  shiftRotations,
   getHandoffMetrics,
   type HandoffEntry,
 } from "./data";
@@ -151,6 +152,37 @@ export default function HandoffJournalPage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6">
+        <h2 className="text-xl font-semibold text-slate-900">
+          Shift Rotations
+        </h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          {shiftRotations.map((rotation) => (
+            <div
+              key={rotation.id}
+              className="rounded-xl border border-slate-200 bg-white p-4"
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-semibold text-slate-400">
+                  {rotation.id}
+                </span>
+                <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700">
+                  {rotation.shiftLabel}
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-slate-700">
+                {rotation.outgoing} &rarr; {rotation.incoming}
+              </p>
+              <p className="mt-1 text-xs text-slate-400">
+                {rotation.entryCount} entries &middot;{" "}
+                {formatTimestamp(rotation.startTime)} &ndash;{" "}
+                {formatTimestamp(rotation.endTime)}
+              </p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6">

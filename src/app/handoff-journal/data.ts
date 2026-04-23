@@ -11,6 +11,37 @@ export type HandoffEntry = {
   priority: "low" | "medium" | "high" | "critical";
 };
 
+export type ShiftRotation = {
+  id: string;
+  shiftLabel: string;
+  startTime: string;
+  endTime: string;
+  outgoing: string;
+  incoming: string;
+  entryCount: number;
+};
+
+export const shiftRotations: ShiftRotation[] = [
+  {
+    id: "SR-01",
+    shiftLabel: "Night → Morning",
+    startTime: "2026-04-23T06:00:00Z",
+    endTime: "2026-04-23T14:00:00Z",
+    outgoing: "M. Chen",
+    incoming: "R. Alvarez",
+    entryCount: 3,
+  },
+  {
+    id: "SR-02",
+    shiftLabel: "Afternoon → Night",
+    startTime: "2026-04-22T18:00:00Z",
+    endTime: "2026-04-23T06:00:00Z",
+    outgoing: "T. Nakamura",
+    incoming: "M. Chen",
+    entryCount: 3,
+  },
+];
+
 export const handoffEntries: HandoffEntry[] = [
   {
     id: "HJ-001",
