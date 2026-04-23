@@ -232,3 +232,63 @@ a {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(15, 23, 42, 0.12);
 }
+
+/* ── Queue-monitor & parcel-hub shared styles ────────────── */
+
+:root {
+  --queue-accent: #d97706;
+  --queue-accent-light: rgba(217, 119, 6, 0.08);
+  --parcel-accent: #059669;
+  --parcel-accent-light: rgba(5, 150, 105, 0.08);
+}
+
+.queue-monitor-hero,
+.parcel-hub-hero {
+  position: relative;
+}
+
+.queue-monitor-hero::after,
+.parcel-hub-hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--queue-accent) 0%,
+    var(--parcel-accent) 100%
+  );
+  opacity: 0.6;
+}
+
+.queue-lane-card {
+  border-left: 3px solid var(--queue-accent-light);
+}
+
+.queue-lane-card:hover {
+  border-left-color: var(--queue-accent);
+}
+
+.parcel-hub-card {
+  border-left: 3px solid var(--parcel-accent-light);
+}
+
+.parcel-hub-card:hover {
+  border-left-color: var(--parcel-accent);
+}
+
+.queue-parcel-link {
+  position: relative;
+}
+
+.queue-parcel-link::after {
+  content: "\2192";
+  margin-left: 0.375rem;
+  transition: transform 0.15s ease;
+}
+
+.queue-parcel-link:hover::after {
+  transform: translateX(2px);
+}
