@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Archive Signals – experiment registry, field guides, and operational dashboards",
+  "keywords": ["api-test", "command-log", "operations"],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

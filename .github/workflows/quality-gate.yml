@@ -33,5 +33,8 @@ jobs:
       - name: Typecheck project
         run: npx tsc --noEmit
 
+      - name: Run tests
+        run: npx vitest run src/app/command-log/
+
       - name: Build project
         run: npm run build
