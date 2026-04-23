@@ -38,6 +38,12 @@
   --status-operational: #059669;
   --status-degraded: #d97706;
   --status-outage: #dc2626;
+
+  /* Telemetry desk accent palette */
+  --telemetry-accent: #0369a1;
+  --telemetry-accent-light: rgba(3, 105, 161, 0.08);
+  --telemetry-accent-glow: rgba(3, 105, 161, 0.15);
+  --telemetry-surface: rgba(240, 249, 255, 0.9);
 }
 
 @theme inline {
@@ -327,4 +333,43 @@ a {
 .status-service-card:hover {
   border-color: rgba(148, 163, 184, 0.5);
   background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* ── Telemetry desk accent utilities ─────────────────────── */
+
+.telemetry-hero {
+  background: linear-gradient(
+    135deg,
+    var(--telemetry-surface) 0%,
+    var(--surface) 100%
+  );
+}
+
+.telemetry-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(3, 105, 161, 0.25);
+  background: var(--telemetry-accent-light);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--telemetry-accent);
+}
+
+.telemetry-badge::before {
+  content: "";
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: var(--telemetry-accent);
+  animation: telemetry-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes telemetry-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
