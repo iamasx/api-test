@@ -18,6 +18,13 @@ const fieldGuideHighlights = [
   "Reference-ready procedure detail for active response handoffs",
 ];
 
+const opsCenterHighlights = [
+  "Live KPI cards with progress bars for on-time departures, fleet use, and exception backlog",
+  "Prioritized alert queue with severity badges, owner attribution, and playbook guidance",
+  "Chronological activity feed tracking automated reroutes and shift-lead decisions",
+  "Shift posture summary with immediate-focus and coverage notes for the command desk",
+];
+
 export default function Home() {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-6 py-12 sm:px-10 lg:px-12">
@@ -168,6 +175,59 @@ export default function Home() {
             </p>
             <ul className="mt-5 space-y-4">
               {fieldGuideHighlights.map((item) => (
+                <li
+                  key={item}
+                  className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.06)]">
+        <div className="grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.9fr)] lg:px-12 lg:py-10">
+          <div className="space-y-5">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-700">
+              Issue 186 / Operations Center
+            </p>
+            <div className="space-y-3">
+              <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+                Monitor live network health, dispatch risk, and intervention
+                velocity from a single dashboard.
+              </h2>
+              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                The operations center consolidates KPI snapshots, live alert
+                queues, and shift activity into a command-desk view designed for
+                operators keeping critical lanes in sync.
+              </p>
+            </div>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/operations-center"
+                className="inline-flex items-center justify-center rounded-full bg-cyan-700 px-6 py-3 text-sm font-semibold text-cyan-50 transition hover:bg-cyan-800"
+              >
+                Open operations center
+              </Link>
+              <a
+                href="https://github.com/iamasx/api-test/issues/186"
+                className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Review issue scope
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface-strong)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
+              Dashboard capabilities
+            </p>
+            <ul className="mt-5 space-y-4">
+              {opsCenterHighlights.map((item) => (
                 <li
                   key={item}
                   className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
