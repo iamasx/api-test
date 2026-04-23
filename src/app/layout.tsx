@@ -32,6 +32,7 @@ const navLinks = [
   { href: "/experiment-registry", label: "Experiments" },
   { href: "/queue-monitor", label: "Queue Monitor" },
   { href: "/parcel-hub", label: "Parcel Hub" },
+  { href: "/status-board", label: "Status Board" },
 ] as const;
 
 export default function RootLayout({
