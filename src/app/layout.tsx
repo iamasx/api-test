@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: "%s | Archive Signals",
   },
   description:
-    "An archive-focused Next.js app with snapshot cards, metadata badges, and an operations-center dashboard.",
+    "Operational dashboards, experiment registries, and field guides for archive-driven teams.",
 };
 
 const navLinks = [
@@ -27,6 +27,7 @@ const navLinks = [
   { href: "/research-notebook", label: "Notebook" },
   { href: "/field-guide", label: "Field Guide" },
   { href: "/operations-center", label: "Ops Center" },
+  { href: "/experiment-registry", label: "Experiments" },
 ] as const;
 
 export default function RootLayout({
@@ -39,7 +40,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full flex-col bg-slate-50/40">
         <nav className="app-nav" aria-label="Primary">
           <Link href="/" className="app-nav__brand">
             Archive Signals
