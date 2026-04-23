@@ -40,10 +40,10 @@ export function countBySeverity(
   return counts;
 }
 
-// DELIBERATE CI BREAK — will be fixed in the next revision
-// Returning a number from a function declared to return string
-export function formatFilterLabel(severity: CommandEventSeverity | null): string {
-  if (!severity) return "All events";
-  const count: number = 42;
-  return count;
+export function formatFilterLabel(
+  severity: CommandEventSeverity | null,
+  count: number,
+): string {
+  if (!severity) return `All events (${count})`;
+  return `${count} ${severity.toLowerCase()} event${count === 1 ? "" : "s"}`;
 }
