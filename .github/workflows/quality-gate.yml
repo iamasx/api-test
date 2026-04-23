@@ -36,5 +36,8 @@ jobs:
       - name: Run tests
         run: npx vitest run src/app/command-log/
 
+      - name: Status board health check
+        run: npm run status-board:check
+
       - name: Build project
         run: npm run build
