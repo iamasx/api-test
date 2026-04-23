@@ -1,0 +1,127 @@
+.pageShell {
+  background-image:
+    radial-gradient(circle at top left, rgba(20, 184, 166, 0.18), transparent 26%),
+    radial-gradient(circle at top right, rgba(251, 191, 36, 0.2), transparent 28%),
+    linear-gradient(180deg, #08131d 0%, #102132 48%, #13283d 100%);
+}
+
+.heroSurface {
+  position: relative;
+  isolation: isolate;
+}
+
+.heroSurface::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(15, 23, 42, 0.12)),
+    radial-gradient(circle at top right, rgba(45, 212, 191, 0.12), transparent 38%);
+  z-index: -1;
+}
+
+.heroSurface::after {
+  content: "";
+  position: absolute;
+  right: -5rem;
+  top: -4rem;
+  height: 14rem;
+  width: 14rem;
+  border-radius: 9999px;
+  background: rgba(250, 204, 21, 0.14);
+  filter: blur(56px);
+  z-index: -1;
+}
+
+.cardChrome {
+  background: linear-gradient(180deg, rgba(11, 20, 33, 0.92), rgba(8, 15, 26, 0.98));
+  box-shadow: 0 28px 90px rgba(2, 6, 23, 0.26);
+}
+
+.railSurface {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(15, 23, 42, 0.22)),
+    linear-gradient(180deg, rgba(8, 15, 26, 0.74), rgba(8, 15, 26, 0.9));
+  box-shadow: 0 28px 90px rgba(2, 6, 23, 0.26);
+}
+
+.matrixScroll {
+  padding-bottom: 0.5rem;
+}
+
+.matrixScroll::-webkit-scrollbar {
+  height: 0.75rem;
+}
+
+.matrixScroll::-webkit-scrollbar-track {
+  border-radius: 9999px;
+  background: rgba(226, 232, 240, 0.65);
+}
+
+.matrixScroll::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.48), rgba(13, 148, 136, 0.58));
+}
+
+.matrixTable {
+  min-width: 66rem;
+  border-collapse: separate;
+  border-spacing: 0 1rem;
+}
+
+.stubCell {
+  position: sticky;
+  left: 0;
+  min-width: 18rem;
+  border-radius: 1.5rem;
+  background: linear-gradient(180deg, rgba(255, 251, 235, 0.98), rgba(248, 250, 252, 0.98));
+  box-shadow: 18px 0 32px rgba(248, 250, 252, 0.88);
+  z-index: 2;
+}
+
+.columnHead {
+  min-width: 16rem;
+}
+
+.matrixCell {
+  min-width: 16rem;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  border-radius: 1.4rem;
+  padding: 1rem 1.05rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.cellStrong {
+  background: linear-gradient(180deg, rgba(236, 253, 245, 0.96), rgba(209, 250, 229, 0.94));
+}
+
+.cellBalanced {
+  background: linear-gradient(180deg, rgba(239, 246, 255, 0.96), rgba(219, 234, 254, 0.94));
+}
+
+.cellFragile {
+  background: linear-gradient(180deg, rgba(255, 241, 242, 0.98), rgba(254, 226, 226, 0.96));
+}
+
+@media (min-width: 1280px) {
+  .railSurface {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .matrixTable {
+    min-width: 54rem;
+  }
+
+  .stubCell {
+    min-width: 14rem;
+  }
+
+  .columnHead,
+  .matrixCell {
+    min-width: 13.5rem;
+  }
+}
