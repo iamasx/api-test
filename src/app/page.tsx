@@ -59,6 +59,12 @@ const statusBoardHighlights = [
   "Summary bar with service counts, operational ratio, and open incident totals",
 ];
 
+const telemetryDeskHighlights = [
+  "Live signal source health with throughput, latency, and uptime metrics",
+  "KPI summary cards showing healthy, degraded, and down source counts",
+  "Severity-tagged alert feed with timestamps and operational context",
+];
+
 const teamDirectoryHighlights = [
   "Cross-functional directory with grouped profiles and availability states",
   "Spotlight panel featuring role highlights and shared skill breakdowns",
@@ -549,6 +555,59 @@ export default function Home() {
             </p>
             <ul className="mt-5 space-y-4">
               {statusBoardHighlights.map((item) => (
+                <li
+                  key={item}
+                  className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="route-entry-link overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--telemetry-surface)] shadow-[0_20px_90px_rgba(15,23,42,0.06)]">
+        <div className="grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.9fr)] lg:px-12 lg:py-10">
+          <div className="space-y-5">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--telemetry-accent)]">
+              Issue 200 / Telemetry Desk
+            </p>
+            <div className="space-y-3">
+              <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+                Monitor signal health, ingestion throughput, and pipeline alerts
+                from a unified telemetry surface.
+              </h2>
+              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                The telemetry desk consolidates live signal sources, latency
+                monitors, and alert feeds into a single operational view for
+                teams managing archive ingestion pipelines.
+              </p>
+            </div>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/telemetry-desk"
+                className="inline-flex items-center justify-center rounded-full bg-[var(--telemetry-accent)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-sky-800"
+              >
+                Open telemetry desk
+              </Link>
+              <a
+                href="https://github.com/iamasx/api-test/issues/200"
+                className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Review issue scope
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface-strong)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
+              Telemetry capabilities
+            </p>
+            <ul className="mt-5 space-y-4">
+              {telemetryDeskHighlights.map((item) => (
                 <li
                   key={item}
                   className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
