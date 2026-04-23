@@ -51,7 +51,7 @@ export function SeverityFilter({ counts, activeSeverity }: SeverityFilterProps) 
                 ? `${colors.activeBg} ${colors.border} ${colors.text} ring-2 ring-offset-1`
                 : `${colors.bg} ${colors.border} ${colors.text} hover:${colors.activeBg}`
             }`}
-            aria-pressed={isActive}
+            aria-current={isActive ? "true" : undefined}
           >
             <span>{severity}</span>
             <span
