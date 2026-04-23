@@ -22,9 +22,9 @@ export default function TeamDirectoryPage() {
 
   return (
     <main className="mx-auto w-full max-w-7xl px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
-      <section className="rounded-[36px] bg-slate-950 p-8 text-white shadow-[0_40px_130px_rgba(15,23,42,0.32)] sm:p-10 lg:p-12">
+      <section className="section-card rounded-[var(--section-radius)] bg-slate-950 text-white shadow-[0_40px_130px_rgba(15,23,42,0.32)]">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <p className="text-xs font-semibold tracking-[0.28em] uppercase text-[#ffc971]">
+          <p className="section-label text-[var(--accent-amber)]">
             Team Directory
           </p>
           <Link
@@ -37,7 +37,7 @@ export default function TeamDirectoryPage() {
 
         <div className="mt-6 grid gap-8 xl:grid-cols-[1.25fr_0.75fr] xl:items-end">
           <div>
-            <h1 className="max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="heading-tight max-w-4xl text-4xl sm:text-5xl lg:text-6xl">
               Find the right crew for launches, fixes, and field follow-through.
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-8 text-white/72">
@@ -47,7 +47,7 @@ export default function TeamDirectoryPage() {
             <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href="#spotlight"
-                className="rounded-full bg-[#ffc971] px-5 py-3 text-sm font-semibold text-slate-950 transition-transform hover:-translate-y-0.5"
+                className="rounded-full bg-[var(--accent-amber)] px-5 py-3 text-sm font-semibold text-slate-950 transition-transform hover:-translate-y-0.5"
               >
                 Jump to spotlight
               </a>
@@ -61,20 +61,20 @@ export default function TeamDirectoryPage() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3 xl:grid-cols-1">
-            <div className="rounded-[24px] border border-white/10 bg-white/6 p-5">
-              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-white/50">
+            <div className="rounded-[var(--card-radius)] border border-white/10 bg-white/6 p-5">
+              <p className="section-label text-white/50">
                 Team groups
               </p>
               <p className="mt-3 text-4xl font-semibold">{metrics.totalGroups}</p>
             </div>
-            <div className="rounded-[24px] border border-white/10 bg-white/6 p-5">
-              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-white/50">
+            <div className="rounded-[var(--card-radius)] border border-white/10 bg-white/6 p-5">
+              <p className="section-label text-white/50">
                 Profiles
               </p>
               <p className="mt-3 text-4xl font-semibold">{metrics.totalMembers}</p>
             </div>
-            <div className="rounded-[24px] border border-white/10 bg-white/6 p-5">
-              <p className="text-xs font-semibold tracking-[0.18em] uppercase text-white/50">
+            <div className="rounded-[var(--card-radius)] border border-white/10 bg-white/6 p-5">
+              <p className="section-label text-white/50">
                 Time zones
               </p>
               <p className="mt-3 text-4xl font-semibold">{metrics.timezoneCount}</p>
@@ -96,10 +96,10 @@ export default function TeamDirectoryPage() {
       <section id="directory-groups" className="mt-10">
         <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs font-semibold tracking-[0.24em] uppercase text-slate-500">
+            <p className="section-label text-slate-500">
               Grouped profiles
             </p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+            <h2 className="heading-tight mt-2 text-3xl text-slate-950 sm:text-4xl">
               Browse the squads behind the work
             </h2>
           </div>
