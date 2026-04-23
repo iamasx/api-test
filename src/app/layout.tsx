@@ -33,6 +33,7 @@ const navLinks = [
   { href: "/queue-monitor", label: "Queue Monitor" },
   { href: "/parcel-hub", label: "Parcel Hub" },
   { href: "/status-board", label: "Status Board" },
+  { href: "/handoff-journal", label: "Handoff Journal" },
 ] as const;
 
 export default function RootLayout({
