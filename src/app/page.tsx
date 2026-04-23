@@ -38,6 +38,13 @@ const registryHighlights = [
   "Compact results panel with baseline-vs-current metric comparisons",
 ];
 
+const commandLogHighlights = [
+  "Chronological event feed with severity badges and expandable detail",
+  "Severity filter with URL-driven state and count badges",
+  "Event timeline with visual connector and selection highlights",
+  "Activity summary showing category, team, and status breakdowns",
+];
+
 export default function Home() {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-6 py-12 sm:px-10 lg:px-12">
@@ -354,6 +361,60 @@ export default function Home() {
             </p>
             <ul className="mt-5 space-y-4">
               {registryHighlights.map((item) => (
+                <li
+                  key={item}
+                  className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.06)]">
+        <div className="grid gap-8 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.9fr)] lg:px-12 lg:py-10">
+          <div className="space-y-5">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-violet-700">
+              Issue 189 / Command Log
+            </p>
+            <div className="space-y-3">
+              <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+                Browse the chronological command log with severity filters,
+                timeline navigation, and activity summaries.
+              </h2>
+              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                The command log route presents system events in a
+                newest-first feed with severity-based filtering, a compact
+                timeline sidebar, and breakdowns by category, team, and
+                status for quick operational triage.
+              </p>
+            </div>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/command-log"
+                className="inline-flex items-center justify-center rounded-full bg-violet-700 px-6 py-3 text-sm font-semibold text-violet-50 transition hover:bg-violet-800"
+              >
+                Open command log
+              </Link>
+              <a
+                href="https://github.com/iamasx/api-test/issues/189"
+                className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Review issue scope
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface-strong)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
+              Command log features
+            </p>
+            <ul className="mt-5 space-y-4">
+              {commandLogHighlights.map((item) => (
                 <li
                   key={item}
                   className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
