@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { ActivityFeed } from "./_components/activity-feed";
 import { AlertList } from "./_components/alert-list";
@@ -28,6 +29,16 @@ export default function OperationsCenterPage() {
   return (
     <main className={styles.shell}>
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-5 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+        <div className="flex items-center gap-4">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white/60 px-4 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-slate-400 hover:text-slate-900"
+          >
+            <span aria-hidden="true">&larr;</span> Home
+          </Link>
+          <span className="ops-badge">Live dashboard</span>
+        </div>
+
         <section className={`${styles.surfaceCard} ${styles.heroPanel} p-6 sm:p-8 lg:p-10`}>
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(280px,0.95fr)] lg:items-start">
             <div className="space-y-6">
