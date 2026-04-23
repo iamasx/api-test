@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
+import {
+  handoffEntries,
+  getHandoffMetrics,
+  type HandoffEntry,
+} from "./data";
 
 export const metadata: Metadata = {
   title: "Handoff Journal",
   description:
     "Shift-change handoff journal for tracking open items, blockers, and ownership transitions across operator rotations.",
-};
-
-type HandoffEntry = {
-  id: string;
-  timestamp: string;
-  fromOperator: string;
-  toOperator: string;
-  status: "open" | "resolved" | "escalated";
-  summary: string;
 };
 
 const STATUS_COLORS: Record<HandoffEntry["status"], string> = {
@@ -27,7 +23,27 @@ const STATUS_LABELS: Record<HandoffEntry["status"], string> = {
   escalated: "Escalated",
 };
 
+const PRIORITY_COLORS: Record<HandoffEntry["priority"], string> = {
+  low: "text-slate-500",
+  medium: "text-blue-600",
+  high: "text-orange-600",
+  critical: "text-red-600",
+};
+
+function formatTimestamp(iso: string) {
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+}
+
 export default function HandoffJournalPage() {
+  const metrics = getHandoffMetrics(handoffEntries);
+
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-6 py-12 sm:px-10 lg:px-12">
       <header className="space-y-3">
@@ -44,47 +60,97 @@ export default function HandoffJournalPage() {
         </p>
       </header>
 
+      <div className="grid gap-4 sm:grid-cols-4">
+        <div className="rounded-xl border border-[var(--line)] bg-[var(--surface)] p-4">
+          <p className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+            Total
+          </p>
+          <p className="mt-1 text-2xl font-semibold text-slate-900">
+            {metrics.total}
+          </p>
+        </div>
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+          <p className="text-sm font-semibold uppercase tracking-wider text-amber-700">
+            Open
+          </p>
+          <p className="mt-1 text-2xl font-semibold text-amber-800">
+            {metrics.byStatus.open}
+          </p>
+        </div>
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4">
+          <p className="text-sm font-semibold uppercase tracking-wider text-red-700">
+            Escalated
+          </p>
+          <p className="mt-1 text-2xl font-semibold text-red-800">
+            {metrics.byStatus.escalated}
+          </p>
+        </div>
+        <div className="rounded-xl border border-green-200 bg-green-50 p-4">
+          <p className="text-sm font-semibold uppercase tracking-wider text-green-700">
+            Resolved
+          </p>
+          <p className="mt-1 text-2xl font-semibold text-green-800">
+            {metrics.byStatus.resolved}
+          </p>
+        </div>
+      </div>
+
       <section className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold text-slate-900">
             Journal Entries
           </h2>
           <p className="text-sm text-slate-500">
-            No entries loaded &mdash; data module pending
+            {metrics.uniqueOperators} operators &middot; {metrics.total} entries
           </p>
         </div>
 
-        <div className="mt-6 flex flex-col items-center gap-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 py-12">
-          <div className="rounded-full bg-orange-100 p-3">
-            <svg
-              className="h-6 w-6 text-orange-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
+        <ul className="mt-6 space-y-4">
+          {handoffEntries.map((entry) => (
+            <li
+              key={entry.id}
+              className="rounded-xl border border-slate-200 bg-white p-4"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-          </div>
-          <p className="text-sm font-medium text-slate-600">
-            Handoff entries will appear here once the data module is connected.
-          </p>
-          <p className="text-xs text-slate-400">
-            Status legend:{" "}
-            {Object.entries(STATUS_LABELS).map(([key, label]) => (
-              <span
-                key={key}
-                className={`ml-1 inline-block rounded-full border px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[key as HandoffEntry["status"]]}`}
-              >
-                {label}
-              </span>
-            ))}
-          </p>
-        </div>
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-mono font-semibold text-slate-400">
+                    {entry.id}
+                  </span>
+                  <span
+                    className={`inline-block rounded-full border px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[entry.status]}`}
+                  >
+                    {STATUS_LABELS[entry.status]}
+                  </span>
+                  <span
+                    className={`text-xs font-semibold uppercase tracking-wider ${PRIORITY_COLORS[entry.priority]}`}
+                  >
+                    {entry.priority}
+                  </span>
+                </div>
+                <span className="text-xs text-slate-400">
+                  {formatTimestamp(entry.timestamp)}
+                </span>
+              </div>
+              <p className="mt-2 text-sm leading-6 text-slate-700">
+                {entry.summary}
+              </p>
+              <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-500">
+                <span>
+                  {entry.fromOperator} &rarr; {entry.toOperator}
+                </span>
+                <span className="text-slate-300">|</span>
+                {entry.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full bg-slate-100 px-2 py-0.5 text-slate-600"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6">
