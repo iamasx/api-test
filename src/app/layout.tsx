@@ -19,11 +19,12 @@ export const metadata: Metadata = {
     template: "%s | Archive Signals",
   },
   description:
-    "Operational dashboards, navigator handoff surfaces, experiment registries, and field guides for archive-driven teams.",
+    "Operational dashboards, mission-console launch surfaces, experiment registries, and field guides for archive-driven teams.",
 };
 
 const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/mission-console", label: "Mission Console" },
   { href: "/navigator-hub", label: "Navigator Hub" },
   { href: "/team-directory", label: "Team Directory" },
   { href: "/archive-browser", label: "Archive" },
@@ -34,6 +35,24 @@ const navLinks = [
   { href: "/queue-monitor", label: "Queue Monitor" },
   { href: "/parcel-hub", label: "Parcel Hub" },
   { href: "/status-board", label: "Status Board" },
+] as const;
+
+const shellStatusLinks = [
+  {
+    href: "/mission-console",
+    label: "Mission Console",
+    value: "Launch branch active",
+  },
+  {
+    href: "/operations-center",
+    label: "Ops Center",
+    value: "Shared command feed",
+  },
+  {
+    href: "/navigator-hub",
+    label: "Navigator Hub",
+    value: "Cross-route overlap",
+  },
 ] as const;
 
 export default function RootLayout({
@@ -63,13 +82,21 @@ export default function RootLayout({
               </li>
             ))}
           </ul>
-          <p className="app-nav__meta">Navigator overlap active</p>
+          <p className="app-nav__meta">Mission overlap active</p>
         </nav>
+        <div className="app-shell-status" aria-label="Shared shell status">
+          {shellStatusLinks.map((item) => (
+            <Link key={item.href} href={item.href} className="app-shell-status__item">
+              <span className="app-shell-status__label">{item.label}</span>
+              <span className="app-shell-status__value">{item.value}</span>
+            </Link>
+          ))}
+        </div>
         {children}
         <footer className="mt-auto border-t border-[var(--line)] py-6 text-center">
           <p className="section-label text-slate-500">
-            Archive Signals &middot; Navigator Hub &middot; Status Board &middot;
-            Built for conflict testing
+            Archive Signals &middot; Mission Console &middot; Status Board
+            &middot; Built for conflict testing
           </p>
         </footer>
       </body>

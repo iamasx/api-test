@@ -226,7 +226,7 @@ export default function MissionConsolePage() {
                 {consoleStats.map((stat) => (
                   <article
                     key={stat.label}
-                    className="rounded-[1.4rem] border border-white/10 bg-white/6 px-4 py-4"
+                    className="rounded-[1.4rem] border border-white/10 bg-white/[0.06] px-4 py-4"
                   >
                     <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/55">
                       {stat.label}
@@ -310,7 +310,7 @@ export default function MissionConsolePage() {
               {commandStreams.map((stream) => (
                 <article
                   key={stream.title}
-                  className="rounded-[1.6rem] border border-white/10 bg-white/6 px-5 py-5"
+                  className="rounded-[1.6rem] border border-white/10 bg-white/[0.06] px-5 py-5"
                 >
                   <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                     <div className="space-y-2">
@@ -384,7 +384,7 @@ export default function MissionConsolePage() {
                 {operatorAssignments.map((assignment) => (
                   <article
                     key={assignment.lane}
-                    className="rounded-[1.6rem] border border-white/10 bg-white/6 px-5 py-5"
+                    className="rounded-[1.6rem] border border-white/10 bg-white/[0.06] px-5 py-5"
                   >
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div>

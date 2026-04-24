@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { teamGroups, getDirectoryMetrics } from "@/data/team-directory";
 
-const navigatorHubHighlights = [
-  "New navigator hub route with linked intervention rails across queue, parcel, and command views",
+const missionConsoleHighlights = [
+  "New mission console route with launch windows, crew posture, and a decision rail in one shared surface",
   "Shared landing-page overlap that rewrites the featured hero around the new route",
-  "Global shell styling updates that intentionally modify the common app nav, footer, and theme tokens",
+  "Global shell styling updates that intentionally modify the common app nav, footer, and launch-status strip",
 ];
 
 const notebookHighlights = [
@@ -70,30 +70,30 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-[var(--section-gap)] px-6 py-12 sm:px-10 lg:px-12">
-      <section className="overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.08)]">
+      <section className="route-entry-link navigator-shell-card overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.08)]">
         <div className="grid gap-10 px-6 py-10 sm:px-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)] lg:px-12 lg:py-14">
           <div className="space-y-6">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-700">
-              Issue 216 / Navigator Hub
+              Issue 220 / Mission Console
             </p>
             <div className="space-y-4">
               <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-                Coordinate shared app-shell handoffs from a dedicated navigator
-                hub.
+                Open the mission console to manage launch branches, crew
+                posture, and shared app-shell pressure.
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-slate-600">
-                The navigator hub is the new conflict surface for issue 216:
-                one route that pulls together lane pressure, handoff timing,
-                and shared-shell entry points while also rewriting common
-                landing and global presentation files.
+                Issue 220 intentionally overlaps the shared shell: the mission
+                console brings launch windows, operator lanes, and escalation
+                timing into one route while also rewriting the landing page,
+                nav chrome, and global presentation tokens.
               </p>
             </div>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Link
-                href="/navigator-hub"
+                href="/mission-console"
                 className="inline-flex items-center justify-center rounded-full bg-cyan-700 px-6 py-3 text-sm font-semibold text-cyan-50 transition hover:bg-cyan-800"
               >
-                Open navigator hub
+                Open mission console
               </Link>
               <Link
                 href="/operations-center"
@@ -102,7 +102,7 @@ export default function Home() {
                 Open ops center
               </Link>
               <a
-                href="https://github.com/iamasx/api-test/issues/216"
+                href="https://github.com/iamasx/api-test/issues/220"
                 className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
                 target="_blank"
                 rel="noreferrer"
@@ -114,10 +114,10 @@ export default function Home() {
 
           <div className="rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface-strong)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
-              Conflict checks
+              Mission overlap
             </p>
             <ul className="mt-5 space-y-4">
-              {navigatorHubHighlights.map((item) => (
+              {missionConsoleHighlights.map((item) => (
                 <li
                   key={item}
                   className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
