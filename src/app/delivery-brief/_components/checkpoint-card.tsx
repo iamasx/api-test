@@ -13,6 +13,7 @@ const severityBadgeStyles: Record<Checkpoint["severity"], string> = {
   critical: "border-rose-300/20 bg-rose-300/10 text-rose-50",
 };
 
+// Maps each severity level to the corresponding CSS module class for card border styling
 const severitySurfaceStyles: Record<Checkpoint["severity"], string> = {
   normal: styles.checkpointNormal,
   delayed: styles.checkpointDelayed,
@@ -23,6 +24,7 @@ type CheckpointCardProps = {
   checkpoint: Checkpoint;
 };
 
+// Renders a single checkpoint with location, timestamp, carrier, severity badge, and detail
 export function CheckpointCard({ checkpoint }: CheckpointCardProps) {
   return (
     <article

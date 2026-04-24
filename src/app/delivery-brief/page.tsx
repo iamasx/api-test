@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default function DeliveryBriefPage() {
+  console.log("DeliveryBriefPage rendered");
   return (
     <main className={`${styles.shell} px-6 py-12 text-slate-50 sm:px-10 lg:px-16`}>
       <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-8">
