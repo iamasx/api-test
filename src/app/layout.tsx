@@ -19,12 +19,13 @@ export const metadata: Metadata = {
     template: "%s | Archive Signals",
   },
   description:
-    "Operational dashboards, navigator handoff surfaces, experiment registries, and field guides for archive-driven teams.",
+    "Operational dashboards, navigator handoff surfaces, capacity boards, experiment registries, and field guides for archive-driven teams.",
 };
 
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/navigator-hub", label: "Navigator Hub" },
+  { href: "/capacity-board", label: "Capacity Board" },
   { href: "/team-directory", label: "Team Directory" },
   { href: "/archive-browser", label: "Archive" },
   { href: "/research-notebook", label: "Notebook" },
@@ -47,9 +48,16 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-slate-50/40">
+        <div className="app-shell__signal">
+          <span className="app-shell__signal-label">Issue 218</span>
+          <p className="app-shell__signal-copy">
+            Capacity Board overlap is active across the landing page, shared
+            layout, and global shell.
+          </p>
+        </div>
         <nav className="app-nav" aria-label="Primary">
           <div className="app-nav__cluster">
-            <p className="app-nav__eyebrow">Conflict surface</p>
+            <p className="app-nav__eyebrow">Conflict surfaces</p>
             <Link href="/" className="app-nav__brand">
               Archive Signals
             </Link>
@@ -63,13 +71,13 @@ export default function RootLayout({
               </li>
             ))}
           </ul>
-          <p className="app-nav__meta">Navigator overlap active</p>
+          <p className="app-nav__meta">Navigator + capacity overlap</p>
         </nav>
         {children}
         <footer className="mt-auto border-t border-[var(--line)] py-6 text-center">
           <p className="section-label text-slate-500">
-            Archive Signals &middot; Navigator Hub &middot; Status Board &middot;
-            Built for conflict testing
+            Archive Signals &middot; Navigator Hub &middot; Capacity Board
+            &middot; Built for conflict testing
           </p>
         </footer>
       </body>
