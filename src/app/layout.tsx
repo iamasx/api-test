@@ -35,6 +35,7 @@ const navLinks = [
   { href: "/parcel-hub", label: "Parcel Hub" },
   { href: "/status-board", label: "Status Board" },
   { href: "/capacity-planner", label: "Capacity Planner" },
+  { href: "/readiness-grid", label: "Readiness Grid" },
 ] as const;
 
 export default function RootLayout({
