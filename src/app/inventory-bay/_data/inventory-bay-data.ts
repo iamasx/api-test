@@ -1,7 +1,5 @@
 export type InventoryBayBandId = "healthy" | "watch" | "critical";
 
-export type InventoryBayPriority = "Immediate" | "This Shift" | "Monitor";
-
 export type InventoryBayBand = {
   id: InventoryBayBandId;
   name: string;
@@ -10,14 +8,14 @@ export type InventoryBayBand = {
   description: string;
   badgeClassName: string;
   surfaceClassName: string;
-  meterClassName: string;
 };
 
 export type InventoryBayCategory = {
   id: string;
   name: string;
+  zone: string;
   description: string;
-  bay: string;
+  restockWindow: string;
 };
 
 export type InventoryBayItem = {
@@ -34,45 +32,46 @@ export type InventoryBayItem = {
   nextDelivery: string;
   owner: string;
   location: string;
-  statusDetail: string;
-  actionLabel: string;
-  tags: string[];
 };
 
-export type InventoryBayRecommendation = {
+export type InventoryBayLowStockLevel = "Critical" | "Watch";
+
+export type InventoryBayLowStockAlert = {
   id: string;
   itemId: string;
-  priority: InventoryBayPriority;
-  title: string;
-  summary: string;
-  action: string;
-  owner: string;
-  dueBy: string;
+  level: InventoryBayLowStockLevel;
+  window: string;
+  recommendedMove: string;
 };
 
-export type InventoryBayMetrics = {
-  trackedSkus: number;
-  atRiskSkus: number;
-  availableToPromise: number;
-  recommendationCount: number;
+export type InventoryBayOverviewMetric = {
+  id: string;
+  label: string;
+  value: string;
+  detail: string;
 };
 
 export type InventoryBayBandSummary = InventoryBayBand & {
-  itemCount: number;
-  unitsOnHand: number;
-  availableToPromise: number;
+  skuCount: number;
+  availableUnits: number;
+  averageDaysOfCover: number;
+  shareOfTrackedSkus: number;
 };
 
-export type InventoryBaySection = InventoryBayCategory & {
-  items: InventoryBayItem[];
-  bandCounts: Record<InventoryBayBandId, number>;
-  availableToPromise: number;
+export type InventoryBayCategorySummary = InventoryBayCategory & {
+  skuCount: number;
+  lowStockCount: number;
+  criticalCount: number;
+  availableUnits: number;
+  fillRate: number;
+  focusItem: InventoryBayItem;
 };
 
-export type InventoryBayRecommendationView = InventoryBayRecommendation & {
+export type InventoryBayLowStockView = InventoryBayLowStockAlert & {
   item: InventoryBayItem;
-  band: InventoryBayBand;
   category: InventoryBayCategory;
+  band: InventoryBayBand;
+  availableUnits: number;
 };
 
 export const inventoryBayBands: InventoryBayBand[] = [
@@ -81,33 +80,33 @@ export const inventoryBayBands: InventoryBayBand[] = [
     name: "Healthy",
     stateLabel: "Available",
     eyebrow: "Above target",
-    description: "Stock is above the reorder point with enough cover for normal demand.",
+    description:
+      "Stock is above the reorder line with enough cover to absorb the normal pull pattern.",
     badgeClassName: "border-emerald-200 bg-emerald-50 text-emerald-800",
     surfaceClassName:
       "border-emerald-200/80 bg-[linear-gradient(135deg,rgba(236,253,245,0.98),rgba(240,253,250,0.92))]",
-    meterClassName: "bg-emerald-500",
   },
   {
     id: "watch",
     name: "Watch",
     stateLabel: "Low Stock",
-    eyebrow: "Drifting low",
-    description: "Coverage is tightening and needs a transfer or replenishment soon.",
+    eyebrow: "Pressure rising",
+    description:
+      "Coverage is tightening and should be checked before the next replenishment window closes.",
     badgeClassName: "border-amber-200 bg-amber-50 text-amber-800",
     surfaceClassName:
       "border-amber-200/80 bg-[linear-gradient(135deg,rgba(255,251,235,0.98),rgba(255,247,237,0.92))]",
-    meterClassName: "bg-amber-500",
   },
   {
     id: "critical",
     name: "Critical",
     stateLabel: "Depleted",
-    eyebrow: "Below reorder point",
-    description: "Current stock cannot safely cover expected pulls without intervention.",
+    eyebrow: "Intervention required",
+    description:
+      "Current stock cannot safely cover the next demand wave without a transfer, expedite, or hold release.",
     badgeClassName: "border-rose-200 bg-rose-50 text-rose-800",
     surfaceClassName:
       "border-rose-200/80 bg-[linear-gradient(135deg,rgba(255,241,242,0.98),rgba(255,247,237,0.92))]",
-    meterClassName: "bg-rose-500",
   },
 ];
 
@@ -115,26 +114,34 @@ export const inventoryBayCategories: InventoryBayCategory[] = [
   {
     id: "cold-storage",
     name: "Cold Storage",
-    description: "Temperature-sensitive consumables staged for outbound kits and clinic loads.",
-    bay: "Bay North / Freezer lane",
+    zone: "Bay North / Freezer lane",
+    description:
+      "Temperature-sensitive consumables staged for outbound kits and clinic loads.",
+    restockWindow: "14:30 freezer sweep",
   },
   {
     id: "fast-picks",
     name: "Fast Picks",
-    description: "High-turn handheld hardware and smart lane components used by the pick wall.",
-    bay: "Bay East / Pick wall",
+    zone: "Bay East / Pick wall",
+    description:
+      "High-turn handheld hardware and light-guided pick components that keep the wall moving.",
+    restockWindow: "13:30 wave launch",
   },
   {
     id: "packing-supplies",
     name: "Packing Supplies",
-    description: "Packout materials that keep parcel prep flowing through the late shift.",
-    bay: "Bay South / Bench run",
+    zone: "Bay South / Bench run",
+    description:
+      "Packout materials that protect the late shift from running short mid-wave.",
+    restockWindow: "18:10 dock replenishment",
   },
   {
     id: "returns-bench",
     name: "Returns Bench",
-    description: "Recovery and QA inventory reserved for intake, inspection, and refurb loops.",
-    bay: "Bay West / QA return cage",
+    zone: "Bay West / QA return cage",
+    description:
+      "Recovery and QA inventory reserved for intake, inspection, and refurb loops.",
+    restockWindow: "15:00 QA recovery check",
   },
 ];
 
@@ -153,9 +160,6 @@ export const inventoryBayItems: InventoryBayItem[] = [
     nextDelivery: "Transfer from Bay 2 at 14:30",
     owner: "Cold Chain Lead",
     location: "Freezer rack C2",
-    statusDetail: "Two outbound vaccine kits leave on the next freezer sweep.",
-    actionLabel: "Cross-bay transfer queued",
-    tags: ["Cold chain", "Reusable", "Below target"],
   },
   {
     id: "vaccine-tote-liners",
@@ -168,12 +172,9 @@ export const inventoryBayItems: InventoryBayItem[] = [
     targetUnits: 40,
     reorderPoint: 20,
     daysOfCover: 18,
-    nextDelivery: "Supplier top-up due Wed 22 Apr",
+    nextDelivery: "Supplier top-up staged for the next inbound lane",
     owner: "Receiving Coordinator",
     location: "Freezer rack A1",
-    statusDetail: "Buffer recovered after last week's donor clinic surge.",
-    actionLabel: "Stable buffer",
-    tags: ["Insulated", "Clinic support", "Shelf-ready"],
   },
   {
     id: "pick-scan-wands",
@@ -189,9 +190,6 @@ export const inventoryBayItems: InventoryBayItem[] = [
     nextDelivery: "Battery pack refill due tonight",
     owner: "Pick Cell Supervisor",
     location: "Pick wall east",
-    statusDetail: "Every handheld cleared the morning diagnostics sweep.",
-    actionLabel: "No action required",
-    tags: ["RF scan", "Lane-ready", "High-turn"],
   },
   {
     id: "pick-to-light-pods",
@@ -204,13 +202,9 @@ export const inventoryBayItems: InventoryBayItem[] = [
     targetUnits: 18,
     reorderPoint: 10,
     daysOfCover: 2,
-    nextDelivery: "Firmware hold blocks inbound replacement lot",
+    nextDelivery: "Inbound replacement lot blocked on firmware hold",
     owner: "Automation Reliability",
     location: "Pick wall control cabinet",
-    statusDetail:
-      "Two pods failed after the lane remap and only partial replacement stock remains.",
-    actionLabel: "Supplier escalation required",
-    tags: ["Automation", "Firmware hold", "Lane recovery"],
   },
   {
     id: "shock-tape-cartridges",
@@ -226,9 +220,6 @@ export const inventoryBayItems: InventoryBayItem[] = [
     nextDelivery: "Dock 4 replenishment due at 18:10",
     owner: "Packout Lead",
     location: "Bench 6 consumables rail",
-    statusDetail: "Promo bundles are burning through tape faster than forecast.",
-    actionLabel: "Top off before night wave",
-    tags: ["Consumable", "Promo load", "Bench stock"],
   },
   {
     id: "thermal-mailers",
@@ -241,12 +232,9 @@ export const inventoryBayItems: InventoryBayItem[] = [
     targetUnits: 52,
     reorderPoint: 26,
     daysOfCover: 20,
-    nextDelivery: "Supplier blanket order clears every Friday",
+    nextDelivery: "Blanket order clears every Friday morning",
     owner: "Packout Lead",
     location: "Pallet stack B7",
-    statusDetail: "Still above presentation target after the weekend pull.",
-    actionLabel: "Healthy lane",
-    tags: ["Parcel prep", "Insulated", "Stable"],
   },
   {
     id: "refurb-bin-seals",
@@ -259,12 +247,9 @@ export const inventoryBayItems: InventoryBayItem[] = [
     targetUnits: 22,
     reorderPoint: 12,
     daysOfCover: 3,
-    nextDelivery: "Vendor expedite requested for Tue 21 Apr",
+    nextDelivery: "Vendor expedite requested for the next QA dock slot",
     owner: "Returns Recovery",
     location: "Refurb bench cage 3",
-    statusDetail: "RMA intake spike consumed the emergency roll over the weekend.",
-    actionLabel: "Emergency buy in flight",
-    tags: ["Returns", "QA hold", "Expedite"],
   },
   {
     id: "qa-hold-cards",
@@ -280,63 +265,43 @@ export const inventoryBayItems: InventoryBayItem[] = [
     nextDelivery: "Print room run scheduled at 16:45",
     owner: "Quality Desk",
     location: "Inspection counter drawer 1",
-    statusDetail: "Night shift requested a larger hold buffer for suspect batches.",
-    actionLabel: "Replenish before handoff",
-    tags: ["Inspection", "Printed stock", "Shift handoff"],
   },
 ];
 
-export const inventoryBayRecommendations: InventoryBayRecommendation[] = [
+export const inventoryBayLowStockAlerts: InventoryBayLowStockAlert[] = [
   {
-    id: "escalate-pick-to-light-pods",
+    id: "pick-to-light-pods-alert",
     itemId: "pick-to-light-pods",
-    priority: "Immediate",
-    title: "Escalate Pick-to-Light Pods firmware batch",
-    summary: "Only two pods remain unreserved and the inbound lot is blocked by a firmware hold.",
-    action: "Convert the pending lot to a manual QA release and shift two healthy pods from the training lane.",
-    owner: "Automation Reliability",
-    dueBy: "Before 13:30 wave launch",
+    level: "Critical",
+    window: "Before 13:30 wave launch",
+    recommendedMove:
+      "Manual QA release the blocked lot and move two healthy pods from the training lane.",
   },
   {
-    id: "convert-refurb-bin-seals-buy",
+    id: "refurb-bin-seals-alert",
     itemId: "refurb-bin-seals",
-    priority: "Immediate",
-    title: "Convert Refurb Bin Seals to emergency buy",
-    summary: "Returns intake is running hotter than forecast and seals drop below minimum cover tonight.",
-    action: "Approve the expedite request and reserve the next dock receipt for QA recovery only.",
-    owner: "Returns Recovery",
-    dueBy: "Today by 15:00",
+    level: "Critical",
+    window: "Today by 15:00",
+    recommendedMove:
+      "Approve the emergency buy and reserve the next dock receipt for QA recovery only.",
   },
   {
-    id: "pull-cryo-gel-transfer",
+    id: "cryo-gel-packs-alert",
     itemId: "cryo-gel-packs",
-    priority: "This Shift",
-    title: "Pull a cross-bay transfer for Cryo Gel Packs",
-    summary: "Seven days of cover is workable, but the next clinic block will consume most of the loose stock.",
-    action: "Move eight packs from Bay 2 before the afternoon freezer sweep starts.",
-    owner: "Cold Chain Lead",
-    dueBy: "During 14:30 freezer sweep",
+    level: "Watch",
+    window: "During 14:30 freezer sweep",
+    recommendedMove:
+      "Transfer eight packs from Bay 2 before the next clinic block departs.",
   },
   {
-    id: "rebuild-qa-hold-buffer",
-    itemId: "qa-hold-cards",
-    priority: "Monitor",
-    title: "Rebuild QA Hold Cards buffer before night shift",
-    summary: "The print run is already scheduled, so the risk is limited to a missed handoff window.",
-    action: "Stage the next 20-card pack directly at the inspection counter after print checks finish.",
-    owner: "Quality Desk",
-    dueBy: "At 16:45 print release",
+    id: "shock-tape-cartridges-alert",
+    itemId: "shock-tape-cartridges",
+    level: "Watch",
+    window: "Before 18:10 dock replenishment",
+    recommendedMove:
+      "Stage a top-off tote at Bench 6 ahead of the promo bundle wave.",
   },
 ];
-
-export const inventoryBayPriorityStyles: Record<
-  InventoryBayPriority,
-  string
-> = {
-  Immediate: "border-rose-200 bg-rose-50 text-rose-800",
-  "This Shift": "border-amber-200 bg-amber-50 text-amber-800",
-  Monitor: "border-slate-200 bg-slate-100 text-slate-700",
-};
 
 const bandSortOrder: Record<InventoryBayBandId, number> = {
   critical: 0,
@@ -344,33 +309,79 @@ const bandSortOrder: Record<InventoryBayBandId, number> = {
   healthy: 2,
 };
 
-const prioritySortOrder: Record<InventoryBayPriority, number> = {
-  Immediate: 0,
-  "This Shift": 1,
-  Monitor: 2,
+const alertLevelSortOrder: Record<InventoryBayLowStockLevel, number> = {
+  Critical: 0,
+  Watch: 1,
 };
 
 export function getAvailableToPromise(item: InventoryBayItem) {
   return Math.max(item.unitsOnHand - item.reservedUnits, 0);
 }
 
-export function getStockFillPercentage(item: InventoryBayItem) {
-  return Math.min(100, Math.round((item.unitsOnHand / item.targetUnits) * 100));
+function getFillRate(items: InventoryBayItem[]) {
+  const totalUnits = items.reduce((sum, item) => sum + item.unitsOnHand, 0);
+  const totalTarget = items.reduce((sum, item) => sum + item.targetUnits, 0);
+
+  if (totalTarget === 0) {
+    return 0;
+  }
+
+  return Math.min(100, Math.round((totalUnits / totalTarget) * 100));
 }
 
-export function getInventoryBayMetrics(
+function compareItemsByRisk(left: InventoryBayItem, right: InventoryBayItem) {
+  const bandDifference = bandSortOrder[left.bandId] - bandSortOrder[right.bandId];
+
+  if (bandDifference !== 0) {
+    return bandDifference;
+  }
+
+  const coverDifference = left.daysOfCover - right.daysOfCover;
+
+  if (coverDifference !== 0) {
+    return coverDifference;
+  }
+
+  return getAvailableToPromise(left) - getAvailableToPromise(right);
+}
+
+export function getInventoryBayOverviewMetrics(
   items: InventoryBayItem[],
-  recommendations: InventoryBayRecommendation[],
-): InventoryBayMetrics {
-  return {
-    trackedSkus: items.length,
-    atRiskSkus: items.filter((item) => item.bandId !== "healthy").length,
-    availableToPromise: items.reduce(
-      (sum, item) => sum + getAvailableToPromise(item),
-      0,
-    ),
-    recommendationCount: recommendations.length,
-  };
+  categories: InventoryBayCategory[],
+  alerts: InventoryBayLowStockAlert[],
+): InventoryBayOverviewMetric[] {
+  const totalAvailableUnits = items.reduce(
+    (sum, item) => sum + getAvailableToPromise(item),
+    0,
+  );
+  const criticalItems = items.filter((item) => item.bandId === "critical").length;
+
+  return [
+    {
+      id: "tracked-skus",
+      label: "Tracked SKUs",
+      value: items.length.toString(),
+      detail: `Across ${categories.length} live bay zones`,
+    },
+    {
+      id: "available-units",
+      label: "Available units",
+      value: totalAvailableUnits.toString(),
+      detail: "Units ready to promise or transfer",
+    },
+    {
+      id: "low-stock-alerts",
+      label: "Low-stock alerts",
+      value: alerts.length.toString(),
+      detail: "Items with an active warning window",
+    },
+    {
+      id: "critical-items",
+      label: "Critical items",
+      value: criticalItems.toString(),
+      detail: "Items already below safe reorder cover",
+    },
+  ];
 }
 
 export function getInventoryBayBandSummaries(
@@ -379,64 +390,69 @@ export function getInventoryBayBandSummaries(
 ): InventoryBayBandSummary[] {
   return bands.map((band) => {
     const bandItems = items.filter((item) => item.bandId === band.id);
+    const availableUnits = bandItems.reduce(
+      (sum, item) => sum + getAvailableToPromise(item),
+      0,
+    );
+    const totalDaysOfCover = bandItems.reduce(
+      (sum, item) => sum + item.daysOfCover,
+      0,
+    );
 
     return {
       ...band,
-      itemCount: bandItems.length,
-      unitsOnHand: bandItems.reduce((sum, item) => sum + item.unitsOnHand, 0),
-      availableToPromise: bandItems.reduce(
-        (sum, item) => sum + getAvailableToPromise(item),
-        0,
-      ),
+      skuCount: bandItems.length,
+      availableUnits,
+      averageDaysOfCover:
+        bandItems.length > 0 ? Math.round(totalDaysOfCover / bandItems.length) : 0,
+      shareOfTrackedSkus:
+        items.length > 0 ? Math.round((bandItems.length / items.length) * 100) : 0,
     };
   });
 }
 
-export function getInventoryBaySections(
+export function getInventoryBayCategorySummaries(
   items: InventoryBayItem[],
   categories: InventoryBayCategory[],
-): InventoryBaySection[] {
+): InventoryBayCategorySummary[] {
   return categories
     .map((category) => {
       const categoryItems = items
         .filter((item) => item.categoryId === category.id)
-        .sort((left, right) => {
-          const bandDifference =
-            bandSortOrder[left.bandId] - bandSortOrder[right.bandId];
+        .sort(compareItemsByRisk);
+      const focusItem = categoryItems[0];
 
-          if (bandDifference !== 0) {
-            return bandDifference;
-          }
-
-          return left.daysOfCover - right.daysOfCover;
-        });
+      if (!focusItem) {
+        return null;
+      }
 
       return {
         ...category,
-        items: categoryItems,
-        bandCounts: {
-          healthy: categoryItems.filter((item) => item.bandId === "healthy").length,
-          watch: categoryItems.filter((item) => item.bandId === "watch").length,
-          critical: categoryItems.filter((item) => item.bandId === "critical").length,
-        },
-        availableToPromise: categoryItems.reduce(
+        skuCount: categoryItems.length,
+        lowStockCount: categoryItems.filter((item) => item.bandId !== "healthy")
+          .length,
+        criticalCount: categoryItems.filter((item) => item.bandId === "critical")
+          .length,
+        availableUnits: categoryItems.reduce(
           (sum, item) => sum + getAvailableToPromise(item),
           0,
         ),
+        fillRate: getFillRate(categoryItems),
+        focusItem,
       };
     })
-    .filter((section) => section.items.length > 0);
+    .filter((summary): summary is InventoryBayCategorySummary => Boolean(summary));
 }
 
-export function getInventoryBayRecommendationViews(
+export function getInventoryBayLowStockViews(
   items: InventoryBayItem[],
   categories: InventoryBayCategory[],
   bands: InventoryBayBand[],
-  recommendations: InventoryBayRecommendation[],
-): InventoryBayRecommendationView[] {
-  return recommendations
-    .map((recommendation) => {
-      const item = items.find((entry) => entry.id === recommendation.itemId);
+  alerts: InventoryBayLowStockAlert[],
+): InventoryBayLowStockView[] {
+  return alerts
+    .map((alert) => {
+      const item = items.find((entry) => entry.id === alert.itemId);
 
       if (!item) {
         return null;
@@ -450,23 +466,22 @@ export function getInventoryBayRecommendationViews(
       }
 
       return {
-        ...recommendation,
+        ...alert,
         item,
         category,
         band,
+        availableUnits: getAvailableToPromise(item),
       };
     })
-    .filter((recommendation): recommendation is InventoryBayRecommendationView =>
-      Boolean(recommendation),
-    )
+    .filter((alert): alert is InventoryBayLowStockView => Boolean(alert))
     .sort((left, right) => {
-      const priorityDifference =
-        prioritySortOrder[left.priority] - prioritySortOrder[right.priority];
+      const levelDifference =
+        alertLevelSortOrder[left.level] - alertLevelSortOrder[right.level];
 
-      if (priorityDifference !== 0) {
-        return priorityDifference;
+      if (levelDifference !== 0) {
+        return levelDifference;
       }
 
-      return bandSortOrder[left.band.id] - bandSortOrder[right.band.id];
+      return compareItemsByRisk(left.item, right.item);
     });
 }

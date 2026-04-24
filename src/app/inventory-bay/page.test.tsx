@@ -1,110 +1,120 @@
-import { render, screen, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { cleanup, render, screen, within } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
 
 import InventoryBayPage from "./page";
 import {
   inventoryBayBands,
   inventoryBayCategories,
-  inventoryBayRecommendations,
+  inventoryBayLowStockAlerts,
 } from "./_data/inventory-bay-data";
 
+afterEach(() => {
+  cleanup();
+});
+
 describe("InventoryBayPage", () => {
-  it(
-    "renders the route hero, stock bands, and recommendation panel",
-    () => {
-      render(<InventoryBayPage />);
+  it("renders the route shell, overview metrics, and stock bands", () => {
+    render(<InventoryBayPage />);
 
-      expect(
-        screen.getByRole("heading", {
-          level: 1,
-          name: /scan stock bands, bay sections, and next restock moves from one route/i,
-        }),
-      ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: /see stock bands, category pressure, and low-stock warnings in one bay scan\./i,
+      }),
+    ).toBeInTheDocument();
 
-      const bandList = screen.getByRole("list", { name: /stock bands/i });
-      expect(within(bandList).getAllByRole("listitem")).toHaveLength(
-        inventoryBayBands.length,
-      );
+    const overviewList = screen.getByRole("list", {
+      name: /inventory bay overview/i,
+    });
+    expect(within(overviewList).getAllByRole("listitem")).toHaveLength(4);
 
-      const recommendationPanel = screen.getByLabelText(
-        /restock recommendations/i,
-      );
-      expect(recommendationPanel).toBeInTheDocument();
-      expect(
-        within(recommendationPanel).getAllByRole("heading", {
-          name: /escalate pick-to-light pods firmware batch/i,
-        }).length,
-      ).toBeGreaterThan(0);
-    },
-    15000,
-  );
+    const bandList = screen.getByRole("list", { name: /stock bands/i });
+    expect(within(bandList).getAllByRole("listitem")).toHaveLength(
+      inventoryBayBands.length,
+    );
 
-  it(
-    "renders every configured bay category section",
-    () => {
-      render(<InventoryBayPage />);
+    const healthyCard = within(bandList)
+      .getByRole("heading", { name: /healthy/i })
+      .closest("li");
+    const criticalCard = within(bandList)
+      .getByRole("heading", { name: /critical/i })
+      .closest("li");
 
-      for (const category of inventoryBayCategories) {
-        expect(
-          screen.getByRole("region", {
-            name: category.name,
-          }),
-        ).toBeInTheDocument();
-      }
-    },
-    15000,
-  );
+    expect(healthyCard).toHaveTextContent("114");
+    expect(healthyCard).toHaveTextContent("18d");
+    expect(healthyCard).toHaveTextContent("38% of inventory tracked on this route");
+    expect(criticalCard).toHaveTextContent("5");
+    expect(criticalCard).toHaveTextContent("3d");
+    expect(criticalCard).toHaveTextContent("25% of inventory tracked on this route");
+  });
 
-  it(
-    "shows meaningful stock details on inventory cards",
-    () => {
-      render(<InventoryBayPage />);
+  it("renders every configured bay category as a summary tile", () => {
+    render(<InventoryBayPage />);
 
-      const coldStorageSection = screen.getByRole("region", {
-        name: "Cold Storage",
-      });
-      const cryoCard = within(coldStorageSection).getByRole("article", {
-        name: "Cryo Gel Packs",
-      });
+    const categoryList = screen.getByRole("list", {
+      name: /category summaries/i,
+    });
 
-      expect(cryoCard).toHaveTextContent("Watch");
-      expect(cryoCard).toHaveTextContent("22 units on hand");
-      expect(cryoCard).toHaveTextContent("10 available to promise");
-      expect(cryoCard).toHaveTextContent("7 days of cover");
-      expect(cryoCard).toHaveTextContent("Reorder at 18");
-      expect(cryoCard).toHaveTextContent("Transfer from Bay 2 at 14:30");
-      expect(cryoCard).toHaveTextContent("Cold Chain Lead");
-    },
-    15000,
-  );
+    expect(within(categoryList).getAllByRole("listitem")).toHaveLength(
+      inventoryBayCategories.length,
+    );
 
-  it(
-    "renders the full recommendation queue with owners and due windows",
-    () => {
-      render(<InventoryBayPage />);
+    const fastPicksTile = within(categoryList)
+      .getByRole("heading", { name: /fast picks/i })
+      .closest("article");
 
-      const recommendationPanel = screen.getByLabelText(
-        /restock recommendations/i,
-      );
-      const recommendationQueue = within(recommendationPanel).getByRole("list", {
-        name: /recommendation queue/i,
-      });
+    expect(fastPicksTile).toBeTruthy();
+    expect(fastPicksTile).toHaveTextContent("Bay East / Pick wall");
+    expect(fastPicksTile).toHaveTextContent("80%");
+    expect(fastPicksTile).toHaveTextContent("28");
+    expect(fastPicksTile).toHaveTextContent("Pick-to-Light Pods");
+    expect(fastPicksTile).toHaveTextContent("13:30 wave launch");
+    expect(fastPicksTile).toHaveTextContent("Automation Reliability");
+  });
 
-      expect(within(recommendationQueue).getAllByRole("listitem")).toHaveLength(
-        inventoryBayRecommendations.length,
-      );
-      expect(
-        within(recommendationPanel).getAllByText(/before 13:30 wave launch/i)
-          .length,
-      ).toBeGreaterThan(0);
-      expect(
-        within(recommendationPanel).getAllByText(/during 14:30 freezer sweep/i)
-          .length,
-      ).toBeGreaterThan(0);
-      expect(
-        within(recommendationPanel).getByText(/quality desk/i),
-      ).toBeInTheDocument();
-    },
-    15000,
-  );
+  it("shows the low-stock panel with visible warnings and owner detail", () => {
+    render(<InventoryBayPage />);
+
+    const lowStockPanel = screen.getByLabelText(/low-stock panel/i);
+    expect(lowStockPanel).toBeInTheDocument();
+
+    const warningList = within(lowStockPanel).getByRole("list", {
+      name: /low-stock warnings/i,
+    });
+    expect(within(warningList).getAllByRole("listitem")).toHaveLength(
+      inventoryBayLowStockAlerts.length,
+    );
+
+    expect(
+      within(lowStockPanel).getByRole("heading", { name: /pick-to-light pods/i }),
+    ).toBeInTheDocument();
+
+    const criticalAlert = within(lowStockPanel)
+      .getByRole("heading", { name: /pick-to-light pods/i })
+      .closest("article");
+    const watchAlert = within(lowStockPanel)
+      .getByRole("heading", { name: /cryo gel packs/i })
+      .closest("article");
+
+    expect(criticalAlert).toHaveTextContent("Automation Reliability");
+    expect(criticalAlert).toHaveTextContent(
+      "Manual QA release the blocked lot and move two healthy pods from the training lane.",
+    );
+    expect(criticalAlert).toHaveTextContent("Before 13:30 wave launch");
+    expect(watchAlert).toHaveTextContent("During 14:30 freezer sweep");
+  });
+
+  it("keeps the split desktop layout and mobile-friendly category grid hooks", () => {
+    render(<InventoryBayPage />);
+
+    const layout = screen.getByTestId("inventory-bay-layout");
+    const categoryList = screen.getByRole("list", {
+      name: /category summaries/i,
+    });
+    const lowStockPanel = screen.getByLabelText(/low-stock panel/i);
+
+    expect(layout.className).toContain("xl:grid-cols-[minmax(0,1.4fr)_320px]");
+    expect(categoryList.className).toContain("sm:grid-cols-2");
+    expect(lowStockPanel.className).toContain("xl:sticky");
+  });
 });
