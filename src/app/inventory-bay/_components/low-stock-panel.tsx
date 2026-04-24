@@ -6,6 +6,7 @@ type LowStockPanelProps = {
 
 export function LowStockPanel({ alerts }: LowStockPanelProps) {
   const criticalAlerts = alerts.filter((alert) => alert.level === "Critical");
+  console.log("LowStockPanel", alerts.length);
 
   return (
     <aside

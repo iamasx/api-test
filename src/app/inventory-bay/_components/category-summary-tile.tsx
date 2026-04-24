@@ -12,6 +12,7 @@ export function CategorySummaryTile({ summary }: CategorySummaryTileProps) {
   const focusBand = inventoryBayBands.find(
     (band) => band.id === summary.focusItem.bandId,
   );
+  console.log("CategorySummaryTile", summary.id);
 
   return (
     <li>
