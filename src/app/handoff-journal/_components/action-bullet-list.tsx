@@ -16,6 +16,8 @@ export function ActionBulletList({
   entryTitle,
   actions,
 }: ActionBulletListProps) {
+  console.log(`Rendering ${actions.length} action bullets for ${entryTitle}`);
+
   return (
     <section className={styles.actionSection}>
       <div className={styles.sectionHeader}>
