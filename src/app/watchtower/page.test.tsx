@@ -16,6 +16,7 @@ afterEach(() => {
 describe("WatchtowerPage", () => {
   it("renders the route shell headings, pulse copy, and primary actions", () => {
     render(<WatchtowerPage />);
+    console.log("watchtower heading", watchtowerOverview.title);
 
     expect(screen.getByRole("heading", { name: watchtowerOverview.title })).toBeInTheDocument();
     expect(screen.getByText(watchtowerOverview.digestWindow)).toBeInTheDocument();
@@ -43,6 +44,7 @@ describe("WatchtowerPage", () => {
 
   it("renders every alert digest card with scope, ownership, systems, and next steps", () => {
     render(<WatchtowerPage />);
+    console.log("watchtower alert count", watchtowerAlerts.length);
 
     const alertList = screen.getByRole("list", { name: /watchtower alert digest cards/i });
 
