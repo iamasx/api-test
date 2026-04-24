@@ -1,0 +1,96 @@
+.shell {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 14%, rgba(99, 102, 241, 0.14), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(34, 211, 238, 0.16), transparent 24%),
+    radial-gradient(circle at 50% 96%, rgba(168, 85, 247, 0.16), transparent 28%),
+    linear-gradient(180deg, #08111f 0%, #0e1c34 44%, #030712 100%);
+}
+
+.shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(125deg, rgba(255, 255, 255, 0.03), transparent 45%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(148, 163, 184, 0.06) 0,
+      rgba(148, 163, 184, 0.06) 1px,
+      transparent 1px,
+      transparent 72px
+    );
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95), transparent 96%);
+}
+
+.heroPanel {
+  position: relative;
+  background:
+    linear-gradient(140deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.58)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(15, 23, 42, 0.12));
+  box-shadow: 0 38px 120px rgba(2, 6, 23, 0.42);
+}
+
+.heroPanel::after {
+  content: "";
+  position: absolute;
+  right: -5rem;
+  top: -4rem;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.22), transparent 66%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.statCard {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(15, 23, 42, 0.28));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.policyCard {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.82), rgba(6, 11, 24, 0.94));
+  box-shadow: 0 26px 70px rgba(2, 6, 23, 0.26);
+}
+
+.policyActive {
+  border-color: rgba(52, 211, 153, 0.22);
+}
+
+.policyUnderReview {
+  border-color: rgba(251, 191, 36, 0.24);
+}
+
+.policyDeprecated {
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+.noteCard {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(15, 23, 42, 0.32));
+}
+
+.statusBadge {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.floatingInfo {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(15, 23, 42, 0.26));
+}
+
+@media (max-width: 640px) {
+  .heroPanel,
+  .policyCard,
+  .noteCard,
+  .statCard {
+    border-radius: 1.5rem;
+  }
+}
