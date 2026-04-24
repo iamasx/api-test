@@ -1,7 +1,3 @@
-export type WatchtowerAlertSeverity = "critical" | "elevated" | "watch";
-export type WatchtowerHealthTone = "stable" | "watch" | "risk";
-export type WatchtowerNoteStatus = "queued" | "tracking" | "closed";
-
 export const watchtowerOverview = {
   eyebrow: "Watchtower route / Alert digest",
   title: "Scan alert drift, service health, and operator notes before the next rotation.",

@@ -1,5 +1,5 @@
-import { cleanup, render, screen, within } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { render, screen, within } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 
 import {
   watchtowerAlerts,
@@ -9,14 +9,9 @@ import {
 } from "./_data/watchtower-data";
 import WatchtowerPage from "./page";
 
-afterEach(() => {
-  cleanup();
-});
-
 describe("WatchtowerPage", () => {
   it("renders the route shell headings, pulse copy, and primary actions", () => {
     render(<WatchtowerPage />);
-    console.log("watchtower heading", watchtowerOverview.title);
 
     expect(screen.getByRole("heading", { name: watchtowerOverview.title })).toBeInTheDocument();
     expect(screen.getByText(watchtowerOverview.digestWindow)).toBeInTheDocument();
@@ -44,11 +39,12 @@ describe("WatchtowerPage", () => {
 
   it("renders every alert digest card with scope, ownership, systems, and next steps", () => {
     render(<WatchtowerPage />);
-    console.log("watchtower alert count", watchtowerAlerts.length);
 
     const alertList = screen.getByRole("list", { name: /watchtower alert digest cards/i });
 
-    expect(alertList.querySelectorAll(':scope > [role="listitem"]')).toHaveLength(watchtowerAlerts.length);
+    expect(alertList.querySelectorAll(':scope > [role="listitem"]')).toHaveLength(
+      watchtowerAlerts.length,
+    );
 
     for (const alert of watchtowerAlerts) {
       const card = within(alertList)
@@ -68,6 +64,11 @@ describe("WatchtowerPage", () => {
     render(<WatchtowerPage />);
 
     const healthSection = screen.getByLabelText(/watchtower health summaries/i);
+    const healthList = within(healthSection).getByRole("list", { name: /watchtower health summary cards/i });
+
+    expect(within(healthList).getAllByRole("listitem")).toHaveLength(
+      watchtowerHealthSummaries.length,
+    );
 
     for (const summary of watchtowerHealthSummaries) {
       expect(within(healthSection).getByText(summary.title)).toBeInTheDocument();
@@ -85,10 +86,15 @@ describe("WatchtowerPage", () => {
     render(<WatchtowerPage />);
 
     const notesRail = screen.getByLabelText(/operator notes rail/i);
-    const noteList = screen.getByRole("list", { name: /watchtower operator note entries/i });
+    const noteList = within(notesRail).getByRole("list", { name: /watchtower operator note entries/i });
 
     expect(within(notesRail).getByText(watchtowerOverview.focusNote)).toBeInTheDocument();
-    expect(noteList.querySelectorAll(':scope > [role="listitem"]')).toHaveLength(watchtowerOperatorNotes.length);
+    expect(
+      within(notesRail).getByText(`Review window · ${watchtowerOverview.reviewWindow}`),
+    ).toBeInTheDocument();
+    expect(noteList.querySelectorAll(':scope > [role="listitem"]')).toHaveLength(
+      watchtowerOperatorNotes.length,
+    );
 
     for (const note of watchtowerOperatorNotes) {
       const card = within(noteList)
