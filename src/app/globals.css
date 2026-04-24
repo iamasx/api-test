@@ -9,6 +9,10 @@
   --nav-height: 3.5rem;
   --ops-accent: #0e7490;
   --ops-accent-light: rgba(14, 116, 144, 0.08);
+  --review-accent: #be123c;
+  --review-accent-light: rgba(190, 24, 93, 0.12);
+  --review-accent-soft: rgba(251, 113, 133, 0.1);
+  --review-ink: #881337;
   --navigator-accent: #0891b2;
   --navigator-accent-light: rgba(8, 145, 178, 0.12);
   --navigator-accent-soft: rgba(34, 211, 238, 0.08);
@@ -67,6 +71,7 @@ body {
   color: var(--foreground);
   background-image:
     radial-gradient(circle at top, rgba(251, 191, 36, 0.18), transparent 32%),
+    radial-gradient(circle at left 18%, rgba(251, 113, 133, 0.12), transparent 24%),
     radial-gradient(circle at right 18%, rgba(8, 145, 178, 0.14), transparent 26%),
     linear-gradient(180deg, #fcf8ef 0%, #f4efe7 52%, #ebe5d9 100%);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
@@ -147,7 +152,7 @@ a {
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(8, 145, 178, 0.75);
+  color: rgba(190, 24, 93, 0.76);
 }
 
 .app-nav__brand {
@@ -174,7 +179,7 @@ a {
 }
 
 .app-nav__link:hover {
-  color: var(--foreground);
+  color: var(--review-ink);
 }
 
 .app-nav__link--active {
@@ -184,14 +189,18 @@ a {
 
 .app-nav__meta {
   border-radius: 9999px;
-  border: 1px solid rgba(8, 145, 178, 0.18);
-  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(190, 24, 93, 0.18);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 241, 242, 0.9),
+    rgba(255, 255, 255, 0.7)
+  );
   padding: 0.4rem 0.8rem;
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--navigator-ink);
+  color: var(--review-ink);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
@@ -273,6 +282,139 @@ a {
 .route-entry-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(15, 23, 42, 0.12);
+}
+
+/* ── Review-hub shared shell styles ───────────────────────── */
+
+.review-hub-hero {
+  position: relative;
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 241, 242, 0.92) 0%,
+    rgba(255, 255, 255, 0.96) 44%,
+    rgba(255, 247, 237, 0.95) 100%
+  );
+}
+
+.review-hub-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    rgba(190, 24, 93, 0.76) 0%,
+    rgba(251, 113, 133, 0.38) 48%,
+    rgba(245, 158, 11, 0.52) 100%
+  );
+  opacity: 0.82;
+}
+
+.review-shell-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.review-shell-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    rgba(190, 24, 93, 0.72) 0%,
+    rgba(251, 113, 133, 0.36) 48%,
+    rgba(245, 158, 11, 0.5) 100%
+  );
+  opacity: 0.72;
+}
+
+.review-shell-link {
+  position: relative;
+}
+
+.review-shell-link::after {
+  content: "\2192";
+  margin-left: 0.45rem;
+  transition: transform 0.15s ease;
+}
+
+.review-shell-link:hover::after {
+  transform: translateX(2px);
+}
+
+.review-hub-orbit,
+.review-hub-section {
+  position: relative;
+}
+
+.review-hub-track,
+.review-hub-check {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.review-hub-track:hover,
+.review-hub-check:hover {
+  transform: translateY(-2px);
+  border-color: rgba(190, 24, 93, 0.2);
+  box-shadow: 0 18px 34px rgba(190, 24, 93, 0.08);
+}
+
+.review-hub-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(190, 24, 93, 0.18);
+  background: rgba(255, 255, 255, 0.76);
+  padding: 0.35rem 0.8rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--review-ink);
+}
+
+.review-hub-kicker::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 9999px;
+  background: var(--review-accent);
+  box-shadow: 0 0 0 0.25rem var(--review-accent-light);
+}
+
+.review-hub-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(190, 24, 93, 0.16);
+  background: rgba(255, 241, 242, 0.88);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--review-ink);
+}
+
+.review-hub-note {
+  border-left: 3px solid rgba(190, 24, 93, 0.24);
+}
+
+.review-hub-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(190, 24, 93, 0.14);
+  background: rgba(255, 241, 242, 0.8);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--review-ink);
 }
 
 /* ── Navigator-hub shared shell styles ────────────────────── */
