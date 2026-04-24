@@ -199,6 +199,7 @@ const verdictLabel: Record<DecisionNote["verdict"], string> = {
 
 export default function ReviewConsolePage() {
   console.log("ReviewConsolePage rendered");
+  console.log("Rendering review items section");
   const counts = {
     total: reviewItems.length,
     pending: reviewItems.filter((r) => r.status === "pending").length,
@@ -258,7 +259,6 @@ export default function ReviewConsolePage() {
       </div>
 
       {/* ── Review items ── */}
-      {console.log("Rendering review items section")}
       <section className="section-card border border-[var(--line)] bg-[var(--surface)]">
         <p className="section-label text-slate-500">Review Items</p>
         <ul aria-label="Review items" className="mt-5 space-y-3">
