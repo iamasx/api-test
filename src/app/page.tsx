@@ -1,10 +1,28 @@
 import Link from "next/link";
 import { teamGroups, getDirectoryMetrics } from "@/data/team-directory";
 
-const navigatorHubHighlights = [
-  "New navigator hub route with linked intervention rails across queue, parcel, and command views",
-  "Shared landing-page overlap that rewrites the featured hero around the new route",
-  "Global shell styling updates that intentionally modify the common app nav, footer, and theme tokens",
+const reserveGridHighlights = [
+  "New reserve-grid route with zone-based reserve selection driven by the shared URL entry",
+  "Landing page, app nav, and footer overlap updated together so the route lands on common files",
+  "Global reserve tokens and shell treatments intentionally widen the merge surface for future route work",
+];
+
+const reserveGridSignals = [
+  {
+    label: "Reserve cells",
+    value: "18",
+    detail: "Distributed across four active reserve zones.",
+  },
+  {
+    label: "Linked surfaces",
+    value: "8",
+    detail: "Route planner, queue, parcel, archive, and shell views remain in play.",
+  },
+  {
+    label: "Swap slack",
+    value: "27m",
+    detail: "Maximum reserve window before the shell must commit a new handoff path.",
+  },
 ];
 
 const notebookHighlights = [
@@ -70,39 +88,43 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-[var(--section-gap)] px-6 py-12 sm:px-10 lg:px-12">
-      <section className="overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.08)]">
-        <div className="grid gap-10 px-6 py-10 sm:px-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)] lg:px-12 lg:py-14">
+      <section className="reserve-grid-callout reserve-grid-hero overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_24px_100px_rgba(15,23,42,0.08)]">
+        <div className="grid gap-10 px-6 py-10 sm:px-10 lg:grid-cols-[minmax(0,1.18fr)_minmax(280px,0.82fr)] lg:px-12 lg:py-14">
           <div className="space-y-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-700">
-              Issue 216 / Navigator Hub
-            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="reserve-grid-badge">Issue 219</span>
+              <span className="reserve-grid-pulse">Shared route entry</span>
+            </div>
             <div className="space-y-4">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--reserve-ink)]">
+                Issue 219 / Reserve Grid
+              </p>
               <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-                Coordinate shared app-shell handoffs from a dedicated navigator
-                hub.
+                Stage reserve lanes, swap windows, and shell-safe overflow from
+                one shared grid.
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-slate-600">
-                The navigator hub is the new conflict surface for issue 216:
-                one route that pulls together lane pressure, handoff timing,
-                and shared-shell entry points while also rewriting common
-                landing and global presentation files.
+                Reserve Grid is the new overlap surface for issue 219: a route
+                that tracks spare corridor capacity, unlock conditions, and
+                linked downstream views while also rewriting the common landing
+                page and app-shell styling other work depends on.
               </p>
             </div>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Link
-                href="/navigator-hub"
-                className="inline-flex items-center justify-center rounded-full bg-cyan-700 px-6 py-3 text-sm font-semibold text-cyan-50 transition hover:bg-cyan-800"
+                href="/reserve-grid?zone=delta"
+                className="inline-flex items-center justify-center rounded-full bg-[var(--reserve-accent)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--reserve-ink)]"
               >
-                Open navigator hub
+                Open reserve grid
               </Link>
               <Link
-                href="/operations-center"
+                href="/route-planner"
                 className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
               >
-                Open ops center
+                Open route planner
               </Link>
               <a
-                href="https://github.com/iamasx/api-test/issues/216"
+                href="https://github.com/iamasx/api-test/issues/219"
                 className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
                 target="_blank"
                 rel="noreferrer"
@@ -112,20 +134,39 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface-strong)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+          <div className="reserve-grid-panel rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface-strong)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
               Conflict checks
             </p>
             <ul className="mt-5 space-y-4">
-              {navigatorHubHighlights.map((item) => (
+              {reserveGridHighlights.map((item) => (
                 <li
                   key={item}
-                  className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
+                  className="reserve-grid-signal rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
                 >
                   {item}
                 </li>
               ))}
             </ul>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {reserveGridSignals.map((signal) => (
+                <div
+                  key={signal.label}
+                  className="rounded-[1.15rem] border border-white/70 bg-white/85 px-4 py-4"
+                >
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                    {signal.label}
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
+                    {signal.value}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    {signal.detail}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
