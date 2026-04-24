@@ -6,6 +6,8 @@ export const metadata: Metadata = {
     "Review items with decision notes and a compact status summary strip.",
 };
 
+// Review console route — displays review items, decision notes, and status summary
+
 interface ReviewItem {
   id: string;
   title: string;
@@ -196,6 +198,7 @@ const verdictLabel: Record<DecisionNote["verdict"], string> = {
 };
 
 export default function ReviewConsolePage() {
+  console.log("ReviewConsolePage rendered");
   const counts = {
     total: reviewItems.length,
     pending: reviewItems.filter((r) => r.status === "pending").length,
@@ -255,6 +258,7 @@ export default function ReviewConsolePage() {
       </div>
 
       {/* ── Review items ── */}
+      {console.log("Rendering review items section")}
       <section className="section-card border border-[var(--line)] bg-[var(--surface)]">
         <p className="section-label text-slate-500">Review Items</p>
         <ul aria-label="Review items" className="mt-5 space-y-3">
