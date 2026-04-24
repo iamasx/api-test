@@ -88,13 +88,13 @@ describe("FieldGuidePage", () => {
     ).toBeInTheDocument();
 
     expect(
-      within(previewSection).getByText(/required/i),
+      within(previewSection).getByRole("heading", { name: /^required$/i }),
     ).toBeInTheDocument();
     expect(
-      within(previewSection).getByText(/verify on site/i),
+      within(previewSection).getByRole("heading", { name: /^verify on site$/i }),
     ).toBeInTheDocument();
     expect(
-      within(previewSection).getByText(/recommended/i),
+      within(previewSection).getByRole("heading", { name: /^recommended$/i }),
     ).toBeInTheDocument();
 
     expect(
@@ -133,9 +133,9 @@ describe("FieldGuidePage", () => {
       within(previewSection).queryByText(/dock seal integrity audit/i),
     ).not.toBeInTheDocument();
 
-    expect(
-      within(previewSection).getByText(/FG-201/),
-    ).toBeInTheDocument();
+    expect(within(previewSection).getAllByText(/FG-201/).length).toBeGreaterThan(
+      0,
+    );
   });
 
   it("supports search-driven narrowing and empty-state feedback", async () => {

@@ -19,11 +19,12 @@ export const metadata: Metadata = {
     template: "%s | Archive Signals",
   },
   description:
-    "Operational dashboards, navigator handoff surfaces, experiment registries, and field guides for archive-driven teams.",
+    "Operational dashboards, reserve-grid overlaps, navigator handoff surfaces, experiment registries, and field guides for archive-driven teams.",
 };
 
 const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/reserve-grid", label: "Reserve Grid" },
   { href: "/navigator-hub", label: "Navigator Hub" },
   { href: "/team-directory", label: "Team Directory" },
   { href: "/archive-browser", label: "Archive" },
@@ -49,7 +50,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col bg-slate-50/40">
         <nav className="app-nav" aria-label="Primary">
           <div className="app-nav__cluster">
-            <p className="app-nav__eyebrow">Conflict surface</p>
+            <p className="app-nav__eyebrow">Shared overlap</p>
             <Link href="/" className="app-nav__brand">
               Archive Signals
             </Link>
@@ -63,13 +64,13 @@ export default function RootLayout({
               </li>
             ))}
           </ul>
-          <p className="app-nav__meta">Navigator overlap active</p>
+          <p className="app-nav__meta">Reserve grid overlap active</p>
         </nav>
         {children}
         <footer className="mt-auto border-t border-[var(--line)] py-6 text-center">
           <p className="section-label text-slate-500">
-            Archive Signals &middot; Navigator Hub &middot; Status Board &middot;
-            Built for conflict testing
+            Archive Signals &middot; Reserve Grid &middot; Navigator Hub
+            &middot; Status Board &middot; Built for conflict testing
           </p>
         </footer>
       </body>
