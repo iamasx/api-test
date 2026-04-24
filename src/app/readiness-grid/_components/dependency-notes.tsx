@@ -13,11 +13,13 @@ const statusBadgeStyles: Record<DependencyNote["status"], string> = {
   "at-risk": "border-rose-300/20 bg-rose-300/10 text-rose-50",
 };
 
+// Renders a list of cross-workstream dependency notes with status badges
 type DependencyNotesProps = {
   notes: DependencyNote[];
 };
 
 export function DependencyNotes({ notes }: DependencyNotesProps) {
+  console.log("DependencyNotes rendered with", notes.length, "notes");
   return (
     <section aria-label="Dependency notes" className="space-y-5">
       <div className="space-y-2">

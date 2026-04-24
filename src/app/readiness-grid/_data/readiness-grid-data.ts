@@ -10,6 +10,7 @@ export interface ReadinessTile {
   summary: string;
 }
 
+// Represents a dependency link between two workstreams with resolution status
 export interface DependencyNote {
   id: string;
   source: string;
