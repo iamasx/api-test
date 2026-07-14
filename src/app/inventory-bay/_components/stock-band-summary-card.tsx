@@ -21,7 +21,7 @@ export function StockBandSummaryCard({ summary }: StockBandSummaryCardProps) {
         <span
           className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${summary.badgeClassName}`}
         >
-          {summary.itemCount} SKUs
+          {summary.skuCount} SKUs
         </span>
       </div>
 
@@ -36,20 +36,29 @@ export function StockBandSummaryCard({ summary }: StockBandSummaryCardProps) {
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
         <div className="rounded-2xl border border-white/70 bg-white/72 px-4 py-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-            Units on hand
+            Available units
           </p>
           <p className="mt-2 text-3xl font-semibold text-slate-950">
-            {summary.unitsOnHand}
+            {summary.availableUnits}
           </p>
         </div>
         <div className="rounded-2xl border border-white/70 bg-white/72 px-4 py-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-            Available to promise
+            Average cover
           </p>
           <p className="mt-2 text-3xl font-semibold text-slate-950">
-            {summary.availableToPromise}
+            {summary.averageDaysOfCover}d
           </p>
         </div>
+      </div>
+
+      <div className="mt-4 rounded-2xl border border-white/70 bg-white/72 px-4 py-4">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+          Share of tracked SKUs
+        </p>
+        <p className="mt-2 text-lg font-semibold text-slate-950">
+          {summary.shareOfTrackedSkus}% of inventory tracked on this route
+        </p>
       </div>
     </li>
   );

@@ -1,46 +1,25 @@
-import Link from "next/link";
-
 import type {
   InventoryBayBandSummary,
-  InventoryBayMetrics,
-  InventoryBayRecommendationView,
-  InventoryBaySection,
+  InventoryBayCategorySummary,
+  InventoryBayLowStockView,
+  InventoryBayOverviewMetric,
 } from "../_data/inventory-bay-data";
-import { InventoryBayCategorySection } from "./inventory-bay-category-section";
-import { RestockRecommendationPanel } from "./restock-recommendation-panel";
+import { CategorySummaryTile } from "./category-summary-tile";
+import { LowStockPanel } from "./low-stock-panel";
 import { StockBandSummaryCard } from "./stock-band-summary-card";
 
 type InventoryBayShellProps = {
   bandSummaries: InventoryBayBandSummary[];
-  metrics: InventoryBayMetrics;
-  recommendations: InventoryBayRecommendationView[];
-  sections: InventoryBaySection[];
+  categorySummaries: InventoryBayCategorySummary[];
+  lowStockAlerts: InventoryBayLowStockView[];
+  overviewMetrics: InventoryBayOverviewMetric[];
 };
-
-const metricCards = [
-  {
-    id: "trackedSkus",
-    label: "Tracked SKUs",
-  },
-  {
-    id: "atRiskSkus",
-    label: "At-risk stock",
-  },
-  {
-    id: "availableToPromise",
-    label: "Available to promise",
-  },
-  {
-    id: "recommendationCount",
-    label: "Recommended moves",
-  },
-] as const;
 
 export function InventoryBayShell({
   bandSummaries,
-  metrics,
-  recommendations,
-  sections,
+  categorySummaries,
+  lowStockAlerts,
+  overviewMetrics,
 }: InventoryBayShellProps) {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(45,212,191,0.16),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(249,115,22,0.12),transparent_28%),linear-gradient(180deg,#f6fafb_0%,#eef4f5_48%,#f8fafc_100%)] text-slate-950">
@@ -50,48 +29,45 @@ export function InventoryBayShell({
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300">
               Inventory Bay
             </p>
-            <Link
-              href="/"
-              className="rounded-full border border-white/12 px-4 py-2 text-sm font-medium text-white/82 transition-colors hover:bg-white/8"
-            >
-              Back to overview
-            </Link>
+            <p className="rounded-full border border-white/12 bg-white/8 px-4 py-2 text-sm font-medium text-white/82">
+              Standalone mock route
+            </p>
           </div>
 
           <div className="mt-6 grid gap-8 xl:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.95fr)]">
             <div>
               <h1 className="max-w-4xl text-4xl font-semibold tracking-tight sm:text-5xl">
-                Scan stock bands, bay sections, and next restock moves from one route.
+                See stock bands, category pressure, and low-stock warnings in one bay scan.
               </h1>
               <p className="mt-5 max-w-3xl text-base leading-8 text-white/72 sm:text-lg">
-                The inventory bay route keeps stock pressure visible without a backend:
-                band summaries show where attention is rising, category sections keep
-                each bay readable, and the recommendation panel stays focused on the
-                next move to protect throughput.
+                This standalone route keeps the inventory story compact: band cards
+                show the overall stock mix, category tiles summarize each bay zone,
+                and the low-stock panel surfaces the items that still need action
+                before the next replenishment window.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3 text-sm text-white/74">
                 <span className="rounded-full border border-white/10 bg-white/8 px-3 py-1.5">
-                  Local mock stock, band, and recommendation data
+                  Local mock stock, band, category, and alert data
                 </span>
                 <span className="rounded-full border border-white/10 bg-white/8 px-3 py-1.5">
-                  Sections grouped by bay category
+                  Summary tiles grouped by bay category
                 </span>
                 <span className="rounded-full border border-white/10 bg-white/8 px-3 py-1.5">
-                  Available, low-stock, and depleted visual states
+                  Healthy, watch, and critical stock states
                 </span>
                 <span className="rounded-full border border-white/10 bg-white/8 px-3 py-1.5">
-                  Recommendation panel stays visible beside the stock grid
+                  Compact warning panel stays visible beside the category grid
                 </span>
               </div>
             </div>
 
             <div
-              aria-label="Inventory bay metrics"
+              aria-label="Inventory bay overview"
               className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1"
               role="list"
             >
-              {metricCards.map((metricCard) => (
+              {overviewMetrics.map((metricCard) => (
                 <div
                   key={metricCard.id}
                   className="rounded-[1.5rem] border border-white/10 bg-white/6 p-5"
@@ -101,7 +77,10 @@ export function InventoryBayShell({
                     {metricCard.label}
                   </p>
                   <p className="mt-3 text-3xl font-semibold tracking-tight">
-                    {metrics[metricCard.id]}
+                    {metricCard.value}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-white/66">
+                    {metricCard.detail}
                   </p>
                 </div>
               ))}
@@ -119,53 +98,57 @@ export function InventoryBayShell({
                 id="inventory-bands-heading"
                 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950"
               >
-                Band-level stock pressure
+                Stock bands at a glance
               </h2>
             </div>
             <p className="max-w-3xl text-sm leading-7 text-slate-600">
-              Each band condenses the same mock inventory into a quick scan so the
-              route immediately shows where bay pressure is stable, tightening, or
-              already below the safe reorder line.
+              Each stock band compresses the bay mix into a readable summary so it
+              is obvious where supply is stable, slipping, or already below the
+              safe reorder line.
             </p>
           </div>
 
-          <ul
-            aria-label="Stock bands"
-            className="grid gap-4 lg:grid-cols-3"
-          >
+          <ul aria-label="Stock bands" className="grid gap-4 lg:grid-cols-3">
             {bandSummaries.map((summary) => (
               <StockBandSummaryCard key={summary.id} summary={summary} />
             ))}
           </ul>
         </section>
 
-        <div className="grid gap-8 xl:grid-cols-[minmax(0,1.55fr)_380px]">
+        <div
+          data-testid="inventory-bay-layout"
+          className="grid gap-6 xl:grid-cols-[minmax(0,1.4fr)_320px]"
+        >
           <section aria-labelledby="inventory-sections-heading" className="space-y-6">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
-                  Category sections
+                  Category tiles
                 </p>
                 <h2
                   id="inventory-sections-heading"
                   className="mt-2 text-3xl font-semibold tracking-tight text-slate-950"
                 >
-                  Bay categories and live stock cards
+                  Category summaries by bay zone
                 </h2>
               </div>
               <p className="max-w-3xl text-sm leading-7 text-slate-600">
-                Every section keeps the item cards tied to a real bay zone so the
-                stock detail, location, owner, and delivery context stay visible in
-                the same scan path.
+                Every tile keeps the category-level signal compact while still
+                surfacing the item that is most likely to need attention first.
               </p>
             </div>
 
-            {sections.map((section) => (
-              <InventoryBayCategorySection key={section.id} section={section} />
-            ))}
+            <ul
+              aria-label="Category summaries"
+              className="grid gap-4 sm:grid-cols-2"
+            >
+              {categorySummaries.map((summary) => (
+                <CategorySummaryTile key={summary.id} summary={summary} />
+              ))}
+            </ul>
           </section>
 
-          <RestockRecommendationPanel recommendations={recommendations} />
+          <LowStockPanel alerts={lowStockAlerts} />
         </div>
       </main>
     </div>
