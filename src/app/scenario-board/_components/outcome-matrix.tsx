@@ -47,7 +47,7 @@ export function OutcomeMatrix({
         </p>
       </div>
 
-      <div className="mt-6 overflow-x-auto">
+      <div className="mt-6 overflow-x-auto" data-testid="outcome-matrix-wrap">
         <table aria-label={title} className="min-w-[64rem] border-separate border-spacing-y-4">
           <caption className="sr-only">{title}</caption>
           <thead>
