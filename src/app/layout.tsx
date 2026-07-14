@@ -31,6 +31,7 @@ const navLinks = [
   { href: "/field-guide", label: "Field Guide" },
   { href: "/operations-center", label: "Ops Center" },
   { href: "/experiment-registry", label: "Experiments" },
+  { href: "/manifest-room", label: "Manifest Room" },
   { href: "/queue-monitor", label: "Queue Monitor" },
   { href: "/parcel-hub", label: "Parcel Hub" },
   { href: "/status-board", label: "Status Board" },
