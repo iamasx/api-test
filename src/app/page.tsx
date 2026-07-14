@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { teamGroups, getDirectoryMetrics } from "@/data/team-directory";
 
-const navigatorHubHighlights = [
-  "New navigator hub route with linked intervention rails across queue, parcel, and command views",
-  "Shared landing-page overlap that rewrites the featured hero around the new route",
-  "Global shell styling updates that intentionally modify the common app nav, footer, and theme tokens",
+const reviewHubHighlights = [
+  "Dedicated review-hub route with file-by-file overlap targets and a release cadence for shared-shell changes",
+  "Featured landing-page hero rewritten so the common entry point routes directly into the review surface",
+  "Global shell copy and presentation updates intentionally widen the merge-conflict surface in shared files",
 ];
 
 const notebookHighlights = [
@@ -70,39 +70,41 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-[var(--section-gap)] px-6 py-12 sm:px-10 lg:px-12">
-      <section className="overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.08)]">
+      <section className="review-hub-hero route-entry-link overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[0_20px_90px_rgba(15,23,42,0.08)]">
         <div className="grid gap-10 px-6 py-10 sm:px-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)] lg:px-12 lg:py-14">
           <div className="space-y-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-700">
-              Issue 216 / Navigator Hub
-            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="review-hub-badge">Landing overlap route</span>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-rose-700">
+                Issue 217 / Review Hub
+              </p>
+            </div>
             <div className="space-y-4">
               <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-                Coordinate shared app-shell handoffs from a dedicated navigator
-                hub.
+                Stage the shared landing-page overlap from the review hub.
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-slate-600">
-                The navigator hub is the new conflict surface for issue 216:
-                one route that pulls together lane pressure, handoff timing,
-                and shared-shell entry points while also rewriting common
-                landing and global presentation files.
+                Review Hub is the new conflict surface for issue 217: one route
+                that inventories the shared files, tracks the active review
+                lanes, and keeps the landing page plus app shell intentionally
+                overlapped while adjacent PRs are still in flight.
               </p>
             </div>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Link
+                href="/review-hub"
+                className="inline-flex items-center justify-center rounded-full bg-rose-700 px-6 py-3 text-sm font-semibold text-rose-50 transition hover:bg-rose-800"
+              >
+                Open review hub
+              </Link>
+              <Link
                 href="/navigator-hub"
-                className="inline-flex items-center justify-center rounded-full bg-cyan-700 px-6 py-3 text-sm font-semibold text-cyan-50 transition hover:bg-cyan-800"
+                className="review-shell-link inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
               >
                 Open navigator hub
               </Link>
-              <Link
-                href="/operations-center"
-                className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
-              >
-                Open ops center
-              </Link>
               <a
-                href="https://github.com/iamasx/api-test/issues/216"
+                href="https://github.com/iamasx/api-test/issues/217"
                 className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
                 target="_blank"
                 rel="noreferrer"
@@ -114,13 +116,13 @@ export default function Home() {
 
           <div className="rounded-[1.75rem] border border-slate-200/80 bg-[var(--surface-strong)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
-              Conflict checks
+              Review checks
             </p>
             <ul className="mt-5 space-y-4">
-              {navigatorHubHighlights.map((item) => (
+              {reviewHubHighlights.map((item) => (
                 <li
                   key={item}
-                  className="rounded-2xl border border-slate-200 bg-white/75 px-4 py-4 text-sm leading-6 text-slate-600"
+                  className="review-hub-note rounded-2xl border border-rose-100 bg-white/80 px-4 py-4 text-sm leading-6 text-slate-600"
                 >
                   {item}
                 </li>
