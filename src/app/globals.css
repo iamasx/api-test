@@ -13,6 +13,10 @@
   --navigator-accent-light: rgba(8, 145, 178, 0.12);
   --navigator-accent-soft: rgba(34, 211, 238, 0.08);
   --navigator-ink: #164e63;
+  --capacity-accent: #2563eb;
+  --capacity-accent-light: rgba(37, 99, 235, 0.12);
+  --capacity-accent-soft: rgba(219, 234, 254, 0.7);
+  --capacity-ink: #1d4ed8;
 
   /* Shared typography tokens */
   --heading-tracking-tight: -0.025em;
@@ -67,6 +71,7 @@ body {
   color: var(--foreground);
   background-image:
     radial-gradient(circle at top, rgba(251, 191, 36, 0.18), transparent 32%),
+    radial-gradient(circle at left 22%, rgba(37, 99, 235, 0.12), transparent 24%),
     radial-gradient(circle at right 18%, rgba(8, 145, 178, 0.14), transparent 26%),
     linear-gradient(180deg, #fcf8ef 0%, #f4efe7 52%, #ebe5d9 100%);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
@@ -118,6 +123,35 @@ a {
   color: var(--foreground);
 }
 
+.app-shell__signal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+  background:
+    linear-gradient(90deg, rgba(239, 246, 255, 0.9), rgba(255, 251, 235, 0.85));
+  padding: 0.75rem 1.5rem;
+}
+
+.app-shell__signal-label {
+  border-radius: 9999px;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  background: rgba(255, 255, 255, 0.82);
+  padding: 0.35rem 0.8rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--capacity-ink);
+}
+
+.app-shell__signal-copy {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(15, 23, 42, 0.72);
+}
+
 /* ── Shared app chrome ─────────────────────────────────────── */
 
 .app-nav {
@@ -130,7 +164,8 @@ a {
   gap: 1rem;
   min-height: var(--nav-height);
   padding: 0.875rem 1.5rem;
-  background: rgba(255, 251, 240, 0.86);
+  background:
+    linear-gradient(90deg, rgba(255, 251, 240, 0.88), rgba(239, 246, 255, 0.72));
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
 }
@@ -374,7 +409,120 @@ a {
   border-left: 3px solid rgba(8, 145, 178, 0.28);
 }
 
+/* ── Capacity-board shared shell styles ───────────────────── */
+
+.capacity-shell-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.capacity-shell-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    rgba(37, 99, 235, 0.72) 0%,
+    rgba(59, 130, 246, 0.42) 50%,
+    rgba(251, 191, 36, 0.58) 100%
+  );
+  opacity: 0.82;
+}
+
+.capacity-board-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.capacity-board-panel::before {
+  content: "";
+  position: absolute;
+  inset: auto -12% -34% 42%;
+  height: 11rem;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.13), transparent 68%);
+  pointer-events: none;
+}
+
+.capacity-board-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  background: rgba(255, 255, 255, 0.76);
+  padding: 0.35rem 0.8rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--capacity-ink);
+}
+
+.capacity-board-chip::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 9999px;
+  background: var(--capacity-accent);
+  box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.12);
+}
+
+.capacity-board-note {
+  border-left: 3px solid rgba(37, 99, 235, 0.24);
+}
+
+.capacity-board-track {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.capacity-board-track:hover {
+  transform: translateY(-2px);
+  border-color: rgba(37, 99, 235, 0.22);
+  box-shadow: 0 18px 34px rgba(37, 99, 235, 0.09);
+}
+
+.capacity-board-link {
+  position: relative;
+}
+
+.capacity-board-link::after {
+  content: "\2192";
+  margin-left: 0.45rem;
+  transition: transform 0.15s ease;
+}
+
+.capacity-board-link:hover::after {
+  transform: translateX(2px);
+}
+
+.capacity-board-meter {
+  overflow: hidden;
+  height: 0.6rem;
+  border-radius: 9999px;
+  background: rgba(148, 163, 184, 0.18);
+}
+
+.capacity-board-meter__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    rgba(37, 99, 235, 0.92) 0%,
+    rgba(96, 165, 250, 0.62) 100%
+  );
+}
+
 @media (max-width: 960px) {
+  .app-shell__signal {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
   .app-nav {
     align-items: flex-start;
     flex-wrap: wrap;
